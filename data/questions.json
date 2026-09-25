@@ -1,0 +1,290 @@
+{
+  "seed": 20260925,
+  "questions": [
+    {
+      "id": "p1",
+      "type": "mcq",
+      "technique": "Substitute",
+      "stem": "Which idea for the hụi app is an example of \"Substitute\"?",
+      "options": [
+        "Add flexible cycle lengths and a large-text mode",
+        "Replace typing amounts with a one-tap 'Paid' button",
+        "Borrow the due/overdue timeline from loan apps",
+        "Merge the ledger, reminders and a payment QR code"
+      ],
+      "answer": "Replace typing amounts with a one-tap 'Paid' button",
+      "explain": "\"Replace typing amounts with a one-tap 'Paid' button\" applies Substitute."
+    },
+    {
+      "id": "p2",
+      "type": "mcq",
+      "technique": "Combine",
+      "stem": "Which idea for the hụi app is an example of \"Combine\"?",
+      "options": [
+        "Show the player's view first instead of the host's",
+        "Remove sign-up and hand calculation of bid payouts",
+        "Reuse the ledger as a personal savings-goal tracker",
+        "Merge the ledger, reminders and a payment QR code"
+      ],
+      "answer": "Merge the ledger, reminders and a payment QR code",
+      "explain": "\"Merge the ledger, reminders and a payment QR code\" applies Combine."
+    },
+    {
+      "id": "p3",
+      "type": "mcq",
+      "technique": "Adapt",
+      "stem": "Which idea for the hụi app is an example of \"Adapt\"?",
+      "options": [
+        "Replace typing amounts with a one-tap 'Paid' button",
+        "Show the player's view first instead of the host's",
+        "Borrow the due/overdue timeline from loan apps",
+        "Add flexible cycle lengths and a large-text mode"
+      ],
+      "answer": "Borrow the due/overdue timeline from loan apps",
+      "explain": "\"Borrow the due/overdue timeline from loan apps\" applies Adapt."
+    },
+    {
+      "id": "p4",
+      "type": "mcq",
+      "technique": "Modify",
+      "stem": "Which idea for the hụi app is an example of \"Modify\"?",
+      "options": [
+        "Remove sign-up and hand calculation of bid payouts",
+        "Reuse the ledger as a personal savings-goal tracker",
+        "Replace typing amounts with a one-tap 'Paid' button",
+        "Add flexible cycle lengths and a large-text mode"
+      ],
+      "answer": "Add flexible cycle lengths and a large-text mode",
+      "explain": "\"Add flexible cycle lengths and a large-text mode\" applies Modify."
+    },
+    {
+      "id": "p5",
+      "type": "mcq",
+      "technique": "Put to another use",
+      "stem": "Which idea for the hụi app is an example of \"Put to another use\"?",
+      "options": [
+        "Borrow the due/overdue timeline from loan apps",
+        "Add flexible cycle lengths and a large-text mode",
+        "Reuse the ledger as a personal savings-goal tracker",
+        "Remove sign-up and hand calculation of bid payouts"
+      ],
+      "answer": "Reuse the ledger as a personal savings-goal tracker",
+      "explain": "\"Reuse the ledger as a personal savings-goal tracker\" applies Put to another use."
+    },
+    {
+      "id": "p6",
+      "type": "mcq",
+      "technique": "Eliminate",
+      "stem": "Which idea for the hụi app is an example of \"Eliminate\"?",
+      "options": [
+        "Show the player's view first instead of the host's",
+        "Add flexible cycle lengths and a large-text mode",
+        "Remove sign-up and hand calculation of bid payouts",
+        "Reuse the ledger as a personal savings-goal tracker"
+      ],
+      "answer": "Remove sign-up and hand calculation of bid payouts",
+      "explain": "\"Remove sign-up and hand calculation of bid payouts\" applies Eliminate."
+    },
+    {
+      "id": "p7",
+      "type": "mcq",
+      "technique": "Rearrange/Reverse",
+      "stem": "Which idea for the hụi app is an example of \"Rearrange/Reverse\"?",
+      "options": [
+        "Borrow the due/overdue timeline from loan apps",
+        "Show the player's view first instead of the host's",
+        "Add flexible cycle lengths and a large-text mode",
+        "Replace typing amounts with a one-tap 'Paid' button"
+      ],
+      "answer": "Show the player's view first instead of the host's",
+      "explain": "\"Show the player's view first instead of the host's\" applies Rearrange/Reverse."
+    },
+    {
+      "id": "c1",
+      "type": "mcq",
+      "technique": "Substitute",
+      "stem": "Which SCAMPER technique is this? The team swaps the paper notebook for a phone ledger.",
+      "options": [
+        "Eliminate",
+        "Rearrange/Reverse",
+        "Substitute",
+        "Put to another use"
+      ],
+      "answer": "Substitute",
+      "explain": "This is Substitute."
+    },
+    {
+      "id": "c2",
+      "type": "mcq",
+      "technique": "Combine",
+      "stem": "Which SCAMPER technique is this? A backpack gets a built-in charger, so two products become one.",
+      "options": [
+        "Rearrange/Reverse",
+        "Combine",
+        "Put to another use",
+        "Modify"
+      ],
+      "answer": "Combine",
+      "explain": "This is Combine."
+    },
+    {
+      "id": "c3",
+      "type": "mcq",
+      "technique": "Adapt",
+      "stem": "Which SCAMPER technique is this? Designers copy how chat apps share a picture so receipts can go to a group.",
+      "options": [
+        "Rearrange/Reverse",
+        "Eliminate",
+        "Adapt",
+        "Substitute"
+      ],
+      "answer": "Adapt",
+      "explain": "This is Adapt."
+    },
+    {
+      "id": "c4",
+      "type": "mcq",
+      "technique": "Modify",
+      "stem": "Which SCAMPER technique is this? Text size, button size and cycle length all become adjustable.",
+      "options": [
+        "Modify",
+        "Eliminate",
+        "Adapt",
+        "Rearrange/Reverse"
+      ],
+      "answer": "Modify",
+      "explain": "This is Modify."
+    },
+    {
+      "id": "c5",
+      "type": "mcq",
+      "technique": "Put to another use",
+      "stem": "Which SCAMPER technique is this? A ledger built for hụi is also used to track a personal savings goal.",
+      "options": [
+        "Substitute",
+        "Rearrange/Reverse",
+        "Put to another use",
+        "Adapt"
+      ],
+      "answer": "Put to another use",
+      "explain": "This is Put to another use."
+    },
+    {
+      "id": "c6",
+      "type": "mcq",
+      "technique": "Eliminate",
+      "stem": "Which SCAMPER technique is this? The app no longer asks users to create an account.",
+      "options": [
+        "Eliminate",
+        "Modify",
+        "Combine",
+        "Rearrange/Reverse"
+      ],
+      "answer": "Eliminate",
+      "explain": "This is Eliminate."
+    },
+    {
+      "id": "c7",
+      "type": "mcq",
+      "technique": "Rearrange/Reverse",
+      "stem": "Which SCAMPER technique is this? The home screen shows what a player owes this week, not the host's list.",
+      "options": [
+        "Rearrange/Reverse",
+        "Put to another use",
+        "Combine",
+        "Modify"
+      ],
+      "answer": "Rearrange/Reverse",
+      "explain": "This is Rearrange/Reverse."
+    },
+    {
+      "id": "f1",
+      "type": "mcq",
+      "technique": null,
+      "stem": "Which of these is NOT one of the seven SCAMPER techniques?",
+      "options": [
+        "Adapt",
+        "Combine",
+        "Eliminate",
+        "Prioritize"
+      ],
+      "answer": "Prioritize",
+      "explain": "SCAMPER = Substitute, Combine, Adapt, Modify, Put to another use, Eliminate, Rearrange/Reverse."
+    },
+    {
+      "id": "f2",
+      "type": "mcq",
+      "technique": null,
+      "stem": "What does the letter P in SCAMPER stand for?",
+      "options": [
+        "Predict",
+        "Plan ahead",
+        "Put to another use",
+        "Prototype"
+      ],
+      "answer": "Put to another use",
+      "explain": "P asks: who else could use this product, or where else could it be used?"
+    },
+    {
+      "id": "n1",
+      "type": "num",
+      "technique": "Modify",
+      "stem": "Dead hụi (no interest): 10 members each pay 2,000,000 VND per cycle. In simplified form the receiver does not pay in their own cycle. How much VND does the receiver collect?",
+      "hint": "Everyone except the receiver pays.",
+      "params": {
+        "members": 10,
+        "contribution": 2000000
+      },
+      "answer": 18000000,
+      "explain": "(10 - 1) x 2,000,000 = 18,000,000 VND."
+    },
+    {
+      "id": "n2",
+      "type": "num",
+      "technique": "Adapt",
+      "stem": "Live hụi (with interest): 10 members, base contribution 1,000,000 VND. In cycle 3 the winner bids a discount of 200,000 VND. Members who already collected pay in full; members still waiting pay base minus the bid; the winner pays nothing. How much VND does the winner collect?",
+      "hint": "Two members collected in cycles 1 and 2; seven are still waiting.",
+      "params": {
+        "members": 10,
+        "contribution": 1000000,
+        "cycle": 3,
+        "bid": 200000
+      },
+      "answer": 7600000,
+      "explain": "2 x 1,000,000 + 7 x (1,000,000 - 200,000) = 7,600,000 VND."
+    },
+    {
+      "id": "n3",
+      "type": "num",
+      "technique": "Substitute",
+      "stem": "The app records these actual payments (VND): 2,000,000; 2,000,000; 1,800,000; 2,000,000; 2,000,000; 1,500,000. The plan is 10 cycles x 2,000,000. How much VND remains to be paid?",
+      "hint": "Remaining = planned total - total actually paid.",
+      "params": {
+        "paid": [
+          2000000,
+          2000000,
+          1800000,
+          2000000,
+          2000000,
+          1500000
+        ],
+        "planned": 20000000
+      },
+      "answer": 8700000,
+      "explain": "Paid = 11,300,000; remaining = 20,000,000 - 11,300,000 = 8,700,000 VND."
+    },
+    {
+      "id": "n4",
+      "type": "num",
+      "technique": "Eliminate",
+      "stem": "7 of 12 cycles are marked as paid. What is the progress percentage, rounded to the nearest whole number?",
+      "hint": "7 / 12 x 100.",
+      "params": {
+        "done": 7,
+        "total": 12
+      },
+      "answer": 58,
+      "explain": "7 / 12 x 100 = 58.33, rounded to 58%."
+    }
+  ]
+}
