@@ -58,6 +58,13 @@ h2{font-size:42px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-wid
 .sdgcol.yes h3{color:var(--ok)}.sdgcol.no h3{color:var(--no)}
 .sdgitem{margin-bottom:6px;font-size:17px;line-height:1.26;color:#dce9e3}
 .sdgitem b{color:var(--ink)}
+.pbrow{display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1;align-content:center}
+.pbcard{border-radius:16px;padding:26px 28px;border-top:6px solid var(--t)}
+.pbcard.a{background:#1a1a0f;border:1px solid #3a3a1f;--t:#fbbf24}
+.pbcard.b{background:#10221d;border:1px solid #1f3a33;--t:#60a5fa}
+.pbcard h3{margin:0 0 10px;font-size:22px}
+.pbcard p{margin:0;font-size:19px;line-height:1.42;color:#d6e6df}
+.pbcard .src{display:block;margin-top:12px;font-size:14px;color:var(--mut)}
 #hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#12221d;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
 #count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
 #home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
@@ -159,6 +166,13 @@ def build():
     ])
     S.append(slide("", f'<h2>A local case: three disruptors, one curve</h2><p class="issue" style="margin-bottom:14px">Each app answers a different gap: a channel to hail a ride, a locally-owned alternative, and a path to electric mobility — the same S-curve logic as Netflix, closer to home.</p><div class="exrow">{exrow}</div>'))
     NOTES[i] = ["A closer-to-home version of the same pattern. Grab entered Vietnam in 2014 and replaced street-hailing with an app; the incumbent, Vinasun, reacted hard enough to sue in 2017 over lost revenue, which is exactly the incumbent behavior the S-curve model predicts. Be followed in 2018, answering a different question: should an entire market's daily mobility run through one foreign platform, or is there room for a locally-owned alternative? Most recently, Xanh SM launched an all-electric fleet in 2023. That is not another hailing app — it uses ride-hailing demand to pull electric vehicles over their own adoption threshold, in a market that still has very little charging infrastructure. Three different gaps, the same underlying curve.", 50]; i += 1
+
+    pb = "".join([
+        '<div class="pbcard a"><h3>Drivers organize</h3><p>On Sept 22, 2026, Phạm Mi Sên, Vice Chair of the Bình Tân Tech Motorbike-Taxi Union (Nghiệp đoàn xe ôm công nghệ Bình Tân), spoke at an official meeting while wearing a Grab jacket — the same gig drivers the app once empowered are now organized labor with a seat at the table.</p><span class="src">Source: Thông tin Chính phủ (Vietnam Government Information), official Facebook page, Sept 22, 2026. Photo: Hoa Lê.</span></div>',
+        '<div class="pbcard b"><h3>Regulators review fees</h3><p>On Sept 12, 2026, the same page reported that the National Competition Commission (UBCTQG) is reviewing and verifying complaints about Grab’s pricing and fee policy, and has asked other ride-hailing app operators in Vietnam to submit related information.</p><span class="src">Source: Thông tin Chính phủ, official Facebook page, Sept 12, 2026.</span></div>',
+    ])
+    S.append(slide("", f'<div class="eyebrow">2026 update</div><h2>The disruptor becomes the incumbent</h2><p class="issue" style="margin-bottom:14px">Grab cleared its own adoption threshold years ago. Now it faces the two pressures every mature incumbent eventually faces: organized labor and regulatory scrutiny.</p><div class="pbrow">{pb}</div>'))
+    NOTES[i] = ["Two recent, real events round out the Grab story. On September 22, 2026, Pham Mi Sen, vice chair of the Binh Tan tech motorbike-taxi union, spoke at an official meeting wearing a Grab jacket — the gig drivers the app once empowered with flexible income are now a formal union with organized bargaining power. Ten days earlier, on September 12, the same government information page reported that Vietnam's National Competition Commission is reviewing complaints about Grab's pricing and fee policy, and has asked competing ride-hailing apps to submit related documents. In S-curve terms: Grab crossed its own threshold years ago, and now faces exactly the two pressures every successful disruptor eventually meets — organized labor, and a regulator asking whether its pricing is fair.", 50]; i += 1
 
     S.append(q_slide(q2))
     NOTES[i] = [f"Question two moves from one company to global systems. {q2['issue']} The case for innovation: {q2['agree']} The case against treating it as sufficient: {q2['oppose']} Which leads to: {q2['probe']}", 85]; i += 1
