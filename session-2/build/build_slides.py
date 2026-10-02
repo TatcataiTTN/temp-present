@@ -34,7 +34,9 @@ h2{font-size:42px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-wid
 .probe b{font-style:normal}
 .model{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
 .model svg{height:480px;width:auto}
-.takeaway{margin-top:auto;font-size:27px;line-height:1.4;color:var(--brand);font-weight:600;max-width:1000px}
+.takeaway{margin-top:26px;font-size:27px;line-height:1.4;color:var(--brand);font-weight:600;max-width:1000px}
+.close.slide{justify-content:center}
+.closewrap{display:flex;flex-direction:column}
 .kv{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:4px}
 .kv div{background:#10221d;border:1px solid #1f3a33;border-radius:12px;padding:16px 20px;font-size:21px;line-height:1.35}
 .kv b{display:block;color:var(--brand);font-size:17px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
@@ -79,19 +81,22 @@ JS = """
 
 # S-curve model: incumbent (steady, then plateaus/declines) vs disruptor (slow start, overtakes).
 def model_svg():
-    return '''<svg viewBox="0 0 900 480" role="img" aria-label="S-curve: a disruptor starts slow then overtakes a plateauing incumbent">
-<line x1="60" y1="420" x2="860" y2="420" stroke="#2a4a41" stroke-width="2"/>
-<line x1="60" y1="420" x2="60" y2="30" stroke="#2a4a41" stroke-width="2"/>
-<text x="860" y="448" fill="#9db3aa" font-size="20" text-anchor="end">Time</text>
-<text x="40" y="30" fill="#9db3aa" font-size="20" text-anchor="end">Value</text>
-<path d="M70 360 C 300 300, 500 120, 760 95" fill="none" stroke="#60a5fa" stroke-width="5"/>
-<text x="770" y="90" fill="#60a5fa" font-size="22" font-weight="700">Incumbent (core strength, slowing gains)</text>
-<path d="M70 410 C 320 405, 420 340, 560 230 C 680 140, 720 90, 760 55" fill="none" stroke="#2dd4bf" stroke-width="5"/>
-<text x="770" y="58" fill="#2dd4bf" font-size="22" font-weight="700">Disruptor (slow start, compounding gains)</text>
-<circle cx="560" cy="230" r="8" fill="#fbbf24"/>
-<text x="560" y="260" fill="#fbbf24" font-size="19" text-anchor="middle">crossover: adoption threshold</text>
-<text x="200" y="455" fill="#9db3aa" font-size="19" text-anchor="middle">Netflix streaming pivot</text>
-<text x="600" y="455" fill="#f87171" font-size="19" text-anchor="middle">Blockbuster: held the old curve too long</text>
+    return '''<svg viewBox="0 0 1000 520" role="img" aria-label="S-curve: a disruptor starts slow then overtakes a plateauing incumbent">
+<line x1="70" y1="440" x2="900" y2="440" stroke="#2a4a41" stroke-width="2"/>
+<line x1="70" y1="440" x2="70" y2="40" stroke="#2a4a41" stroke-width="2"/>
+<text x="900" y="468" fill="#9db3aa" font-size="20" text-anchor="end">Time</text>
+<text x="70" y="26" fill="#9db3aa" font-size="20" text-anchor="start">Value</text>
+<path d="M80 380 C 310 320, 510 140, 770 115" fill="none" stroke="#60a5fa" stroke-width="5"/>
+<path d="M80 430 C 330 425, 430 360, 570 250 C 690 160, 730 110, 770 75" fill="none" stroke="#2dd4bf" stroke-width="5"/>
+<circle cx="570" cy="250" r="8" fill="#fbbf24"/>
+<text x="570" y="282" fill="#fbbf24" font-size="19" text-anchor="middle">crossover: adoption threshold</text>
+<text x="200" y="476" fill="#9db3aa" font-size="19" text-anchor="middle">Netflix streaming pivot</text>
+<text x="620" y="476" fill="#f87171" font-size="19" text-anchor="middle">Blockbuster: held the old curve too long</text>
+<rect x="610" y="40" width="370" height="86" rx="10" fill="#0b1a16" stroke="#1f3a33"/>
+<line x1="626" y1="64" x2="654" y2="64" stroke="#60a5fa" stroke-width="5"/>
+<text x="662" y="70" fill="#60a5fa" font-size="17" font-weight="700" text-anchor="start">Incumbent: slowing gains</text>
+<line x1="626" y1="102" x2="654" y2="102" stroke="#2dd4bf" stroke-width="5"/>
+<text x="662" y="108" fill="#2dd4bf" font-size="17" font-weight="700" text-anchor="start">Disruptor: compounding gains</text>
 </svg>'''
 
 def slide(cls, inner):
@@ -143,7 +148,7 @@ def build():
     S.append(slide("lit", '<div class="eyebrow">Literature</div><h2>Grounding the debate</h2><div class="litgrid" id="lit"></div>'))
     NOTES[i] = ["Three sources anchor this discussion: a measured estimate of the carbon cost of training large NLP models, which supports the opposing case in question two; and two further open-access sources on digital transformation and on the limits of techno-solutionism, listed with their access status.", 40]; i += 1
 
-    S.append(slide("", '<div class="eyebrow">Synthesis</div><h2>Closing</h2><p class="takeaway">' + e(TAKEAWAY) + '</p>'))
+    S.append(slide("close", '<div class="closewrap"><div class="eyebrow">Synthesis</div><h2>Closing</h2><p class="takeaway">' + e(TAKEAWAY) + '</p></div>'))
     NOTES[i] = [TAKEAWAY + " Thank you — I'm happy to open the floor for the group discussion on question two.", 35]; i += 1
 
     notes_json = json.dumps({str(k): v for k, v in NOTES.items()}, ensure_ascii=False)
