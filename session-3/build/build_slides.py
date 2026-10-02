@@ -1,0 +1,235 @@
+"""Generates slides/index.html for Session 3. Run: python3 build/build_slides.py"""
+import html, json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+e = html.escape
+
+CSS = """
+:root{--bg:#0b1512;--ink:#eef6f2;--mut:#9db3aa;--brand:#2dd4bf;--ok:#34d399;--no:#f87171;--q:#fbbf24}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#050a08;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;background:radial-gradient(1200px 600px at 10% 0,#12332c,var(--bg));overflow:hidden}
+.slide{position:absolute;inset:0;padding:56px 84px 46px;display:none;flex-direction:column}
+.slide.on{display:flex;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:88px;letter-spacing:-.04em;margin:0;line-height:1.05}
+h2{font-size:40px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-width:1080px}
+.kick{color:var(--brand);font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px;font-size:19px}
+.sub{font-size:28px;color:var(--mut);margin:16px 0 0;max-width:980px;line-height:1.35}
+.title{justify-content:center}
+.eyebrow{font-size:18px;color:var(--q);font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px}
+.issue{font-size:22px;line-height:1.4;color:var(--mut);max-width:1050px}
+.model{flex:1;display:flex;align-items:center;justify-content:center;min-height:0}
+.model svg{height:480px;width:auto}
+.takeaway{margin-top:auto;font-size:26px;line-height:1.4;color:var(--brand);font-weight:600;max-width:1020px}
+.close.slide{justify-content:center}
+.closewrap{display:flex;flex-direction:column}
+.exrow{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;align-content:center}
+.excard{background:#10221d;border:1px solid #1f3a33;border-top:6px solid var(--t);border-radius:16px;padding:22px}
+.excard h3{margin:0 0 4px;font-size:22px}
+.excard .yr{color:var(--mut);font-size:15px;margin-bottom:10px}
+.excard p{margin:0;font-size:18px;line-height:1.4;color:#d6e6df}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:24px;flex:1;min-height:0}
+.pc{background:#10221d;border:1px solid #1f3a33;border-top:6px solid var(--t);border-radius:16px;padding:24px;display:flex;flex-direction:column;min-height:0}
+.pc h3{margin:0 0 10px;font-size:23px}
+.pc .meta{color:var(--mut);font-size:15px;margin:-6px 0 10px}
+.pc p{margin:0 0 8px;font-size:18px;line-height:1.4;color:#d6e6df}
+.pc p:last-child{margin-bottom:0}
+.pc b.lbl{color:var(--q);font-weight:700}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;align-content:center}
+.card3{background:#10221d;border:1px solid #1f3a33;border-top:6px solid var(--t);border-radius:16px;padding:22px}
+.card3 h3{margin:0 0 8px;font-size:21px}
+.card3 p{margin:0;font-size:17px;line-height:1.4;color:#d6e6df}
+.probe{margin-top:18px;font-size:22px;line-height:1.4;color:var(--q);font-style:italic;border-top:1px solid #1f3a33;padding-top:16px}
+.probe b{font-style:normal}
+#hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#12221d;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
+#count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
+#home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:34vh;overflow:auto;background:#f6f7f4;color:#15211d;padding:16px 28px;font-size:17px;line-height:1.6;display:none;z-index:9;border-top:4px solid var(--brand)}
+#notes.on{display:block}#notes small{display:block;color:#5b6b64;margin-bottom:6px}
+.nb{position:fixed;top:12px;right:12px;z-index:9;display:flex;gap:8px}
+.nb button{background:#12221d;color:var(--ink);border:1px solid #2a4a41;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px}
+@media print{html,body{overflow:visible;height:auto}#stage{position:static;transform:none!important;width:auto;height:auto}.slide{display:flex!important;position:relative;height:720px;page-break-after:always}.nb,#hud,#count,#home,#notes{display:none!important}}
+"""
+
+JS = """
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),stage=document.getElementById('stage'),cur=0;
+  var notes=NOTES_JSON;
+  function fit(){var on=document.getElementById('notes').classList.contains('on');var s=Math.min(innerWidth/1280,(innerHeight*(on?.66:1))/720);
+    stage.style.transform='translate(-50%,-50%) scale('+s+')';stage.style.top=(on?33:50)+'%';}
+  function show(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach(function(s,i){s.classList.toggle('on',i===cur)});
+    document.getElementById('bar').style.width=((cur+1)/slides.length*100)+'%';document.getElementById('count').textContent=(cur+1)+' / '+slides.length;
+    var n2=notes[cur+1]||['',0];document.getElementById('notes').innerHTML='<small>Speaker notes · slide '+(cur+1)+' · about '+n2[1]+' s</small>'+n2[0];
+    history.replaceState(null,'','#'+(cur+1));}
+  document.addEventListener('keydown',function(ev){var c=ev.key;
+    if(c==='ArrowRight'||c==='PageDown'||c===' '){ev.preventDefault();show(cur+1)}else if(c==='ArrowLeft'||c==='PageUp'){show(cur-1)}
+    else if(c==='Home'){show(0)}else if(c==='End'){show(slides.length-1)}
+    else if(c==='n'||c==='N'){toggleNotes()}else if(c==='f'||c==='F'){fs()}});
+  function toggleNotes(){document.getElementById('notes').classList.toggle('on');fit();}
+  function fs(){if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();}
+  var sx=null;document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX});
+  document.addEventListener('touchend',function(e){if(sx==null)return;var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)show(cur+(d<0?1:-1));sx=null});
+  document.getElementById('prev').onclick=function(){show(cur-1)};document.getElementById('next').onclick=function(){show(cur+1)};
+  document.getElementById('nt').onclick=toggleNotes;document.getElementById('fs').onclick=fs;
+  addEventListener('resize',fit);addEventListener('hashchange',function(){show((parseInt(location.hash.slice(1),10)||1)-1)});fit();show((parseInt(location.hash.slice(1),10)||1)-1);
+})();
+"""
+
+
+def slide(cls, inner):
+    return f'<section class="slide {cls}">{inner}</section>'
+
+
+def seci_svg():
+    """Nonaka & Takeuchi SECI model: a 2x2 cycle of knowledge conversion."""
+    def box(x, y, w, h, title, sub, color):
+        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="14" fill="{color}" fill-opacity=".14" stroke="{color}" stroke-width="2.5"/>'
+                f'<text x="{x+w/2}" y="{y+h/2-10}" text-anchor="middle" fill="#eef6f2" font-size="23" font-weight="700">{title}</text>'
+                f'<text x="{x+w/2}" y="{y+h/2+20}" text-anchor="middle" fill="#9db3aa" font-size="16">{sub}</text>')
+    return '''<svg viewBox="0 0 900 560" role="img" aria-label="SECI model: Socialization, Externalization, Combination, Internalization cycling between tacit and explicit knowledge">
+<text x="450" y="30" text-anchor="middle" fill="#9db3aa" font-size="18">tacit → tacit</text>
+<text x="450" y="548" text-anchor="middle" fill="#9db3aa" font-size="18">explicit → explicit</text>
+<text x="30" y="285" text-anchor="middle" fill="#9db3aa" font-size="18" transform="rotate(-90 30 285)">from tacit</text>
+<text x="878" y="285" text-anchor="middle" fill="#9db3aa" font-size="18" transform="rotate(90 878 285)">from explicit</text>
+''' + box(90, 60, 340, 180, "Socialization", "tacit → tacit · apprenticeship, shadowing", "#2dd4bf") + \
+      box(470, 60, 340, 180, "Externalization", "tacit → explicit · codifying know-how", "#fbbf24") + \
+      box(90, 320, 340, 180, "Internalization", "explicit → tacit · learning by doing", "#a78bfa") + \
+      box(470, 320, 340, 180, "Combination", "explicit → explicit · merging documents, data", "#60a5fa") + '''
+<path d="M430 150 H470" stroke="#9db3aa" stroke-width="3" marker-end="url(#a1)"/>
+<path d="M640 240 V320" stroke="#9db3aa" stroke-width="3" marker-end="url(#a1)"/>
+<path d="M470 410 H430" stroke="#9db3aa" stroke-width="3" marker-end="url(#a1)"/>
+<path d="M260 320 V240" stroke="#9db3aa" stroke-width="3" marker-end="url(#a1)"/>
+<text x="285" y="300" fill="#fbbf24" font-size="15" text-anchor="middle">Toyota: Takumi’s feel → Jidoka sensors</text>
+<defs><marker id="a1" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9db3aa"/></marker></defs>
+</svg>'''
+
+
+def oi_svg():
+    """Chesbrough's open innovation funnel: closed vs permeable boundary."""
+    return '''<svg viewBox="0 0 980 480" role="img" aria-label="Closed innovation funnel versus open innovation funnel with a permeable boundary">
+<text x="245" y="34" text-anchor="middle" fill="#eef6f2" font-size="22" font-weight="700">Closed innovation</text>
+<rect x="60" y="56" width="370" height="360" fill="none" stroke="#f87171" stroke-width="2.5" rx="6"/>
+<path d="M90 90 L90 382 L400 310 L400 160 Z" fill="#f87171" fill-opacity=".12" stroke="#f87171" stroke-width="2"/>
+<text x="245" y="440" text-anchor="middle" fill="#9db3aa" font-size="16">ideas start and end inside one lab</text>
+<text x="735" y="34" text-anchor="middle" fill="#eef6f2" font-size="22" font-weight="700">Open innovation</text>
+<rect x="550" y="56" width="370" height="360" fill="none" stroke="#2dd4bf" stroke-width="2.5" stroke-dasharray="9 7" rx="6"/>
+<path d="M580 90 L580 382 L890 310 L890 160 Z" fill="#2dd4bf" fill-opacity=".12" stroke="#2dd4bf" stroke-width="2"/>
+<path d="M500 140 L580 170" stroke="#60a5fa" stroke-width="3" marker-end="url(#a2)"/>
+<path d="M500 220 L580 230" stroke="#60a5fa" stroke-width="3" marker-end="url(#a2)"/>
+<path d="M500 300 L580 280" stroke="#60a5fa" stroke-width="3" marker-end="url(#a2)"/>
+<text x="500" y="125" text-anchor="middle" fill="#60a5fa" font-size="15">startups</text>
+<text x="500" y="205" text-anchor="middle" fill="#60a5fa" font-size="15">universities</text>
+<text x="500" y="365" text-anchor="middle" fill="#60a5fa" font-size="15">acquisitions</text>
+<path d="M770 330 L850 400" stroke="#fbbf24" stroke-width="3" marker-end="url(#a3)"/>
+<text x="610" y="400" fill="#fbbf24" font-size="15">spin-outs / licensing out</text>
+<text x="735" y="440" text-anchor="middle" fill="#9db3aa" font-size="16">ideas and tech cross a permeable boundary</text>
+<defs>
+<marker id="a2" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#60a5fa"/></marker>
+<marker id="a3" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#fbbf24"/></marker>
+</defs>
+</svg>'''
+
+
+def planet_svg():
+    """Traditional exquisite satellite vs Planet Labs agile swarm, as a two-column comparison."""
+    rows = [
+        ("Unit cost", "Hundreds of millions USD, one satellite", "Commercial parts, hundreds of CubeSats"),
+        ("Failure risk", "One launch failure → mission lost", "Risk spread across a swarm"),
+        ("Revisit time", "Days to weeks", "Entire Earth, daily"),
+        ("What is sold", "Individual images, on request", "Continuous data + insight feed"),
+    ]
+    h = 70
+    y0 = 150
+    body = ""
+    for idx, (label, left, right) in enumerate(rows):
+        y = y0 + idx * h
+        body += (f'<text x="20" y="{y+24}" fill="#9db3aa" font-size="16" font-weight="700">{label}</text>'
+                  f'<text x="330" y="{y+24}" fill="#f87171" font-size="16">{left}</text>'
+                  f'<text x="700" y="{y+24}" fill="#2dd4bf" font-size="16">{right}</text>')
+        if idx:
+            body += f'<line x1="0" y1="{y}" x2="1060" y2="{y}" stroke="#1f3a33"/>'
+    return f'''<svg viewBox="0 0 1060 480" role="img" aria-label="Comparison of traditional exquisite satellites versus Planet Labs agile aerospace swarm">
+<text x="330" y="60" text-anchor="middle" fill="#f87171" font-size="22" font-weight="700">Traditional "exquisite" satellite</text>
+<text x="700" y="60" text-anchor="middle" fill="#2dd4bf" font-size="22" font-weight="700">Planet Labs: agile aerospace</text>
+<line x1="330" y1="80" x2="330" y2="{y0+len(rows)*h}" stroke="#1f3a33"/>
+<line x1="680" y1="80" x2="680" y2="{y0+len(rows)*h}" stroke="#1f3a33"/>
+{body}
+</svg>'''
+
+
+def build():
+    S, NOTES, i = [], {}, 1
+
+    S.append(slide("title", '<div class="kick">USTH Innovation · Session 3 · Knowledge &amp; Open Innovation</div>'
+        '<h1>From Know-How to Know-What</h1><p class="sub">Turning tacit knowledge into explicit advantage, and opening the lab door</p>'))
+    NOTES[i] = ["Good morning. Session 3 covers two linked ideas. First, how a company turns tacit knowledge, the know-how inside people's heads, into explicit knowledge anyone can use. Second, how open innovation lets a company source and share that knowledge beyond its own walls. We will ground both in real companies, then look at one deep-dive case and a closing discussion question.", 35]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Question 1</div><h2>Turning tacit knowledge into explicit knowledge</h2>'
+        '<p class="issue">Tacit knowledge is the skill, intuition and "feel" inside an expert’s head. Explicit knowledge is that same experience written down, coded into data, software or a standard procedure — so anyone can apply it, not just the expert.</p>'))
+    NOTES[i] = ["Here is the core distinction. Tacit knowledge is the skill and intuition sitting inside a specific, skilled person: a master craftsman's feel for a part, a forecaster's eye for a storm. Explicit knowledge is that same experience once it has been coded into a document, a dataset, software or a standard procedure — something anyone in the company can use, not only the original expert. The competitive question is: how do you make that transfer happen on purpose?", 35]; i += 1
+
+    S.append(slide("", '<h2>Toyota: turning a craftsman’s senses into sensors</h2><div class="two">'
+        '<div class="pc" style="--t:#60a5fa"><h3>Tacit</h3><div class="meta">the Takumi, master craftsmen</div><p>Decades of experience let a Takumi hear or feel a defect in a part — a skill that normally retires when the person does.</p></div>'
+        '<div class="pc" style="--t:#2dd4bf"><h3>Explicit</h3><div class="meta">Jidoka + Andon, Toyota Production System</div><p>Engineers studied that sense and encoded it into automated defect sensors (Jidoka) and a line-wide alert system (Andon) — so the machine now works at the Takumi’s precision, system-wide.</p></div></div>'))
+    NOTES[i] = ["The classic example is Toyota. A Takumi, a master craftsman, can detect a defect in a part by sound or by feel, built up over decades. That is pure tacit knowledge: it lives in one person and does not scale. Toyota's engineers studied exactly what the Takumi was sensing, and encoded it into automated defect sensors, called Jidoka, plus a line-wide alert system called Andon. The machine now catches what only the master's senses used to catch, across every production line, not just where that one person stands. That codification is the company's quality advantage.", 45]; i += 1
+
+    S.append(slide("", '<h2>AI and remote sensing: an expert’s eye becomes a model</h2><div class="two">'
+        '<div class="pc" style="--t:#60a5fa"><h3>Tacit</h3><div class="meta">senior meteorologists</div><p>Recognizing extreme weather in multispectral satellite imagery used to depend entirely on an experienced forecaster’s trained eye.</p></div>'
+        '<div class="pc" style="--t:#2dd4bf"><h3>Explicit</h3><div class="meta">labeled training data → deep learning model</div><p>Experts label thousands of images, turning personal judgment into a structured training set. A model learns from it and becomes a deployable forecasting tool, usable at global scale.</p></div></div>'))
+    NOTES[i] = ["A more technical version of the same pattern. Recognizing an extreme weather event in multispectral satellite imagery used to depend entirely on a senior meteorologist's trained eye — tacit knowledge again. The conversion step is data labeling: experts look at thousands of images and mark what they see, turning personal judgment into a structured, explicit training dataset. A deep learning model learns from that dataset, and the result is a forecasting tool that can run globally, continuously, without needing that one expert in the loop every time.", 40]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Model</div><h2>The SECI cycle: knowledge keeps converting, not just once</h2><div class="model">' + seci_svg() + '</div>'))
+    NOTES[i] = ["Nonaka and Takeuchi's SECI model frames this as a continuous cycle, not a one-time event. Socialization shares tacit knowledge directly, person to person, like an apprentice shadowing a Takumi. Externalization codifies it into something explicit, like Toyota's sensors or a labeled dataset. Combination merges explicit knowledge with other explicit knowledge, like merging datasets or manuals. And Internalization is explicit knowledge becoming tacit again, as a new engineer learns the system by using it until it becomes second nature. A real organization keeps spiraling through all four, not stopping after one externalization.", 45]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Question 2</div><h2>Open innovation: R&amp;D with a permeable wall</h2>'
+        '<p class="issue">Closed innovation keeps research inside one lab, start to finish. Open innovation deliberately lets ideas, technology and people cross the company’s boundary in both directions — bringing outside ideas in, and sending unused internal technology out.</p>'))
+    NOTES[i] = ["Our second question is open innovation. In the closed model, a company researches everything itself, start to finish, behind one lab's walls. Chesbrough's open innovation model argues for a permeable boundary instead: ideas, technology, even people cross in from outside — startups, universities, partners — and the company also sends its own unused technology back out, through licensing or spin-offs. The goal is the same new-knowledge creation, just sourced from a much larger pool.", 35]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Model</div><h2>Closed funnel vs. open, permeable funnel</h2><div class="model">' + oi_svg() + '</div>'))
+    NOTES[i] = ["Visually: the closed funnel on the left has a solid wall — ideas go in one end and a product comes out the other, all inside one lab. The open funnel on the right has a dashed, permeable boundary. Outside ideas from startups, universities and acquisitions flow in partway through the funnel, not just at the start. And technology the company isn't using flows back out, through spin-offs or licensing. Both Apple and VinFast, next, run the open version.", 35]; i += 1
+
+    S.append(slide("", '<h2>Apple: the great systems integrator</h2><div class="two">'
+        '<div class="pc" style="--t:#a78bfa"><h3>Outside-in</h3><div class="meta">buying the core technology</div><p>Siri began as a spin-out of SRI International. FaceID traces back to the acquisition of PrimeSense. Apple rarely invents the core sensor technology itself.</p></div>'
+        '<div class="pc" style="--t:#2dd4bf"><h3>New knowledge created</h3><div class="meta">integration, not invention</div><p>Apple’s advantage is turning acquired technology into a polished feature through UI/UX design and hardware optimization — and the App Store itself is open innovation, letting millions of outside developers create value Apple’s own R&amp;D never could alone.</p></div></div>'))
+    NOTES[i] = ["Apple looks like the most closed company in tech — one ecosystem, tightly controlled. Its R&D is actually very open. Siri began life as a spin-out of SRI International, a research institute. FaceID traces back to Apple's acquisition of PrimeSense, an Israeli sensor company. Apple is, in effect, a great systems integrator: it imports core technology from outside, then applies its own strength in UI design and hardware optimization to turn that technology into a polished feature. The App Store is open innovation too — millions of outside developers create value every day that Apple's internal R&D alone never could.", 45]; i += 1
+
+    S.append(slide("", '<h2>VinFast: a global partner network to compress time-to-market</h2><div class="two">'
+        '<div class="pc" style="--t:#fbbf24"><h3>The network</h3><div class="meta">years of car-making knowledge, borrowed</div><p>Design partnership with Pininfarina (Italy); chassis technology from BMW; solid-state battery co-development with ProLogium (Taiwan) — open innovation used to skip a knowledge-building timeline that normally takes decades.</p></div>'
+        '<div class="pc" style="--t:#f87171"><h3>The catch</h3><div class="meta">absorptive capacity</div><p>Buying the technology is not the hard part. Integrating components from many different vendors into one coherent software and hardware system, without conflicts, is — the real constraint is the company’s capacity to absorb, not to acquire.</p></div></div>'))
+    NOTES[i] = ["VinFast tells the same open-innovation story under real time pressure. Building up the tacit knowledge to make cars from scratch normally takes a company decades. VinFast instead built a global partner network: design partnership with Pininfarina in Italy, chassis technology from BMW, and solid-state battery co-development with ProLogium in Taiwan. That compresses years of R&D into a much shorter timeline. The catch is what researchers call absorptive capacity: buying in that much outside technology is the easy part. Integrating components from many different vendors into one coherent system, especially the central software, without conflicts between them, is the actual bottleneck.", 50]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Deep-dive case</div><h2>Planet Labs: agile aerospace disrupts the exquisite satellite</h2><div class="model">' + planet_svg() + '</div>'))
+    NOTES[i] = ["One more case, going deeper. Earth observation used to mean one enormous, exquisite satellite: hundreds of millions of dollars, and if the launch failed, the mission was simply gone. Revisit time, how often you could photograph the same spot, was days or weeks. Planet Labs took an agile-aerospace approach instead: hundreds of small CubeSats, built from commercial parts, in low Earth orbit, with cloud computing doing the image processing. Risk is spread across the swarm instead of concentrated in one launch. The result: the entire Earth's surface, imaged daily — and Planet's business model shifted from selling individual images to selling a continuous data and insight feed for supply chains, agriculture and security.", 55]; i += 1
+
+    S.append(slide("", '<div class="eyebrow">Extending the case</div><h2>Where this technology meets global challenges</h2><div class="three">'
+        '<div class="card3" style="--t:#60a5fa"><h3>HPC + climate</h3><p>High-performance computing processes multispectral data from satellites like Sentinel or Himawari to run complex climate models, and combine with AI to optimize how renewable energy is dispatched onto the grid using real-time forecasts.</p></div>'
+        '<div class="card3" style="--t:#2dd4bf"><h3>IoT + Edge AI</h3><p>Global logistics’ biggest bottleneck is an information blind spot and slow response. IoT sensor networks with edge AI monitor cargo condition and auto-reroute the moment a disruption happens.</p></div>'
+        '<div class="card3" style="--t:#a78bfa"><h3>Agent-based modeling</h3><p>Instead of linear planning, organizations simulate spatial interactions in a logistics ecosystem or disease spread, “stress-testing” systemic risk and building contingency scenarios with mathematical confidence.</p></div></div>'))
+    NOTES[i] = ["This same satellite-and-sensing technology extends directly into the macro challenges from our earlier sessions. High-performance computing processes huge volumes of multispectral data, from satellites like Sentinel or Himawari, to run complex climate models, and combined with AI, to optimize how renewable energy gets dispatched onto the grid using real-time weather forecasts. On the ground, the biggest bottleneck in global logistics is an information blind spot and slow response time; IoT sensor networks with edge AI monitor cargo condition and reroute automatically the moment something breaks. And instead of linear planning, organizations are using agent-based modeling to simulate how disruptions actually spread through a logistics network or a disease outbreak, stress-testing systemic risk before it happens.", 55]; i += 1
+
+    S.append(slide("close", '<div class="closewrap"><div class="eyebrow">Group discussion</div><h2>HPC or IoT: which builds the stronger resilience moat?</h2>'
+        '<p class="takeaway">Between building macro remote-sensing processing power (HPC) and building a micro ground-level sensor network (IoT), which direction creates a more durable defensive moat against disruption for today’s global supply chains — and why?</p>'
+        '<div class="probe"><b>Consider.</b> HPC sees the whole system but reacts on a model’s timescale. IoT reacts in real time but only sees what it is physically wired to. Which failure mode would you rather defend against first?</div></div>'))
+    NOTES[i] = ["So, to close with the open question this session leaves us with. Between building macro-scale remote-sensing processing power, HPC reading satellite data, and building a micro-scale ground sensor network, IoT devices on the ground, which direction creates a stronger, more durable defensive moat for today's global supply chains? One lens: HPC sees the whole system but reacts on the timescale of a model run. IoT reacts instantly but only sees exactly where you've physically installed a sensor. Which failure mode would you rather be defending against first? Over to the group.", 40]; i += 1
+
+    notes_json = json.dumps({str(k): v for k, v in NOTES.items()}, ensure_ascii=False)
+    js = JS.replace("NOTES_JSON", notes_json)
+    doc = f'''<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From Know-How to Know-What · Session 3 Slides</title><style>{CSS}</style></head>
+<body>
+<div id="stage">{"".join(S)}<a id="home" href="../index.html">← Home</a><div id="count"></div><div id="hud"><i id="bar"></i></div></div>
+<div class="nb"><button id="prev" aria-label="Previous slide">‹</button><button id="next" aria-label="Next slide">›</button><button id="nt">Notes (N)</button><button id="fs">Full screen (F)</button></div>
+<div id="notes"></div>
+<script>{js}</script>
+</body></html>
+'''
+    (ROOT / "slides").mkdir(exist_ok=True)
+    (ROOT / "slides" / "index.html").write_text(doc, encoding="utf-8")
+    sec = sum(v[1] for v in NOTES.values())
+    print(f"slides: {len(S)}, total seconds: {sec} ({sec//60} min)")
+
+
+if __name__ == "__main__":
+    build()
