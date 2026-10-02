@@ -45,6 +45,19 @@ h2{font-size:42px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-wid
 .lit .card b{font-size:21px}
 .lit .card span{display:block;color:var(--mut);font-size:17px;margin-top:4px}
 .lit .card p{margin:8px 0 0;font-size:19px;line-height:1.4;color:#d6e6df}
+.exrow{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;flex:1;align-content:center}
+.excard{background:#10221d;border:1px solid #1f3a33;border-top:6px solid var(--t);border-radius:16px;padding:24px}
+.excard h3{margin:0 0 4px;font-size:23px}
+.excard .yr{color:var(--mut);font-size:16px;margin-bottom:10px}
+.excard p{margin:0;font-size:19px;line-height:1.42;color:#d6e6df}
+.sdgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;min-height:0}
+.sdgcol{border-radius:16px;padding:14px 22px;overflow:auto}
+.sdgcol.yes{background:#0f2420;border:1px solid #1f4a3c;border-top:6px solid var(--ok)}
+.sdgcol.no{background:#241212;border:1px solid #4a2020;border-top:6px solid var(--no)}
+.sdgcol h3{margin:0 0 6px;font-size:19px}
+.sdgcol.yes h3{color:var(--ok)}.sdgcol.no h3{color:var(--no)}
+.sdgitem{margin-bottom:6px;font-size:17px;line-height:1.26;color:#dce9e3}
+.sdgitem b{color:var(--ink)}
 #hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#12221d;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
 #count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
 #home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
@@ -139,6 +152,14 @@ def build():
     NOTES[i] = ["This S-curve model explains the Netflix example. An incumbent's core technology improves quickly at first, then plateaus. A disruptor's new technology starts weaker, but compounds faster once it clears the adoption threshold, marked here in yellow. Netflix accepted a dip in its DVD numbers to get onto the streaming curve early. Blockbuster kept optimizing its store-rental curve, which was already past its bend, and so never crossed.", 55]; i += 1
 
     q2 = Q[1]
+    exrow = "".join([
+        '<div class="excard" style="--t:#60a5fa"><h3>Grab</h3><div class="yr">Entered Vietnam, 2014</div><p>Replaced street-hailing and phone dispatch with an app; gave idle drivers a new income channel. Vinasun, the leading incumbent taxi firm, filed a high-profile 2017 lawsuit against Grab over lost revenue — a real-world incumbent reaction, not just theory.</p></div>',
+        '<div class="excard" style="--t:#2dd4bf"><h3>Be</h3><div class="yr">Launched, 2018</div><p>A domestic alternative built on local ownership and local data handling, answering the question of whether a market should depend entirely on one foreign platform for daily mobility.</p></div>',
+        '<div class="excard" style="--t:#fbbf24"><h3>Xanh SM</h3><div class="yr">Launched, 2023</div><p>An all-electric ride-hailing fleet (VinFast / GSM). It does not just move the hailing app forward again — it moves the adoption threshold for EVs themselves, in a market with little charging infrastructure.</p></div>',
+    ])
+    S.append(slide("", f'<h2>A local case: three disruptors, one curve</h2><p class="issue" style="margin-bottom:14px">Each app answers a different gap: a channel to hail a ride, a locally-owned alternative, and a path to electric mobility — the same S-curve logic as Netflix, closer to home.</p><div class="exrow">{exrow}</div>'))
+    NOTES[i] = ["A closer-to-home version of the same pattern. Grab entered Vietnam in 2014 and replaced street-hailing with an app; the incumbent, Vinasun, reacted hard enough to sue in 2017 over lost revenue, which is exactly the incumbent behavior the S-curve model predicts. Be followed in 2018, answering a different question: should an entire market's daily mobility run through one foreign platform, or is there room for a locally-owned alternative? Most recently, Xanh SM launched an all-electric fleet in 2023. That is not another hailing app — it uses ride-hailing demand to pull electric vehicles over their own adoption threshold, in a market that still has very little charging infrastructure. Three different gaps, the same underlying curve.", 50]; i += 1
+
     S.append(q_slide(q2))
     NOTES[i] = [f"Question two moves from one company to global systems. {q2['issue']} The case for innovation: {q2['agree']} The case against treating it as sufficient: {q2['oppose']} Which leads to: {q2['probe']}", 85]; i += 1
 
@@ -149,7 +170,25 @@ def build():
     NOTES[i] = ["Three sources anchor this discussion: a measured estimate of the carbon cost of training large NLP models, which supports the opposing case in question two; and two further open-access sources on digital transformation and on the limits of techno-solutionism, listed with their access status.", 40]; i += 1
 
     S.append(slide("close", '<div class="closewrap"><div class="eyebrow">Synthesis</div><h2>Closing</h2><p class="takeaway">' + e(TAKEAWAY) + '</p></div>'))
-    NOTES[i] = [TAKEAWAY + " Thank you — I'm happy to open the floor for the group discussion on question two.", 35]; i += 1
+    NOTES[i] = [TAKEAWAY + " That would usually be where we stop — but one more open question is worth putting on the table before we do.", 30]; i += 1
+
+    yes_items = [
+        ("SDG 7 — Affordable &amp; Clean Energy", "Solar PV + battery technology", "Module costs fell roughly 80–90% in the 2010s (IRENA); solar is now the cheapest new power source in most markets — a durable curve, not a one-off pilot."),
+        ("SDG 3 — Good Health", "mRNA vaccine platforms", "The platform that produced COVID-19 vaccines in under a year is now being re-used for other diseases — reusable, not single-use."),
+        ("SDG 9 — Industry &amp; Infrastructure", "Mobile networks + mobile money", "Many regions skipped landlines and reached banking through a phone — infrastructure that compounds."),
+    ]
+    no_items = [
+        ("SDG 1 — No Poverty", "Depends on redistribution: land rights, labor law, tax policy. Tech can speed up a cash transfer; it cannot decide who gets one."),
+        ("SDG 10 — Reduced Inequalities", "The same AI compute and platform ownership that solves one problem concentrates in few hands — as likely to widen a gap as close it."),
+        ("SDG 16 — Peace, Justice &amp; Institutions", "No app replaces a functioning court, a fair election, or a ceasefire — this is governance, not throughput."),
+    ]
+    yes_html = "".join(f'<div class="sdgitem"><b>{t}</b><br><i>{tech}</i><br>{d}</div>' for t, tech, d in yes_items)
+    no_html = "".join(f'<div class="sdgitem"><b>{t}</b><br>{d}</div>' for t, d in no_items)
+    S.append(slide("", '<div class="eyebrow">Open discussion — extending Q2</div><h2>Of the 17 SDGs, which ones does technology actually fix?</h2>'
+        '<div class="sdgrid"><div class="sdgcol yes"><h3>Tech moves the curve</h3>' + yes_html + '</div>'
+        '<div class="sdgcol no"><h3>Tech alone does not</h3>' + no_html + '</div></div>'
+        '<div class="probe" style="margin-top:14px;padding-top:12px"><b>Probing question.</b> Notice which column each goal lands in: the left column is the set already closest to a market mechanism. Does that prove technology solves development — or just that we solve the parts of development that happen to be profitable?</div>'))
+    NOTES[i] = ["One correction first: there are 17 Sustainable Development Goals, not 14. So, of those 17, which ones has technology actually moved in a stable, durable way, and with what technology specifically? On the left: clean energy, through the collapse in solar and battery costs; health, through reusable mRNA vaccine platforms; and infrastructure, through mobile networks that let whole regions skip landlines and bank by phone. On the right: poverty, inequality, and strong institutions. These do not move because a model got better — they move when redistribution, ownership, and governance change, and no technology substitutes for those. Which raises the real question for the group: the goals technology reaches are the ones already closest to a market. Is that evidence technology solves development, or evidence we only solve the parts of development that pay for themselves?", 65]; i += 1
 
     notes_json = json.dumps({str(k): v for k, v in NOTES.items()}, ensure_ascii=False)
     js = JS.replace("NOTES_JSON", notes_json)
