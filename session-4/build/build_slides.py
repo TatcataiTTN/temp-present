@@ -227,11 +227,10 @@ def iso_svg():
 
 
 def double_scurve_svg():
-    return '''<svg viewBox="0 0 1100 500" role="img" aria-label="Two competing S-curves: electric vehicles lead around 1900, gasoline cars overtake by the 1920s, electric vehicles begin a second S-curve after 2010">
+    return '''<svg viewBox="0 0 1180 500" role="img" aria-label="Two competing S-curves: electric vehicles lead around 1900, gasoline cars overtake by the 1920s, electric vehicles begin a second S-curve after 2010">
 <line x1="60" y1="420" x2="1040" y2="420" stroke="#2a4a41" stroke-width="2"/>
 <line x1="60" y1="420" x2="60" y2="30" stroke="#2a4a41" stroke-width="2"/>
 <text x="60" y="22" fill="#9db3aa" font-size="17">Market share</text>
-<text x="1040" y="445" text-anchor="end" fill="#9db3aa" font-size="17">Time</text>
 <text x="100" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">~1900</text>
 <text x="220" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">1920s</text>
 <text x="520" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">mid-1900s</text>
@@ -251,7 +250,7 @@ def double_scurve_svg():
 <text x="785" y="330" fill="#2dd4bf" font-size="15" font-weight="700">Round 2: EV’s second S-curve</text>
 <text x="785" y="348" fill="#9db3aa" font-size="13">Li-ion battery breakthroughs, Tesla, VinFast</text>
 <rect x="900" y="40" width="130" height="380" fill="#fbbf24" fill-opacity=".06" stroke="#fbbf24" stroke-opacity=".3" stroke-dasharray="4 4"/>
-<text x="965" y="440" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700">toward parity</text>
+<text x="965" y="470" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700">toward parity</text>
 </svg>'''
 
 
@@ -423,6 +422,9 @@ def build():
              '<li>This is the identical dispute already on <b class="lbl">Session 2</b> of this site (Thông tin Chính phủ, Sept 12 &amp; 22, 2026) — now with the business mechanics behind why it happened</li></ul>')
         + '</div>',
         "And the uncomfortable half of the same case. On September 12th and 13th, 2026, drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a community group with over 166,000 members. Multiple outlets report commission deductions in the 30 to 50 percent range, above Grab's own stated 20 to 27 — exact per-ride figures are disputed and vary by source, so we report the range, not one anecdote. This is at least the third round of the same dispute: documented strikes in January 2018 and December 2020 came before it. Why does this belong in an answer about innovation management? Because 2025 is the exact year the first evaluation principle, increasing value for the business, finally succeeded — and the same filings show no comparable discipline applied to relevance to context, the principle meant to weigh impact on real stakeholders. This is, in fact, the identical dispute already sitting on session two of this site, in the government's own September posts — we now have the business mechanics behind why it happened.", 80)
+
+    add("", '<div class="eyebrow">Exercise 2 — the group activity</div><h2>Chosen product: Electric Vehicles — two S-curves, a century apart</h2><div class="model">' + double_scurve_svg() + '</div>',
+        "Exercise 2 asks a group to pick a real product and place it on the S-curve. We picked electric vehicles, because the history is unusually rich: around 1900, EVs held a meaningful share of the market — quiet, no hand-crank, no manual gear shifting, popular in cities. Round one went to gasoline: the Model T's moving assembly line crashed the price of ICE cars, cheap oil was abundant, and the 1912 electric starter removed the one real inconvenience of gasoline engines. EVs nearly vanished from the mass market for most of the twentieth century. Round two only became possible once lithium-ion battery costs fell sharply and energy density rose — that is a second, distinct S-curve, not a continuation of the first one, and it's still climbing toward the shaded 'parity' zone on the right.", 60)
 
     add("", '<div class="eyebrow">Exercise 2, step 1 — group brainstorm</div><h2>Chosen product: Electric Vehicles. Raw ideas first, no filtering yet.</h2>'
         '<p class="issue" style="margin-bottom:0">Rule for this step: quantity over quality. A real classroom group would throw out 8–10 ideas before judging any of them. Each is tagged with the one attribute it most directly attacks.</p>'
