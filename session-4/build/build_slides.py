@@ -35,6 +35,9 @@ h2{font-size:38px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-wid
 .pc .meta{color:var(--mut);font-size:14px;margin:-4px 0 8px}
 .pc p{margin:0 0 6px;font-size:16px;line-height:1.38;color:#d6e6df}
 .pc p:last-child{margin-bottom:0}
+.pc .shot{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#000;border-radius:10px;overflow:hidden;margin:2px 0 8px}
+.pc .shot img{max-width:100%;max-height:100%;object-fit:contain}
+.pc .src{display:block;margin-top:6px;font-size:12px;color:var(--mut)}
 .pc ul{margin:4px 0 0;padding-left:18px}
 .pc li{font-size:15px;line-height:1.4;color:#d6e6df;margin:3px 0}
 .pc b.lbl{color:var(--q);font-weight:700}
@@ -254,6 +257,76 @@ def double_scurve_svg():
 </svg>'''
 
 
+def ev_ice_bars_svg():
+    """Head-to-head bar chart: Electric vs Gasoline, at 3 verified moments. Heights are qualitative
+    (no invented precise percentages beyond the one sourced figure, ~1900 EV share)."""
+    groups = [
+        ("~1900", "28–38% of US cars", 150, "a minority too — steam cars still common", 110, "~1900, before gasoline pulled ahead"),
+        ("~1912", "$1,750 roadster, losing ground", 110, "$650 Model T — less than half the price", 230, "1912: Ford’s price cut + Kettering’s starter"),
+        ("mid-1920s", "nearly every EV maker bankrupt", 25, "the new standard, continent-wide", 320, "mid-1920s: the gap closes for good"),
+    ]
+    w = 1080
+    gw = w / len(groups)
+    body = ""
+    for i, (era, ev_lab, ev_h, ice_lab, ice_h, foot) in enumerate(groups):
+        gx = i * gw
+        bw = 90
+        ev_x = gx + gw / 2 - bw - 10
+        ice_x = gx + gw / 2 + 10
+        base = 400
+        body += f'<rect x="{ev_x}" y="{base-ev_h}" width="{bw}" height="{ev_h}" rx="8" fill="#2dd4bf" fill-opacity=".85"/>'
+        body += f'<rect x="{ice_x}" y="{base-ice_h}" width="{bw}" height="{ice_h}" rx="8" fill="#f87171" fill-opacity=".85"/>'
+        body += f'<text x="{ev_x+bw/2}" y="{base-ev_h-12}" text-anchor="middle" fill="#2dd4bf" font-size="13" font-weight="700">{ev_lab}</text>'
+        body += f'<text x="{ice_x+bw/2}" y="{base-ice_h-12}" text-anchor="middle" fill="#f87171" font-size="13" font-weight="700">{ice_lab}</text>'
+        body += f'<text x="{gx+gw/2}" y="{base+30}" text-anchor="middle" fill="#eef6f2" font-size="20" font-weight="800">{era}</text>'
+        body += f'<text x="{gx+gw/2}" y="{base+52}" text-anchor="middle" fill="#9db3aa" font-size="13">{foot}</text>'
+        if i < len(groups) - 1:
+            body += f'<line x1="{gx+gw-6}" y1="30" x2="{gx+gw-6}" y2="400" stroke="#1f3a33" stroke-dasharray="5 5"/>'
+    return f'''<svg viewBox="0 0 {w} 480" role="img" aria-label="Electric versus gasoline cars head to head at three moments: 1900, 1912, and the mid-1920s">
+<line x1="0" y1="400" x2="{w}" y2="400" stroke="#2a4a41" stroke-width="2"/>
+<rect x="30" y="20" width="18" height="12" rx="3" fill="#2dd4bf" fill-opacity=".85"/><text x="54" y="30" fill="#9db3aa" font-size="14">Electric</text>
+<rect x="130" y="20" width="18" height="12" rx="3" fill="#f87171" fill-opacity=".85"/><text x="154" y="30" fill="#9db3aa" font-size="14">Gasoline (ICE)</text>
+{body}
+</svg>'''
+
+
+def bertha_benz_svg():
+    stops = [
+        ("Mannheim", "start, before dawn", "Aug 5, 1888 — Bertha Benz leaves with sons Eugen &amp; Richard, without telling her husband Karl", "#60a5fa"),
+        ("Wiesloch", "Stadt-Apotheke pharmacy", "Buys ligroin from pharmacist Willi Ockel — the only place selling fuel solvent; later called “the world’s first gas station”", "#fbbf24"),
+        ("Pforzheim", "arrival", "~100 km covered, uphill sections pushed/walked, a blocked fuel line cleared with her hatpin — the car works, in public, for a full day", "#2dd4bf"),
+    ]
+    n = len(stops)
+    w = 1080
+    cw = w / n
+    body = ""
+    for i, (city, sub, desc, color) in enumerate(stops):
+        cx = i * cw + cw / 2
+        body += f'<circle cx="{cx}" cy="90" r="14" fill="{color}"/>'
+        body += f'<text x="{cx}" y="50" text-anchor="middle" fill="{color}" font-size="24" font-weight="800">{city}</text>'
+        body += f'<text x="{cx}" y="72" text-anchor="middle" fill="#9db3aa" font-size="14">{sub}</text>'
+        words = desc.split(" ")
+        lines, line = [], ""
+        for wd in words:
+            if len(line + " " + wd) > 34:
+                lines.append(line); line = wd
+            else:
+                line = (line + " " + wd).strip()
+        lines.append(line)
+        ty = 140
+        body += f'<text x="{cx}" y="{ty}" text-anchor="middle" fill="#d6e6df" font-size="15">'
+        for j, ln in enumerate(lines):
+            body += f'<tspan x="{cx}" dy="{0 if j==0 else 21}">{ln}</tspan>'
+        body += '</text>'
+        if i < n - 1:
+            body += f'<line x1="{cx+90}" y1="90" x2="{(i+1)*cw+cw/2-90}" y2="90" stroke="#9db3aa" stroke-width="3" marker-end="url(#bb)"/>'
+    return f'''<svg viewBox="0 0 {w} 320" role="img" aria-label="Bertha Benz’s August 1888 drive from Mannheim through Wiesloch to Pforzheim, the first long-distance automobile trip">
+{body}
+<text x="{w/2}" y="300" text-anchor="middle" fill="#fbbf24" font-size="16" font-weight="700">The trip itself was the advertisement: proof, in public, that Karl Benz’s "horseless carriage" actually worked</text>
+<defs><marker id="bb" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9db3aa"/></marker></defs>
+</svg>'''
+
+
 def pc(t, title, meta, body_html):
     return f'<div class="pc" style="--t:{t}"><h3>{e(title)}</h3>' + (f'<div class="meta">{e(meta)}</div>' if meta else '') + body_html + '</div>'
 
@@ -412,16 +485,21 @@ def build():
         "Continuing the Grab case, at scale: three systems, not luck. First, EXP, Grab's internal A/B-testing system — drivers and riders randomly split into groups testing old versus new matching or pricing logic, hundreds of experiments running every month, continuously re-optimizing the same driver network without any new product launch. Second, the flywheel, proven in Grab's own filed numbers: incentive spend fell from 13.3 percent of GMV in 2022, to 9.9 in 2023, to about 10 in 2024, while monthly users grew from 32.7 million to 47.2 million — which is exactly why fiscal year 2025, filed this February, is Grab's first-ever full-year net profit, 200 million dollars, on 3.37 billion in revenue and 22.1 billion in GMV, after losses of 485 million and 158 million the two years before. Third, GrabMaps: built in 2022 purely to route Grab's own drivers through motorbike alleys that standard maps miss, then sold B2B once it worked — an innovation nobody set out to sell.", 85)
 
     add("", '<div class="eyebrow">Exercise 1, deep case, closing the loop to Session 2</div><h2>Grab: the same discipline, seen from the driver’s seat</h2><div class="two">'
-        + pc("#a78bfa", "Verified, not rumor", "",
-             '<ul><li>Sept 12–13, 2026: drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a 166,000-member driver community group</li>'
-             '<li>Multiple outlets (VnExpress, Bloomberg, AsiaNews) report commission deductions in the <b class="lbl">30–50% range</b>, above Grab’s stated 20–27%; exact per-ride figures vary by source and are disputed</li>'
-             '<li>Documented prior rounds: January 2018 (commission 20%→23.6%) and December 2020 — this is at least the third cycle of the same dispute</li></ul>')
-        + pc("#f87171", "Why this is an IMS problem, not just PR", "",
-             '<ul><li>2025 is the exact year the 7 evaluation principles’ first item — <i>increasing value for the business</i> — finally succeeded</li>'
-             '<li>The same filings show no comparable discipline applied to <i>relevance to context</i>: the course’s own principle meant to weigh local stakeholder impact</li>'
-             '<li>This is the identical dispute already on <b class="lbl">Session 2</b> of this site (Thông tin Chính phủ, Sept 12 &amp; 22, 2026) — now with the business mechanics behind why it happened</li></ul>')
+        + '<div class="pc" style="--t:#a78bfa"><h3>Drivers organize</h3><div class="shot"><img src="../assets/sources/grab-union-phammisen-2026-09-22.png" alt="Facebook post from Thong tin Chinh phu, Sept 22 2026: Pham Mi Sen, Vice Chair of the Binh Tan Tech Motorbike-Taxi Union, speaking at an official meeting while wearing a Grab jacket"></div><p>Sept 22, 2026: Phạm Mi Sên, Vice Chair of the Bình Tân Tech Motorbike-Taxi Union, speaks at an official meeting — the gig drivers Grab once empowered are now organized labor with a seat at the table.</p><span class="src">Thông tin Chính phủ, official Facebook page. Photo: Hoa Lê.</span></div>'
+        + '<div class="pc" style="--t:#60a5fa"><h3>Regulators review fees</h3><div class="shot"><img src="../assets/sources/grab-fee-review-ubctqg-2026-09-12.png" alt="Facebook post from Thong tin Chinh phu, Sept 12 2026: National Competition Commission reviewing Grab pricing and fee policy complaints"></div><p>Sept 12, 2026: Vietnam’s National Competition Commission (UBCTQG) opens a review of Grab’s pricing and fee policy, and asks other ride-hailing apps for related information.</p><span class="src">Thông tin Chính phủ, official Facebook page.</span></div>'
         + '</div>',
-        "And the uncomfortable half of the same case. On September 12th and 13th, 2026, drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a community group with over 166,000 members. Multiple outlets report commission deductions in the 30 to 50 percent range, above Grab's own stated 20 to 27 — exact per-ride figures are disputed and vary by source, so we report the range, not one anecdote. This is at least the third round of the same dispute: documented strikes in January 2018 and December 2020 came before it. Why does this belong in an answer about innovation management? Because 2025 is the exact year the first evaluation principle, increasing value for the business, finally succeeded — and the same filings show no comparable discipline applied to relevance to context, the principle meant to weigh impact on real stakeholders. This is, in fact, the identical dispute already sitting on session two of this site, in the government's own September posts — we now have the business mechanics behind why it happened.", 80)
+        "And the uncomfortable half of the same case, in the government's own words, posted days apart. September 22nd, 2026: Pham Mi Sen, vice chair of the Binh Tan tech motorbike-taxi union, speaks at an official meeting wearing a Grab jacket — the gig drivers Grab once empowered with flexible income are now organized labor with a seat at the table. Ten days earlier, September 12th: Vietnam's National Competition Commission opens a review of Grab's pricing and fee policy, and asks competing ride-hailing apps for related information. These are the exact same posts already sitting on session two of this site — we now have the business mechanics, from the previous slide, that explain why both happened in the same month.", 55)
+
+    add("", '<div class="eyebrow">Exercise 1, deep case, the analysis</div><h2>Why this is an IMS problem, not just PR</h2>'
+        '<p class="issue" style="margin-bottom:0">Sept 12–13, 2026: drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a 166,000-member driver community group. Multiple outlets (VnExpress, Bloomberg, AsiaNews) report commission deductions in the <b style="color:#eef6f2">30–50% range</b>, above Grab’s stated 20–27%; exact per-ride figures vary by source and are disputed. Documented prior rounds: January 2018 (commission 20%→23.6%) and December 2020 — this is at least the third cycle of the same dispute.</p><div class="two" style="margin-top:16px">'
+        + pc("#f87171", "The evaluation-principle reading", "",
+             '<ul><li>2025 is the exact year the 7 evaluation principles’ first item — <i>increasing value for the business</i> — finally succeeded (slide 20)</li>'
+             '<li>The same filings show no comparable discipline applied to <i>relevance to context</i>: the course’s own principle meant to weigh local stakeholder impact</li></ul>')
+        + pc("#fbbf24", "The transferable lesson", "",
+             '<ul><li>An IMS optimized on one evaluation principle while ignoring another doesn’t fail quietly — it produces exactly this kind of headline</li>'
+             '<li>“Role of innovation management” therefore includes knowing <i>which</i> principle a firm is currently skipping, not just which one it’s winning on</li></ul>')
+        + '</div>',
+        "So why does this belong in an answer about the role of innovation management? Because 2025 is the exact year the first evaluation principle, increasing value for the business, finally succeeded — and the same filings show no comparable discipline applied to relevance to context, the principle meant to weigh impact on real stakeholders. The transferable lesson: an IMS optimized on one evaluation principle while ignoring another doesn't fail quietly, it produces exactly this kind of headline. So the role of innovation management isn't just applying the principles — it's knowing which one your firm is currently skipping, not just which one it's winning on.", 65)
 
     add("", '<div class="eyebrow">Exercise 2 — the group activity</div><h2>Chosen product: Electric Vehicles — two S-curves, a century apart</h2><div class="model">' + double_scurve_svg() + '</div>',
         "Exercise 2 asks a group to pick a real product and place it on the S-curve. We picked electric vehicles, because the history is unusually rich: around 1900, EVs held a meaningful share of the market — quiet, no hand-crank, no manual gear shifting, popular in cities. Round one went to gasoline: the Model T's moving assembly line crashed the price of ICE cars, cheap oil was abundant, and the 1912 electric starter removed the one real inconvenience of gasoline engines. EVs nearly vanished from the mass market for most of the twentieth century. Round two only became possible once lithium-ion battery costs fell sharply and energy density rose — that is a second, distinct S-curve, not a continuation of the first one, and it's still climbing toward the shaded 'parity' zone on the right.", 60)
@@ -457,15 +535,23 @@ def build():
         '</div>',
         "Step two: filter against the scorecard. Relative advantage is medium-high, complexity is already a strength, trialability is rising, observability is high — compatibility is the one real low score, so that's what the group should attack first. Two ideas from the raw list do that most efficiently. Pick one: battery subscription rather than building a swap network from zero — it removes the single biggest compatibility cost, the battery itself, and it's literally what Selex and Xanh SM already do, not a hypothetical. Pick two: sell to B2B fleets before individual consumers — one fleet contract puts hundreds of daily riders inside an EV as passengers, which is a free trial for each of them, far cheaper than marketing to each household one at a time.", 70)
 
-    add("", '<div class="eyebrow">Exercise 3 — the ~300-word reflection</div><h2>Why early EVs failed to diffuse (1900–1920s): a researched reflection</h2>'
-        '<div class="issue" style="font-size:17px;line-height:1.5;max-width:1140px">Around 1900, roughly a third of American cars were electric — brands like Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly, needed no hand-crank, and had no gears to grind. On several real dimensions it was the more advanced product. Within two decades it had nearly vanished from the mass market, and the reason was not technology.</p>'
-        '<p style="margin-top:8px">Compatibility was the deepest problem, and it was structural, not fixable by a better product alone. Gasoline could be bought at a fast-growing number of stations along a road network that the 1916 Federal Aid Road Act was actively expanding; electricity for home charging assumed a reach into American households that, outside cities, simply did not exist yet. Thomas Edison spent roughly a decade, from 1901 to 1910, trying to solve exactly this with a better nickel-iron battery — even that investment could not close the range gap in time.</p>'
-        '<p style="margin-top:8px">Meanwhile relative advantage flipped. Henry Ford’s moving assembly line, a process innovation rather than a product one, cut the Model T’s price from around $825 in 1908 to roughly $260 by the mid-1920s — far below any electric car. Cheap, abundant oil made running cost irrelevant. And Charles Kettering’s 1912 electric self-starter, introduced on the Cadillac, erased gasoline’s one real weakness, the dangerous hand-crank, closing the complexity gap that had favored EVs.</p>'
-        '<p style="margin-top:8px">The lesson generalizes beyond cars: a technologically advanced product fails in diffusion when an incumbent closes the gap on its <i>one</i> weak attribute (complexity, for gasoline) while the newcomer’s own weak attribute (compatibility, for electric) is structural and expensive to fix. Being better is not enough if the market cannot yet use what you offer.</p>',
-        "Exercise 3's reflection, with the research behind it. Around 1900, roughly a third of American cars were electric — brands like Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly and had no gears to grind. Within two decades it had nearly vanished, and the reason wasn't technology. Compatibility was the deepest, most structural problem: gasoline stations kept multiplying along a road network the 1916 Federal Aid Road Act was actively expanding, while home charging assumed an electrical reach that simply wasn't there outside cities yet — and even Thomas Edison spent nearly a decade, from 1901 to 1910, failing to close that range gap with a better battery. Meanwhile relative advantage flipped entirely: Ford's assembly line cut the Model T's price from around 825 dollars in 1908 to roughly 260 by the mid-1920s, cheap oil made running cost irrelevant, and Charles Kettering's 1912 electric starter, introduced on the Cadillac, erased gasoline's one real weakness, the hand-crank. The general lesson: a better product still fails in diffusion when an incumbent closes its one weak attribute while the newcomer's own weakness is structural and expensive to fix.", 85)
+    add("", '<div class="eyebrow">Exercise 3, part 1 — the researched reflection</div><h2>Electric vs. gasoline, head to head: three moments</h2><div class="model">' + ev_ice_bars_svg() + '</div>'
+        '<p class="issue" style="margin-top:10px;font-size:16px">Around 1900, roughly 28–38% of American cars were electric — Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly and had no gears to grind. By 1912, Ford’s Model T cost $650 against a $1,750 electric roadster. By the mid-1920s, nearly every electric-car maker had gone out of business. Not because the electric car got worse — because gasoline stopped being the harder car to use.</p>',
+        "Exercise 3's reflection, part one, head to head. Around 1900, roughly 28 to 38 percent of American cars were electric, brands like Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly and had no gears to grind. By 1912, Ford's Model T cost 650 dollars against a 1,750-dollar electric roadster. By the mid-1920s, nearly every electric car maker had gone out of business. Not because the electric car got worse — because gasoline stopped being the harder car to use.", 55)
+
+    add("", '<div class="eyebrow">Exercise 3, part 2 — the human story</div><h2>Bertha Benz, August 1888: advertising by doing</h2><div class="model">' + bertha_benz_svg() + '</div>'
+        '<p class="issue" style="margin-top:8px;font-size:16px">Karl Benz had invented the car two years earlier but struggled to sell it — the public simply didn’t believe it worked. His wife, Bertha Benz, took it the 100km to her mother’s town without telling him, buying fuel from a pharmacy because nowhere else sold it. It became the first real-world product demo in automotive history: proof before a single word of marketing.</p>',
+        "Part two is the human story behind the numbers. Karl Benz had invented the car two years earlier, in 1886, but struggled to sell it — the public simply didn't believe it worked. His wife, Bertha Benz, drove it 100 kilometers to her mother's town without telling him, stopping at a pharmacy in Wiesloch because nowhere else sold fuel for it. It became the first real-world product demo in automotive history, proof before a single word of marketing, and it's exactly the kind of observability and trialability moment this course's five attributes are built to explain — it just happened in 1888 instead of on social media.", 65)
+
+    add("", '<div class="eyebrow">Exercise 3, part 3 — the ~300-word write-up</div><h2>Why early EVs failed to diffuse: the full reflection</h2>'
+        '<div class="issue" style="font-size:15px;line-height:1.42;max-width:1140px">Around 1900, the electric car was arguably the more advanced product: instant start, no hand-crank, no gears to grind, quiet and clean. Within two decades it had nearly vanished from the mass market, and the reason was not technology.</p>'
+        '<p style="margin-top:6px">Compatibility was the deepest, most structural problem. Gasoline could be bought at a fast-growing number of stations along a road network the 1916 Federal Aid Road Act was actively expanding; home charging assumed a reach into American households that, outside cities, simply did not exist yet. Thomas Edison spent roughly a decade, 1901–1910, trying to solve exactly this with a better nickel-iron battery — even that could not close the range gap in time.</p>'
+        '<p style="margin-top:6px">Meanwhile relative advantage flipped. Ford’s moving assembly line, a process innovation, cut the Model T’s price from $825 in 1908 to roughly $260 by the mid-1920s, far below any electric car; cheap oil made running cost irrelevant; and Kettering’s 1912 electric starter erased gasoline’s one real weakness, closing the complexity gap that had favored EVs. And Bertha Benz’s 1888 drive had already done, for free, what no gasoline-car ad could: proven in public, over real distance, that the thing worked.</p>'
+        '<p style="margin-top:6px">The lesson generalizes beyond cars: a technologically advanced product fails in diffusion when an incumbent closes the gap on its <i>one</i> weak attribute (complexity, for gasoline) while the newcomer’s own weak attribute (compatibility, for electric) is structural and expensive to fix. Being better is not enough if the market cannot yet use what you offer — and cannot yet see, with their own eyes, that it works.</p>',
+        "And the full write-up, as it would actually be submitted. Compatibility was the deepest, most structural problem: gasoline stations kept multiplying along a road network the 1916 Federal Aid Road Act was actively expanding, while home charging assumed an electrical reach that simply wasn't there outside cities yet — and even Thomas Edison spent nearly a decade failing to close that range gap with a better battery. Meanwhile relative advantage flipped entirely: Ford's assembly line cut the Model T's price far below any electric car, cheap oil made running cost irrelevant, and Kettering's 1912 starter erased gasoline's one real weakness. And Bertha Benz's drive had already done, for free, what no advertisement could: proven in public that the thing worked. The general lesson: a better product still fails in diffusion when an incumbent closes its one weak attribute while the newcomer's own weakness is structural and expensive to fix — and the market can't yet see with its own eyes that it works.", 80)
 
     add("", '<div class="eyebrow">Exercise 4, part 1</div><h2>"Electric Vehicles: The Second S-Curve" — Intro &amp; Overview, with real figures</h2><div class="two">'
-        + pc("#2dd4bf", "1. Introduction", "", '<p><b class="lbl">Problem statement:</b> Round one is documented history — EVs held ≈⅓ of the 1900 US market, then fell under 1% by the 1930s, beaten on compatibility, not technology.</p><p><b class="lbl">Why now:</b> VinFast launched Vietnam’s first mass-market EV, the VF e34, in 2021; lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 the compatibility gap is closing instead of widening.</p>')
+        + pc("#2dd4bf", "1. Introduction", "", '<p><b class="lbl">Problem statement:</b> Round one is documented history — EVs held roughly a quarter to a third of the 1900 US market, then nearly every electric-car maker had gone out of business by the mid-1920s, beaten on compatibility, not technology.</p><p><b class="lbl">Why now:</b> VinFast launched Vietnam’s first mass-market EV, the VF e34, in 2021; lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 the compatibility gap is closing instead of widening.</p>')
         + pc("#fbbf24", "2. Overview", "", '<p><b class="lbl">Type:</b> Product innovation (battery + motor) + Business Model innovation (battery-as-a-service — Xanh SM/Selex, both Session 2 cases).</p><p><b class="lbl">Level:</b> Disruptive to a 110-year-old refueling habit; rollout itself is incremental, city by city.</p><p><b class="lbl">Target users:</b> fleets and urban commuters first — Xanh SM put VinFast EVs into taxi service directly, skipping the individual-buyer’s compatibility doubt entirely.</p>')
         + '</div>',
         "Exercise 4's introduction and overview, with real figures this time. Problem statement: round one is documented history — EVs held around a third of the 1900 US market, then fell under one percent by the 1930s, beaten on compatibility, not technology. Why now: VinFast launched Vietnam's first mass-market EV, the VF e34, in 2021, and lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 that the compatibility gap has been closing instead of widening. Type of innovation: product innovation in battery and motor, combined with business-model innovation in battery-as-a-service, the same Xanh SM and Selex cases from session two. Level: disruptive to a hundred-and-ten-year-old refueling habit, though the rollout itself is incremental, city by city. Target users: fleets and urban commuters first — Xanh SM put VinFast EVs directly into taxi service, skipping the individual buyer's compatibility doubt entirely.", 70)
