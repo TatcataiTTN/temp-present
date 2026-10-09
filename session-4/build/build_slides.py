@@ -48,6 +48,19 @@ h2{font-size:38px;letter-spacing:-.025em;margin:0 0 8px;line-height:1.15;max-wid
 .tablewrap th{text-align:left;color:var(--q);font-size:13px;text-transform:uppercase;letter-spacing:.05em;padding:6px 10px;border-bottom:2px solid #1f3a33}
 .tablewrap td{padding:10px 10px;border-bottom:1px solid #1f3a33;color:#d6e6df;vertical-align:top}
 .tablewrap tr:last-child td{border-bottom:none}
+.tablewrap td b.lbl{color:var(--q)}
+.mech td:first-child{color:#eef6f2;font-weight:700;width:19%}
+.mech td:nth-child(2){color:#f8a9a9}
+.mech td:nth-child(3){color:#8fd6c4}
+.mech td:last-child{color:var(--mut);font-style:italic;width:21%}
+.rawlist{display:grid;grid-template-columns:1fr 1fr;gap:2px 30px;margin:10px 0 0;padding:0;list-style:none;font-size:15px}
+.rawlist li{line-height:1.45;color:#d6e6df;padding:5px 0 5px 20px;position:relative;border-bottom:1px dashed #1f3a33}
+.rawlist li::before{content:"→";position:absolute;left:0;color:var(--brand);font-weight:700}
+.tagf{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;padding:1px 7px;border-radius:999px;margin-left:7px;color:#04211d;vertical-align:1px}
+.pickrow{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:14px}
+.pick{background:#0f2420;border:1px solid #1f4a3c;border-left:5px solid var(--ok);border-radius:10px;padding:12px 16px}
+.pick b{color:var(--ok)}
+.pick p{margin:4px 0 0;font-size:15px;color:#d6e6df;line-height:1.4}
 #hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#12221d;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
 #count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
 #home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
@@ -213,6 +226,35 @@ def iso_svg():
 </svg>'''
 
 
+def double_scurve_svg():
+    return '''<svg viewBox="0 0 1100 500" role="img" aria-label="Two competing S-curves: electric vehicles lead around 1900, gasoline cars overtake by the 1920s, electric vehicles begin a second S-curve after 2010">
+<line x1="60" y1="420" x2="1040" y2="420" stroke="#2a4a41" stroke-width="2"/>
+<line x1="60" y1="420" x2="60" y2="30" stroke="#2a4a41" stroke-width="2"/>
+<text x="60" y="22" fill="#9db3aa" font-size="17">Market share</text>
+<text x="1040" y="445" text-anchor="end" fill="#9db3aa" font-size="17">Time</text>
+<text x="100" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">~1900</text>
+<text x="220" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">1920s</text>
+<text x="520" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">mid-1900s</text>
+<text x="780" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">2010s</text>
+<text x="1000" y="445" text-anchor="middle" fill="#9db3aa" font-size="14">today</text>
+<line x1="220" y1="40" x2="220" y2="420" stroke="#1f3a33" stroke-dasharray="6 6"/>
+<line x1="780" y1="40" x2="780" y2="420" stroke="#1f3a33" stroke-dasharray="6 6"/>
+<path d="M100 380 C 160 260, 190 140, 220 100 C 320 60, 450 55, 520 70 C 650 85, 720 85, 780 90 C 860 92, 950 95, 1000 100" fill="none" stroke="#f87171" stroke-width="5"/>
+<path d="M100 300 C 150 360, 190 395, 220 400 C 320 403, 450 404, 520 405 C 600 404, 680 400, 780 380 C 850 320, 930 180, 1000 110" fill="none" stroke="#2dd4bf" stroke-width="5"/>
+<circle cx="100" cy="300" r="6" fill="#2dd4bf"/><circle cx="220" cy="400" r="6" fill="#2dd4bf"/><circle cx="1000" cy="110" r="6" fill="#2dd4bf"/>
+<text x="40" y="300" text-anchor="end" fill="#2dd4bf" font-size="15" font-weight="700">EV leads early</text>
+<text x="1010" y="80" fill="#2dd4bf" font-size="16" font-weight="800">Electric</text>
+<text x="1010" y="130" fill="#f87171" font-size="16" font-weight="800">Gasoline (ICE)</text>
+<text x="225" y="130" fill="#f87171" font-size="15" font-weight="700">Round 1: ICE wins</text>
+<text x="225" y="148" fill="#9db3aa" font-size="13">Model T + cheap oil + electric starter</text>
+<text x="630" y="360" text-anchor="middle" fill="#9db3aa" font-size="14">EV nearly disappears from the mass market</text>
+<text x="785" y="330" fill="#2dd4bf" font-size="15" font-weight="700">Round 2: EV’s second S-curve</text>
+<text x="785" y="348" fill="#9db3aa" font-size="13">Li-ion battery breakthroughs, Tesla, VinFast</text>
+<rect x="900" y="40" width="130" height="380" fill="#fbbf24" fill-opacity=".06" stroke="#fbbf24" stroke-opacity=".3" stroke-dasharray="4 4"/>
+<text x="965" y="440" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="700">toward parity</text>
+</svg>'''
+
+
 def pc(t, title, meta, body_html):
     return f'<div class="pc" style="--t:{t}"><h3>{e(title)}</h3>' + (f'<div class="meta">{e(meta)}</div>' if meta else '') + body_html + '</div>'
 
@@ -329,6 +371,113 @@ def build():
     ])
     add("", '<div class="eyebrow">Worked example in the lecture</div><h2>Selex Motors: EV ecosystem &amp; battery swapping</h2><div class="four">' + worked + '</div>',
         "The lecture's own worked example is Selex Motors, a Vietnamese company founded in 2018. The problem: delivery drivers lose three to eight hours a day charging electric motorbikes. Their solution: smart EVs, standardized batteries, and automated two-minute battery-swap stations sold as Battery-as-a-Service. It's classified as product innovation combined with business-model innovation, and disruptive, because it replaces the existing habit of passive charging. Evidence of adoption: hundreds of stations across Hanoi and Ho Chi Minh City, over 90 percent driver satisfaction, and drivers reporting 20 to 30 percent higher daily income once charging downtime disappears. The SWOT in the deck also flags the real risk: heavy upfront capital and the threat of big EV makers introducing their own proprietary battery standard.", 55)
+
+    # ---- Worked answers to the 4 assignments ----------------------------
+    add("", '<div class="section">6 · Worked Answers</div><h2>Completing Exercises 1–4 — four different ways of thinking, not one template</h2>'
+        '<div class="issue">#1 is causal analysis (named mechanisms, named failures). #2 is a raw group brainstorm, filtered down. #3 is a researched narrative with dates and names. #4 is a structured business case with real figures. Running example for #2–#4: <b style="color:#eef6f2">electric vehicles</b> — the rare product that rode two separate S-curves, a century apart.</div>',
+        "Before the wrap-up, four worked answers — deliberately in four different formats, because the four assignments ask for four different kinds of thinking. Exercise 1 wants causal analysis: name the mechanism, name the company it broke or saved. Exercise 2 wants a group brainstorm, raw ideas filtered down, not a tidy pre-made answer. Exercise 3 wants a researched narrative, with real dates and names, not bullet points. Exercise 4 wants a structured business case with real figures. For 2 through 4 we follow one story: electric vehicles, the rare product that rode two separate S-curves a century apart.", 45)
+
+    mech = """<div class="tablewrap"><table class="mech"><thead><tr><th>Mechanism</th><th>Without it (named failure)</th><th>With it (named success)</th><th>What it proves</th></tr></thead><tbody>
+<tr><td>Codify one expert’s skill</td><td>A single Takumi’s defect-sensing skill stays locked in that one worker, retiring when he does</td><td>Toyota studied it and built Jidoka sensors + Andon alerts — the whole line now catches what only he could</td><td>IMS turns tacit knowledge into a company asset, not a personal one</td></tr>
+<tr><td>Force a second S-curve early</td><td>Kodak engineer Steve Sasson built the first digital camera in 1975; management shelved it to protect film margins — Kodak filed for bankruptcy in 2012</td><td>Netflix launched streaming in 2007 while DVD-by-mail was still its main profit center, and restructured around it by 2011</td><td>IMS forces Search again before Capture Value peaks, even against short-term resistance</td></tr>
+<tr><td>Give formal permission to experiment</td><td>A good idea proposed outside the official roadmap has no process to reach resources</td><td>3M’s 15%-time policy let engineer Art Fry keep developing a "failed" weak adhesive — it became the Post-it Note</td><td>IMS’s <i>support</i> element (people, time, budget) is what separates an idea from a product</td></tr>
+<tr><td>Evaluate before scaling</td><td>A firm commits capital to stations/inventory nationwide before unit economics are proven</td><td>Selex Motors’ own case notes “heavy CapEx” as the main risk — exactly what the 7 evaluation principles (relevance to context, effectiveness) are meant to catch first</td><td>IMS principles are a filter against expensive busywork, not paperwork</td></tr>
+</tbody></table></div>"""
+    add("", '<div class="eyebrow">Exercise 1 — slide 92</div><h2>"Analyze the role of innovation management": 4 mechanisms, 4 named cases</h2>' + mech,
+        "Exercise 1 asks for the role of innovation management with illustrative examples, so here are four specific mechanisms, each with a named failure and a named success. First, codifying one expert's skill: Toyota did this with the Takumi's defect sensing, building it into Jidoka sensors and Andon alerts. Second, forcing a second S-curve early: Kodak's own engineer, Steve Sasson, built the first digital camera in 1975, and management shelved it to protect film margins — Kodak filed for bankruptcy in 2012. Netflix did the opposite, launching streaming in 2007 while DVD-by-mail was still its main profit center. Third, giving formal permission to experiment: 3M's fifteen-percent-time policy let engineer Art Fry keep developing what looked like a failed weak adhesive — it became the Post-it Note. Fourth, evaluating before scaling: Selex Motors' own case flags heavy capital expenditure as its main risk, which is exactly what the evaluation principles are meant to catch before a firm commits.", 80)
+
+    add("", '<div class="eyebrow">Exercise 1, deep case</div><h2>Grab: resources only some founders start with</h2><div class="two">'
+        + pc("#2dd4bf", "Family capital & domain expertise — verified", "",
+             '<ul><li>Grandfather Tan Yuet Foh co-founded Tan Chong Motor in 1957, Malaysia’s Nissan distributor; father Tan Heng Chew is its president</li>'
+             '<li>Anthony Tan worked as <b class="lbl">head of supply chain and marketing</b> at Tan Chong before leaving in 2012 — real logistics-network experience, not a random MBA idea</li>'
+             '<li>Family motto per his own CNBC account: "you can sleep soundly when you are dead" — documented <i>innovation culture</i> (IMS principle 4) instilled before day one</li>'
+             '<li>His own retelling adds 5 years of hands-on factory work, welding and assembling seats — a self-reported detail, not independently verified beyond his interviews</li></ul>')
+        + pc("#fbbf24", "Seed capital & the Select decision — verified", "",
+             '<ul><li>2011: Harvard competition, 2nd place, $25k — judges said Malaysia alone was too small, think Southeast Asia — that comment became the actual regional strategy</li>'
+             '<li>His mother funded his first money ("I don’t understand, but I love you, so here is some money"); he added his own savings</li>'
+             '<li>MyTeksi launched Kuala Lumpur, June 2012; first institutional round, $2M+ from Vertex Ventures, June 2013</li>'
+             '<li>This is the <b class="lbl">Select</b> stage of Search→Select→Implement→Capture Value, forced by outside feedback, not planned in advance</li></ul>')
+        + '</div>',
+        "Exercise 1 asks for a real illustrative example, so here's one developed in depth: Grab. Start with resources most founders don't have. Anthony Tan's grandfather, Tan Yuet Foh, co-founded Tan Chong Motor in 1957, Malaysia's Nissan distributor, and his father is its president today. Before Grab, Anthony himself worked as head of supply chain and marketing at Tan Chong — real logistics experience, not a random idea from an MBA student. His own retelling adds years of hands-on factory work, welding and assembling seats, which is worth noting as self-reported rather than independently verified. The family motto he's quoted repeating — you can sleep soundly when you are dead — is documented innovation culture, instilled before the company existed. Then the Select decision: in 2011, a Harvard competition judge told his team Malaysia alone was too small, think Southeast Asia — that single comment became the actual regional strategy. His mother funded his first money, he added his own savings, and the first institutional round, over two million dollars from Vertex Ventures, came a year later in June 2013.", 85)
+
+    add("", '<div class="eyebrow">Exercise 1, deep case, continued</div><h2>Grab: the three systems behind $22.1B in GMV</h2><div class="two">'
+        + pc("#60a5fa", "EXP: the Search→Capture loop, running monthly", "",
+             '<ul><li>Internal A/B-testing system: drivers/riders randomly split into groups, old vs. new matching or pricing logic compared on real outcomes</li>'
+             '<li>Hundreds of experiments run every month — fares and matching are continuously re-optimized on the <i>same</i> driver network, no new product launch needed</li>'
+             '<li>This is <b class="lbl">Capture Value</b> treated as a repeatable monthly process, not a one-time launch event</li></ul>')
+        + pc("#f87171", "The flywheel, proven in Grab’s own filed numbers", "",
+             '<ul><li>Incentive spend fell from <b class="lbl">13.3% of GMV (2022) → 9.9% (2023) → ≈10% (2024)</b>, while monthly users grew 32.7M → 41.3M → 47.2M</li>'
+             '<li>FY2025 (filed Feb 2026): first-ever full-year net profit, <b class="lbl">$200M</b>, on $3.37B revenue (+20%) and $22.1B GMV (+21%) — after losses of $485M (2023) and $158M (2024)</li>'
+             '<li><b class="lbl">GrabMaps:</b> built in 2022 purely to route Grab’s own drivers through motorbike alleys standard maps miss — then sold B2B once it worked. An innovation nobody set out to sell.</li></ul>')
+        + '</div>',
+        "Continuing the Grab case, at scale: three systems, not luck. First, EXP, Grab's internal A/B-testing system — drivers and riders randomly split into groups testing old versus new matching or pricing logic, hundreds of experiments running every month, continuously re-optimizing the same driver network without any new product launch. Second, the flywheel, proven in Grab's own filed numbers: incentive spend fell from 13.3 percent of GMV in 2022, to 9.9 in 2023, to about 10 in 2024, while monthly users grew from 32.7 million to 47.2 million — which is exactly why fiscal year 2025, filed this February, is Grab's first-ever full-year net profit, 200 million dollars, on 3.37 billion in revenue and 22.1 billion in GMV, after losses of 485 million and 158 million the two years before. Third, GrabMaps: built in 2022 purely to route Grab's own drivers through motorbike alleys that standard maps miss, then sold B2B once it worked — an innovation nobody set out to sell.", 85)
+
+    add("", '<div class="eyebrow">Exercise 1, deep case, closing the loop to Session 2</div><h2>Grab: the same discipline, seen from the driver’s seat</h2><div class="two">'
+        + pc("#a78bfa", "Verified, not rumor", "",
+             '<ul><li>Sept 12–13, 2026: drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a 166,000-member driver community group</li>'
+             '<li>Multiple outlets (VnExpress, Bloomberg, AsiaNews) report commission deductions in the <b class="lbl">30–50% range</b>, above Grab’s stated 20–27%; exact per-ride figures vary by source and are disputed</li>'
+             '<li>Documented prior rounds: January 2018 (commission 20%→23.6%) and December 2020 — this is at least the third cycle of the same dispute</li></ul>')
+        + pc("#f87171", "Why this is an IMS problem, not just PR", "",
+             '<ul><li>2025 is the exact year the 7 evaluation principles’ first item — <i>increasing value for the business</i> — finally succeeded</li>'
+             '<li>The same filings show no comparable discipline applied to <i>relevance to context</i>: the course’s own principle meant to weigh local stakeholder impact</li>'
+             '<li>This is the identical dispute already on <b class="lbl">Session 2</b> of this site (Thông tin Chính phủ, Sept 12 &amp; 22, 2026) — now with the business mechanics behind why it happened</li></ul>')
+        + '</div>',
+        "And the uncomfortable half of the same case. On September 12th and 13th, 2026, drivers in Hanoi, Ho Chi Minh City and Da Nang organized a two-day app log-off, coordinated through a community group with over 166,000 members. Multiple outlets report commission deductions in the 30 to 50 percent range, above Grab's own stated 20 to 27 — exact per-ride figures are disputed and vary by source, so we report the range, not one anecdote. This is at least the third round of the same dispute: documented strikes in January 2018 and December 2020 came before it. Why does this belong in an answer about innovation management? Because 2025 is the exact year the first evaluation principle, increasing value for the business, finally succeeded — and the same filings show no comparable discipline applied to relevance to context, the principle meant to weigh impact on real stakeholders. This is, in fact, the identical dispute already sitting on session two of this site, in the government's own September posts — we now have the business mechanics behind why it happened.", 80)
+
+    add("", '<div class="eyebrow">Exercise 2, step 1 — group brainstorm</div><h2>Chosen product: Electric Vehicles. Raw ideas first, no filtering yet.</h2>'
+        '<p class="issue" style="margin-bottom:0">Rule for this step: quantity over quality. A real classroom group would throw out 8–10 ideas before judging any of them. Each is tagged with the one attribute it most directly attacks.</p>'
+        '<ul class="rawlist">'
+        '<li>Battery-swap stations piggybacked onto existing Petrolimex gas stations <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>Monthly battery subscription instead of buying the battery outright <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>Real-time app showing the nearest swap/charge point <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>Trade-in discount: old gasoline motorbike toward a new EV <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
+        '<li>Free or discounted city-center parking for green plates <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
+        '<li>EV taxi fleet partnership, modeled on Xanh SM <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '<li>University EV loaner program for students <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '<li>B2B first: sell to delivery/logistics fleets before individual buyers <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '<li>Driver testimonial / influencer campaign showing real monthly savings <span class="tagf" style="background:#fbbf24">observability</span></li>'
+        '<li>One-button "auto" driving mode, no gear shifting to learn <span class="tagf" style="background:#2dd4bf">complexity</span></li>'
+        '</ul>',
+        "Step one of the group activity is a raw brainstorm, ten ideas, no judgment yet, each tagged with the one adoption attribute it most directly attacks. On compatibility: piggyback battery-swap stations onto existing gas stations, a monthly battery subscription instead of buying the battery outright, and a real-time app showing the nearest swap point. On relative advantage: a trade-in discount from an old gasoline motorbike, and free city-center parking for green plates. On trialability: an EV taxi fleet partnership modeled on Xanh SM, a university loaner program, and selling to delivery fleets before individual buyers. On observability: a driver testimonial campaign showing real monthly savings. And on complexity, which is already EV's strength: a one-button driving mode with no gears to learn.", 70)
+
+    add("", '<div class="eyebrow">Exercise 2, step 2 — filter and justify</div><h2>Why these 2 beat the other 8</h2>'
+        '<p class="issue" style="margin-bottom:0">Filter rule: attack the <i>weakest</i> attribute first. The scorecard below shows compatibility is EV’s only low score — so the winning ideas are the two that fix compatibility at the lowest cost per driver reached.</p>'
+        '<div class="tablewrap"><table><thead><tr><th>Attribute</th><th>Score (today’s EV, e.g. VinFast)</th></tr></thead><tbody>'
+        '<tr><td>Relative advantage</td><td>Medium-high — lower running cost, but price and range still trail ICE</td></tr>'
+        '<tr><td><b>Compatibility</b></td><td><b>Low-medium — the one real weak score</b></td></tr>'
+        '<tr><td>Complexity</td><td>Low (i.e. simple) — already a strength</td></tr>'
+        '<tr><td>Trialability</td><td>Medium, rising</td></tr>'
+        '<tr><td>Observability</td><td>High — green plates, visible charging, taxi fleets</td></tr>'
+        '</tbody></table></div>'
+        '<div class="pickrow">'
+        '<div class="pick"><b>Pick 1: Battery subscription (not swap-at-gas-station)</b><p>Removes the single biggest compatibility cost — the battery itself — without needing a new physical network built from scratch. This is literally Selex/Xanh SM’s real strategy, not a hypothetical.</p></div>'
+        '<div class="pick"><b>Pick 2: B2B fleets first, consumers second</b><p>One fleet contract reaches hundreds of daily riders as passengers, each one a free trial — fixing trialability and compatibility distrust at once, far cheaper than per-household marketing.</p></div>'
+        '</div>',
+        "Step two: filter against the scorecard. Relative advantage is medium-high, complexity is already a strength, trialability is rising, observability is high — compatibility is the one real low score, so that's what the group should attack first. Two ideas from the raw list do that most efficiently. Pick one: battery subscription rather than building a swap network from zero — it removes the single biggest compatibility cost, the battery itself, and it's literally what Selex and Xanh SM already do, not a hypothetical. Pick two: sell to B2B fleets before individual consumers — one fleet contract puts hundreds of daily riders inside an EV as passengers, which is a free trial for each of them, far cheaper than marketing to each household one at a time.", 70)
+
+    add("", '<div class="eyebrow">Exercise 3 — the ~300-word reflection</div><h2>Why early EVs failed to diffuse (1900–1920s): a researched reflection</h2>'
+        '<div class="issue" style="font-size:17px;line-height:1.5;max-width:1140px">Around 1900, roughly a third of American cars were electric — brands like Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly, needed no hand-crank, and had no gears to grind. On several real dimensions it was the more advanced product. Within two decades it had nearly vanished from the mass market, and the reason was not technology.</p>'
+        '<p style="margin-top:8px">Compatibility was the deepest problem, and it was structural, not fixable by a better product alone. Gasoline could be bought at a fast-growing number of stations along a road network that the 1916 Federal Aid Road Act was actively expanding; electricity for home charging assumed a reach into American households that, outside cities, simply did not exist yet. Thomas Edison spent roughly a decade, from 1901 to 1910, trying to solve exactly this with a better nickel-iron battery — even that investment could not close the range gap in time.</p>'
+        '<p style="margin-top:8px">Meanwhile relative advantage flipped. Henry Ford’s moving assembly line, a process innovation rather than a product one, cut the Model T’s price from around $825 in 1908 to roughly $260 by the mid-1920s — far below any electric car. Cheap, abundant oil made running cost irrelevant. And Charles Kettering’s 1912 electric self-starter, introduced on the Cadillac, erased gasoline’s one real weakness, the dangerous hand-crank, closing the complexity gap that had favored EVs.</p>'
+        '<p style="margin-top:8px">The lesson generalizes beyond cars: a technologically advanced product fails in diffusion when an incumbent closes the gap on its <i>one</i> weak attribute (complexity, for gasoline) while the newcomer’s own weak attribute (compatibility, for electric) is structural and expensive to fix. Being better is not enough if the market cannot yet use what you offer.</p>',
+        "Exercise 3's reflection, with the research behind it. Around 1900, roughly a third of American cars were electric — brands like Detroit Electric and Baker Electric sold well, especially to urban and female drivers, because the electric car started instantly and had no gears to grind. Within two decades it had nearly vanished, and the reason wasn't technology. Compatibility was the deepest, most structural problem: gasoline stations kept multiplying along a road network the 1916 Federal Aid Road Act was actively expanding, while home charging assumed an electrical reach that simply wasn't there outside cities yet — and even Thomas Edison spent nearly a decade, from 1901 to 1910, failing to close that range gap with a better battery. Meanwhile relative advantage flipped entirely: Ford's assembly line cut the Model T's price from around 825 dollars in 1908 to roughly 260 by the mid-1920s, cheap oil made running cost irrelevant, and Charles Kettering's 1912 electric starter, introduced on the Cadillac, erased gasoline's one real weakness, the hand-crank. The general lesson: a better product still fails in diffusion when an incumbent closes its one weak attribute while the newcomer's own weakness is structural and expensive to fix.", 85)
+
+    add("", '<div class="eyebrow">Exercise 4, part 1</div><h2>"Electric Vehicles: The Second S-Curve" — Intro &amp; Overview, with real figures</h2><div class="two">'
+        + pc("#2dd4bf", "1. Introduction", "", '<p><b class="lbl">Problem statement:</b> Round one is documented history — EVs held ≈⅓ of the 1900 US market, then fell under 1% by the 1930s, beaten on compatibility, not technology.</p><p><b class="lbl">Why now:</b> VinFast launched Vietnam’s first mass-market EV, the VF e34, in 2021; lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 the compatibility gap is closing instead of widening.</p>')
+        + pc("#fbbf24", "2. Overview", "", '<p><b class="lbl">Type:</b> Product innovation (battery + motor) + Business Model innovation (battery-as-a-service — Xanh SM/Selex, both Session 2 cases).</p><p><b class="lbl">Level:</b> Disruptive to a 110-year-old refueling habit; rollout itself is incremental, city by city.</p><p><b class="lbl">Target users:</b> fleets and urban commuters first — Xanh SM put VinFast EVs into taxi service directly, skipping the individual-buyer’s compatibility doubt entirely.</p>')
+        + '</div>',
+        "Exercise 4's introduction and overview, with real figures this time. Problem statement: round one is documented history — EVs held around a third of the 1900 US market, then fell under one percent by the 1930s, beaten on compatibility, not technology. Why now: VinFast launched Vietnam's first mass-market EV, the VF e34, in 2021, and lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 that the compatibility gap has been closing instead of widening. Type of innovation: product innovation in battery and motor, combined with business-model innovation in battery-as-a-service, the same Xanh SM and Selex cases from session two. Level: disruptive to a hundred-and-ten-year-old refueling habit, though the rollout itself is incremental, city by city. Target users: fleets and urban commuters first — Xanh SM put VinFast EVs directly into taxi service, skipping the individual buyer's compatibility doubt entirely.", 70)
+
+    add("", '<div class="eyebrow">Exercise 4, part 2</div><h2>Core Analysis, Impact &amp; Challenges, Conclusion</h2><div class="two">'
+        + pc("#60a5fa", "3–4. Core analysis, impact & SWOT", "",
+             '<p><b class="lbl">Value proposition:</b> round-two directly attacks round-one’s killer (compatibility) via swap/subscription, while keeping round-one’s real edge (simplicity, instant torque).</p>'
+             '<ul><li><b class="lbl">S:</b> closes the exact historical gap that killed EV round one — not a new, unproven bet</li>'
+             '<li><b class="lbl">W:</b> heavy upfront CapEx for batteries/stations — Selex’s own case names this as its top risk</li>'
+             '<li><b class="lbl">O:</b> urban air-quality policy pressure + falling battery cell cost curve</li>'
+             '<li><b class="lbl">T:</b> incumbents could close the gap again — Kettering’s starter did it to EV once already in 1912</li></ul>')
+        + pc("#f87171", "5. Conclusion", "", '<p><b class="lbl">Summary:</b> round two succeeds only to the extent it actually fixes compatibility — relative advantage alone already lost once, in 1912.</p><p><b class="lbl">Key lesson, stated as a rule:</b> when reviving a technology that failed before, diagnose <i>which</i> of the 5 attributes killed it the first time, and fix <i>that one</i> — do not assume the technology improving is sufficient by itself.</p>')
+        + '</div>',
+        "Core analysis: the value proposition is that round two directly attacks round one's killer, compatibility, through swap and subscription models, while keeping round one's real edge, simplicity and instant torque. The SWOT: the strength is closing the exact historical gap that killed EV round one, not a new unproven bet; the weakness is the same heavy upfront capital Selex's own case names as its top risk; the opportunity is urban air-quality policy plus the falling battery cost curve; and the threat is that incumbents could close the gap again, exactly as Kettering's starter did to EV once already in 1912. Conclusion: round two succeeds only to the extent it actually fixes compatibility, because relative advantage alone already lost once before. Stated as a transferable rule: when reviving a technology that failed previously, diagnose which of the five attributes killed it the first time, and fix that one specifically — don't assume the technology improving is sufficient by itself.", 75)
 
     add("close", '<div class="closewrap"><div class="eyebrow">Wrap-up</div><h2>Diffusion is not automatic — it has to be managed</h2>'
         '<p class="takeaway">Technological excellence alone does not guarantee success; commercial victory relies on market adoption. Managers must actively design products and strategies for each adopter segment, not assume the S-curve will climb itself.</p>'
