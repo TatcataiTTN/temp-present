@@ -555,23 +555,39 @@ def build():
     add("", '<div class="eyebrow">Exercise 2 — the group activity</div><h2>Chosen product: QR code payments in Vietnam</h2><div class="model">' + qr_adoption_svg() + '</div>',
         "Exercise 2 asks a group to pick a real product and place it on the S-curve, and the lecture's own suggested list includes QR payments — we picked that one, deliberately different from exercises 3 and 4, and genuinely necessary: almost every daily purchase in Vietnam's cities now touches it. NAPAS launched VietQR in 2021 as the national standard, unifying what had been a fragmented mess of bank-by-bank and wallet-by-wallet codes. By 2024, QR payment volume surged 106.7 percent year on year, across roughly 2.1 million outlets. By 2025, QR payments make up over half of all transactions in the country — genuinely fast diffusion, though cash hasn't disappeared, it's still roughly 30 percent.", 60)
 
-    add("", '<div class="eyebrow">Exercise 2, step 1 — group brainstorm</div><h2>Chosen product: QR payments. Raw ideas first, no filtering yet.</h2>'
-        '<p class="issue" style="margin-bottom:0">Rule for this step: quantity over quality. Each idea is tagged with the one attribute it most directly attacks.</p>'
+    add("", '<div class="eyebrow">Exercise 2, step 1a — group brainstorm</div><h2>Chosen product: QR payments. Raw ideas, compatibility &amp; complexity.</h2>'
+        '<p class="issue" style="margin-bottom:0">Rule for this step: quantity over quality. 20 ideas total, each tagged with the one attribute it most directly attacks — judge none of them yet. First 10, here:</p>'
         '<ul class="rawlist">'
         '<li>One single national QR standard (VietQR) instead of a different code per bank/wallet <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
         '<li>Offline/low-data fallback mode for weak-signal areas <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>Static printed QR glued to the xe ôm helmet or taxi dash — scan-only, no app pairing, works even on a near-dead phone <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>USSD-style QR confirmation (*101#-type menu) for feature phones, no smartphone or data plan required <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
+        '<li>ASEAN QR interoperability so a Vietnamese tourist in Bangkok, or a visitor here, scans with their own home app <span class="tagf" style="background:#60a5fa">compatibility</span></li>'
         '<li>Voice-guided scan flow for elderly or low-literacy users <span class="tagf" style="background:#2dd4bf">complexity</span></li>'
         '<li>Bigger on-screen confirmation + sound cue, so the payer visibly sees it went through <span class="tagf" style="background:#2dd4bf">complexity</span></li>'
+        '<li>One-tap "repeat last payment" for regulars — same xé ôm driver, same bánh mì stall, every morning <span class="tagf" style="background:#2dd4bf">complexity</span></li>'
+        '<li>Face-unlock to confirm a payment instead of typing a PIN — one fewer step at the register <span class="tagf" style="background:#2dd4bf">complexity</span></li>'
         '<li>Cashback or lucky-draw for a user’s first 10 QR payments <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '</ul>',
+        "Step one, a raw brainstorm, twenty ideas total — the first ten, on compatibility and complexity. On compatibility: one national standard, an offline fallback, a static printed QR that needs no app pairing, a USSD menu for feature phones, and ASEAN-wide interoperability for travelers. On complexity: a voice-guided flow, a louder success confirmation, a one-tap repeat-payment button for regulars, and face-unlock instead of a PIN. And the first trialability idea: cashback for a user's first ten payments.", 50)
+
+    add("", '<div class="eyebrow">Exercise 2, step 1b — group brainstorm</div><h2>Chosen product: QR payments. Raw ideas, trialability, observability &amp; advantage.</h2>'
+        '<p class="issue" style="margin-bottom:0">The remaining 9 ideas, same rule: no judging yet, just tag the attribute.</p>'
+        '<ul class="rawlist">'
         '<li>Market/street-vendor onboarding kiosks, free QR sticker printed on the spot <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '<li>Zero-fee "QR Tết" campaign during Lunar New Year, timed to a cash-heavy ritual (lì xì envelopes) <span class="tagf" style="background:#a78bfa">trialability</span></li>'
+        '<li>University canteen goes QR-only one day a week — students form the habit, then teach it to parents at home <span class="tagf" style="background:#a78bfa">trialability</span></li>'
         '<li>"Paid by QR" badge displayed at the stall, visible to the next customer in line <span class="tagf" style="background:#fbbf24">observability</span></li>'
         '<li>Published real-time national adoption counter (“X million payments today”) <span class="tagf" style="background:#fbbf24">observability</span></li>'
+        '<li>Public map/leaderboard of which wet markets have gone fully QR — social proof, and a little peer pressure on the ones that haven’t <span class="tagf" style="background:#fbbf24">observability</span></li>'
         '<li>No-fee guarantee for small transactions under a set amount <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
         '<li>Instant refund flow for failed/duplicate scans, no waiting on hold <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
+        '<li>Loyalty points that stack across banks/wallets via VietQR, instead of a separate point balance locked inside each app <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
+        '<li>Chargeback-style buyer protection on QR transfers, which today are treated as irreversible — closing the trust gap with card payments <span class="tagf" style="background:#f87171">rel. advantage</span></li>'
         '</ul>',
-        "Step one, a raw brainstorm, ten ideas, each tagged with the attribute it most directly attacks. On compatibility: one single national standard instead of a different code per bank, and an offline fallback for weak signal. On complexity: a voice-guided flow for elderly users, and a louder, bigger success confirmation so the payer can see the payment actually went through. On trialability: cashback for a user's first ten payments, and free on-the-spot QR stickers for street vendors. On observability: a visible paid-by-QR badge at the stall, and a published real-time national counter. And on relative advantage: a no-fee guarantee for small transactions, and an instant refund flow for failed scans.", 70)
+        "The remaining nine ideas. More trialability: free vendor onboarding kiosks, a zero-fee Tet campaign timed to cash-gift season, and a QR-only canteen day at universities. On observability: a visible paid-by-QR badge, a national counter, and a public leaderboard of which markets have gone fully QR. And on relative advantage: a no-fee guarantee for small transactions, instant refunds, loyalty points that stack across apps, and chargeback-style protection on transfers. Twenty ideas on the table — now we filter.", 55)
 
-    add("", '<div class="eyebrow">Exercise 2, step 2 — filter and justify</div><h2>Why these 2 beat the other 8</h2>'
+    add("", '<div class="eyebrow">Exercise 2, step 2 — filter and justify</div><h2>Why these 2 beat the other 18</h2>'
         '<p class="issue" style="margin-bottom:0">Filter rule: attack the <i>weakest</i> attribute first. The scorecard shows complexity and observability already strong — the real gap is trust (relative advantage) and reach into the remaining ~30% cash users (compatibility).</p>'
         '<div class="tablewrap"><table><thead><tr><th>Attribute</th><th>Score (VietQR, 2025)</th></tr></thead><tbody>'
         '<tr><td><b>Relative advantage</b></td><td><b>Medium — fast and free for most, but failed/duplicate scans erode trust fast</b></td></tr>'
