@@ -399,6 +399,44 @@ def dvorak_svg():
 </svg>'''
 
 
+def vneid_timeline_svg():
+    stops = [
+        ("2021", "COVID-era launch", "Ministry of Public Security launches VNeID (Sept 10) for health declarations and domestic travel during the pandemic", "#60a5fa"),
+        ("2023", "Nationwide rollout", "Expands beyond pandemic use into a general digital-ID app for citizens across the country", "#2dd4bf"),
+        ("2025", "Mandatory: banks &amp; business", "Jan: biometric banking tied to VNeID. Jul: Decree 69 requires businesses to use it for e-government services; foreign residents need Level 2", "#fbbf24"),
+        ("2026", "Mandatory: platforms", "Decree 320 requires 12 sectors of online platforms to link accounts to VNeID by Dec 31; opens to all legal foreign entrants Sept 28", "#f87171"),
+    ]
+    n = len(stops)
+    w = 1080
+    cw = w / n
+    body = ""
+    for i, (year, title, desc, color) in enumerate(stops):
+        cx = i * cw + cw / 2
+        body += f'<circle cx="{cx}" cy="70" r="16" fill="{color}"/><text x="{cx}" y="76" text-anchor="middle" fill="#04211d" font-size="15" font-weight="800">{i+1}</text>'
+        body += f'<text x="{cx}" y="118" text-anchor="middle" fill="{color}" font-size="24" font-weight="800">{year}</text>'
+        body += f'<text x="{cx}" y="142" text-anchor="middle" fill="#eef6f2" font-size="16" font-weight="700">{title}</text>'
+        words = desc.split(" ")
+        lines, line = [], ""
+        for wd in words:
+            if len(line + " " + wd) > 30:
+                lines.append(line); line = wd
+            else:
+                line = (line + " " + wd).strip()
+        lines.append(line)
+        ty = 170
+        body += f'<text x="{cx}" y="{ty}" text-anchor="middle" fill="#9db3aa" font-size="13.5">'
+        for j, ln in enumerate(lines):
+            body += f'<tspan x="{cx}" dy="{0 if j==0 else 19}">{ln}</tspan>'
+        body += '</text>'
+        if i < n - 1:
+            body += f'<line x1="{cx+90}" y1="70" x2="{(i+1)*cw+cw/2-90}" y2="70" stroke="#9db3aa" stroke-width="3" marker-end="url(#vn)"/>'
+    return f'''<svg viewBox="0 0 {w} 320" role="img" aria-label="VNeID timeline from 2021 COVID-era launch to 2026 mandatory platform linking">
+{body}
+<text x="{w/2}" y="300" text-anchor="middle" fill="#fbbf24" font-size="16" font-weight="700">Diffusion forced sector by sector, by decree — not earned attribute by attribute</text>
+<defs><marker id="vn" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9db3aa"/></marker></defs>
+</svg>'''
+
+
 def pc(t, title, meta, body_html):
     return f'<div class="pc" style="--t:{t}"><h3>{e(title)}</h3>' + (f'<div class="meta">{e(meta)}</div>' if meta else '') + body_html + '</div>'
 
@@ -492,10 +530,10 @@ def build():
 <tr><td>1</td><td>Analysis (in-class)</td><td>Analyze the role of innovation management in enterprises, with illustrative examples.</td></tr>
 <tr><td>2</td><td>Group activity, 30–40 min</td><td>Pick a real product (EV, air fryer, GenAI tool, QR payments). Evaluate it on the 5 attributes, place it on the S-curve / adopter spectrum, propose 1–2 strategies to cross the chasm into the Early Majority.</td></tr>
 <tr><td>3</td><td>Homework (~300 words)</td><td>Reflect on why a technologically advanced product failed during its diffusion phase.</td></tr>
-<tr><td>4</td><td>Presentation (graded)</td><td>Full "Analysis of an Innovation" deck — 5-part structure, worked example provided (Selex Motors).</td></tr>
+<tr><td>5</td><td>Presentation (graded)</td><td>Full "Analysis of an Innovation" deck — 5-part structure, worked example provided (Selex Motors).</td></tr>
 </tbody></table></div>"""
-    add("", '<div class="section">5 · Assignments</div><h2>Four tasks attached to this lecture</h2>' + assign,
-        "That's the theory. The lecture attaches four concrete tasks to it. One, an in-class analysis of innovation management's role with real examples. Two, a 30 to 40 minute group activity: pick a real product, score it on the five adoption attributes, place it on the S-curve, and propose strategies to cross the chasm into the Early Majority. Three, a roughly 300-word homework reflection on why a technologically advanced product failed during diffusion. And four, the graded presentation assignment, which comes with a full worked example we'll look at next.", 55)
+    add("", '<div class="section">5 · Assignments</div><h2>Four tasks attached to this lecture, numbered 1–3 and 5</h2>' + assign,
+        "That's the theory. The lecture attaches four concrete tasks to it, numbered 1 through 3 and then 5 — slide 93's warm-up poll sits between the analysis and the group activity as the lecture's own item 2, so the graded presentation is item 5, not 4. One, an in-class analysis of innovation management's role with real examples. Two — counting the warm-up poll — is a 30 to 40 minute group activity: pick a real product, score it on the five adoption attributes, place it on the S-curve, and propose strategies to cross the chasm into the Early Majority. Three is a roughly 300-word homework reflection on why a technologically advanced product failed during diffusion. And five is the graded presentation assignment, which comes with a full worked example we'll look at next.", 55)
 
     tmpl = """<div class="tablewrap"><table><thead><tr><th>Part</th><th>Covers</th></tr></thead><tbody>
 <tr><td>1. Introduction</td><td>Title, problem statement, objective — why this innovation was chosen</td></tr>
@@ -504,7 +542,7 @@ def build():
 <tr><td>4. Impact &amp; Challenges</td><td>Positive impact, risks/barriers, full SWOT analysis</td></tr>
 <tr><td>5. Conclusion</td><td>Summary, key lessons applicable elsewhere, Q&amp;A</td></tr>
 </tbody></table></div>"""
-    add("", '<div class="eyebrow">Assignment 4, the template</div><h2>"Analysis of an Innovation" — 5-part structure</h2>' + tmpl,
+    add("", '<div class="eyebrow">Assignment 5, the template</div><h2>"Analysis of an Innovation" — 5-part structure</h2>' + tmpl,
         "The presentation template has five parts. Introduction: title, problem statement, and why this innovation was chosen. Overview: what it is, its type — product, process, position or paradigm — its level, disruptive, incremental or radical, and its target users. Core analysis: value proposition, key success factors, evidence of market adoption. Impact and challenges: positive impact, risks, and a full SWOT. And conclusion: summary, key lessons, and Q&A.", 45)
 
     worked = "".join([
@@ -517,9 +555,9 @@ def build():
         "The lecture's own worked example is Selex Motors, a Vietnamese company founded in 2018. The problem: delivery drivers lose three to eight hours a day charging electric motorbikes. Their solution: smart EVs, standardized batteries, and automated two-minute battery-swap stations sold as Battery-as-a-Service. It's classified as product innovation combined with business-model innovation, and disruptive, because it replaces the existing habit of passive charging. Evidence of adoption: hundreds of stations across Hanoi and Ho Chi Minh City, over 90 percent driver satisfaction, and drivers reporting 20 to 30 percent higher daily income once charging downtime disappears. The SWOT in the deck also flags the real risk: heavy upfront capital and the threat of big EV makers introducing their own proprietary battery standard.", 55)
 
     # ---- Worked answers to the 4 assignments ----------------------------
-    add("", '<div class="section">6 · Worked Answers</div><h2>Completing Exercises 1–4 — four different ways of thinking, not one template</h2>'
-        '<div class="issue">#1 is causal analysis (named mechanisms, named failures). #2 is a raw group brainstorm, filtered down. #3 is a researched narrative with dates and names. #4 is a structured business case with real figures. Running example for #2–#4: <b style="color:#eef6f2">electric vehicles</b> — the rare product that rode two separate S-curves, a century apart.</div>',
-        "Before the wrap-up, four worked answers — deliberately in four different formats, because the four assignments ask for four different kinds of thinking. Exercise 1 wants causal analysis: name the mechanism, name the company it broke or saved. Exercise 2 wants a group brainstorm, raw ideas filtered down, not a tidy pre-made answer. Exercise 3 wants a researched narrative, with real dates and names, not bullet points. Exercise 4 wants a structured business case with real figures. For 2 through 4 we follow one story: electric vehicles, the rare product that rode two separate S-curves a century apart.", 45)
+    add("", '<div class="section">6 · Worked Answers</div><h2>Completing Exercises 1, 2, 3 &amp; 5 — four different ways of thinking, one example each</h2>'
+        '<div class="issue">#1 is causal analysis, the Grab case. #2 is a raw group brainstorm on QR payments, filtered down. #3 is a researched narrative on the Dvorak keyboard, with dates and names. #5 is a structured business case on VNeID, Vietnam’s national digital ID, with real figures — four different examples, deliberately, so no single running story does all the work.</div>',
+        "Before the wrap-up, four worked answers — deliberately in four different formats, because these assignments ask for four different kinds of thinking, and deliberately four different examples, so no one story is doing all the work. Exercise 1 wants causal analysis: name the mechanism, name the company it broke or saved — that's Grab. Exercise 2 wants a group brainstorm, raw ideas filtered down — that's QR payments. Exercise 3 wants a researched narrative with real dates and names — that's the Dvorak keyboard. And exercise 5 wants a structured business case with real figures — that's VNeID, Vietnam's national digital identity system.", 50)
 
     roles5 = """<div class="tablewrap"><table><thead><tr><th>Role of innovation management</th><th>What it means in practice</th><th>Evidence from Grab (detailed next)</th></tr></thead><tbody>
 <tr><td><b class="lbl">1. Creating &amp; sustaining competitive advantage</b></td><td>Not a one-time edge — an edge that keeps renewing itself against copycats</td><td>EXP: hundreds of A/B tests a month keep fine-tuning matching/pricing on the same driver network — why no SEA rival, including Uber, could out-execute Grab on its own turf</td></tr>
@@ -660,32 +698,31 @@ def build():
         '<p style="margin-top:6px">The lesson generalizes beyond keyboards: sometimes a challenger fails to diffuse not because the incumbent closes a gap, but because the evidence for the challenger’s advantage was never as solid as its proponents believed — and even a real advantage can lose to the sheer cost of relearning a skill millions of people already have.</p>',
         "And the full write-up. The first problem was the evidence itself: the best-known proof, a 1944 Navy study, was designed and run by Dvorak, the Navy's own leading expert in time-and-motion analysis, reporting startling gains that economists Liebowitz and Margolis later showed came from unevenly skilled test groups. When the government's own General Services Administration ran an independently controlled follow-up in 1956, retrained Dvorak typists only matched their prior speed, never exceeded it. The second problem was compatibility in a different sense than usual: touch-typing is procedural memory built into millions of trained hands, and every keyboard and curriculum already assumed QWERTY — an installed base, not a conspiracy. The general lesson: sometimes a challenger fails to diffuse not because an incumbent closes a gap, but because the evidence for its advantage was never as solid as believed, and even a real advantage can lose to the cost of relearning a skill millions already have.", 80)
 
-    add("", '<div class="eyebrow">Exercise 4, part 1 — Introduction</div><h2>"Electric Vehicles: The Second S-Curve"</h2><div class="model">' + double_scurve_svg() + '</div>'
-        '<p class="issue" style="margin-top:8px;font-size:16px"><b style="color:#eef6f2">Problem statement:</b> round one is documented history — EVs held roughly a quarter to a third of the 1900 US market, then nearly every electric-car maker had gone out of business by the mid-1920s, beaten on compatibility, not technology. <b style="color:#eef6f2">Why now:</b> lithium-ion cell costs have fallen sharply over the past decade — the first time since 1912 the compatibility gap is closing instead of widening.</p>',
-        "Exercise 4's presentation, in full. Introduction: round one is documented history, shown on this same two-S-curve chart from exercise two — EVs held roughly a quarter to a third of the 1900 US market, then nearly every electric-car maker had gone out of business by the mid-1920s, beaten on compatibility, not technology. Why now: lithium-ion cell costs have fallen sharply over the past decade, the first time since 1912 the compatibility gap has been closing instead of widening.", 55)
+    add("", '<div class="eyebrow">Exercise 5, part 1 — Introduction</div><h2>"VNeID: Vietnam’s National Digital Identity"</h2>'
+        '<p class="issue" style="margin-top:8px;font-size:16px"><b style="color:#eef6f2">Problem statement:</b> paper ID cards and in-person, agency-by-agency paperwork mean queues, duplicate data entry, and real fraud risk — and the pandemic needed a trusted digital credential immediately, not eventually. <b style="color:#eef6f2">Why now:</b> by mid-2025, over 62 million citizen accounts were already issued, with daily logins up to four times 2023 levels — this is no longer an optional app, it’s becoming mandatory infrastructure.</p>',
+        "Exercise 5's presentation, in full, with a deliberately different kind of example: not a company, a government system. Introduction: paper ID cards and in-person, agency-by-agency paperwork mean queues, duplicate data entry, and real fraud risk, and the pandemic needed a trusted digital credential immediately. Why now: by mid-2025, over 62 million citizen accounts were already issued, with daily logins up to four times 2023 levels — this is no longer an optional app, it's becoming mandatory infrastructure.", 50)
 
-    add("", '<div class="eyebrow">Exercise 4, supporting evidence</div><h2>Round one already had its Bertha Benz moment too</h2><div class="model">' + bertha_benz_svg() + '</div>'
-        '<p class="issue" style="margin-top:8px;font-size:16px">Worth citing in the presentation’s introduction: gasoline cars needed exactly this kind of public proof-by-doing in 1888 before they were trusted at all. The lesson for round two isn’t just technical — VinFast and Xanh SM putting EVs into daily taxi service is the modern version of the same move: proof before a word of marketing.</p>',
-        "Worth citing directly in the presentation's introduction: gasoline cars needed exactly this kind of public proof-by-doing in 1888, Bertha Benz's drive, before they were trusted at all. The lesson for round two isn't only technical — VinFast and Xanh SM putting EVs into daily taxi service is the modern version of the same move: proof before a word of marketing, exactly like Bertha Benz's drive was.", 50)
+    add("", '<div class="eyebrow">Exercise 5, the rollout</div><h2>Diffusion forced sector by sector, by decree</h2><div class="model">' + vneid_timeline_svg() + '</div>',
+        "Worth building the presentation's timeline around, because it's the opposite strategy from every other example in this deck. 2021: launched purely as a COVID-era health-declaration and travel tool. 2023: expanded into a general nationwide digital ID. 2025: biometric banking tied to it in January, then Decree 69 made it mandatory for businesses doing government e-services in July, with foreign residents required to hold Level 2. And 2026: Decree 320 requires twelve sectors of online platforms to link accounts to it by the end of the year, and opens it to all legal foreign entrants. Each stage didn't win adoption, it mandated it.", 60)
 
-    add("", '<div class="eyebrow">Exercise 4, part 2 — Overview, with 2025 figures</div><h2>Type, level, and who’s actually buying</h2><div class="two">'
-        + pc("#fbbf24", "2. Overview", "", '<p><b class="lbl">Type:</b> Product innovation (battery + motor) + Business Model innovation (battery-as-a-service — VinFast’s own swap network, separate from Session 2’s Selex Motors case, is targeting 150,000 stations by 2028).</p><p><b class="lbl">Level:</b> Disruptive to a 110-year-old refueling habit; rollout itself is incremental, city by city.</p><p><b class="lbl">Target users:</b> fleets first — Xanh SM (GSM) runs a fleet of roughly 100,000 vehicles, over 40% of Vietnam’s entire taxi count as of 2024, putting riders inside an EV before they ever shop for one.</p>')
-        + pc("#2dd4bf", "2025, in numbers", "", '<ul><li>VinFast sold <b class="lbl">175,099 EVs</b> in Vietnam in 2025, taking its domestic passenger-car market share to <b class="lbl">≈36%</b>, up from ~22% in 2024</li>'
-             '<li>27.3% of those deliveries went to related parties, chiefly GSM/Xanh SM — the fleet-first strategy, in the filings</li>'
-             '<li>Battery-swap subscription: ~200,000 VND (~$8) per month, ~9,000 VND (~$0.35) per swap</li></ul>')
+    add("", '<div class="eyebrow">Exercise 5, part 2 — Overview, with 2025 figures</div><h2>Type, level, and who’s required to use it</h2><div class="two">'
+        + pc("#fbbf24", "2. Overview", "", '<p><b class="lbl">Type:</b> Paradigm innovation (replaces the citizen–government relationship itself: one verified digital identity instead of a paper card plus a separate login per agency) combined with Process innovation (procedures move online).</p><p><b class="lbl">Level:</b> Disruptive to a century-old paper-ID and in-person dossier system; rollout is incremental, sector by sector.</p><p><b class="lbl">Target users:</b> eventually all citizens, but mandated sector-first — banks (Jan 2025), businesses doing e-government paperwork (Jul 2025), foreign residents, then 12 platform sectors (by end of 2026).</p>')
+        + pc("#2dd4bf", "2025, in numbers", "", '<ul><li>Over <b class="lbl">62 million</b> citizen digital-ID accounts issued, plus 292M+ organization accounts (mid-2025)</li>'
+             '<li>Daily logins: <b class="lbl">3–6 million</b> in early 2025, up to 4× 2023 levels</li>'
+             '<li>Biometric verification mandatory for new bank accounts/cards from Jan 2025 (face-to-face from Jan 2026)</li></ul>')
         + '</div>',
-        "Overview, now with 2025 figures. Type of innovation: product innovation in battery and motor, combined with business-model innovation in battery-as-a-service — specifically VinFast's own swap network, a separate program from session two's Selex Motors case, targeting 150,000 stations by 2028. Level: disruptive to a hundred-and-ten-year-old refueling habit, though the rollout itself is incremental, city by city. Target users: fleets first — Xanh SM runs a fleet of roughly 100,000 vehicles, over 40 percent of Vietnam's entire taxi count as of 2024. And in the numbers: VinFast sold 175,099 EVs in Vietnam in 2025, taking its domestic market share to about 36 percent, up from 22 the year before; 27.3 percent of deliveries went to related parties, chiefly GSM, which is the fleet-first strategy showing up directly in the filings; and the battery-swap subscription runs about 200,000 dong a month, roughly 9,000 dong per swap.", 75)
+        "Overview, with 2025 figures. Type of innovation: paradigm innovation, replacing the citizen-government relationship itself, one verified digital identity instead of a paper card plus a separate login per agency, combined with process innovation as procedures move online. Level: disruptive to a century-old paper-ID system, though the rollout is incremental, sector by sector. Target users: eventually all citizens, but mandated sector-first, banks from January 2025, businesses doing e-government paperwork from July, then platforms by the end of 2026. And in the numbers: over 62 million citizen accounts issued, plus 292 million-plus organization accounts by mid-2025, daily logins of 3 to 6 million, up to four times 2023 levels, and biometric verification now mandatory for new bank accounts and cards.", 70)
 
-    add("", '<div class="eyebrow">Exercise 4, part 3 — Core Analysis, Impact &amp; Challenges</div><h2>Value proposition and SWOT</h2><div class="two">'
+    add("", '<div class="eyebrow">Exercise 5, part 3 — Core Analysis, Impact &amp; Challenges</div><h2>Value proposition and SWOT</h2><div class="two">'
         + pc("#60a5fa", "3–4. Core analysis, impact & SWOT", "",
-             '<p><b class="lbl">Value proposition:</b> round-two directly attacks round-one’s killer (compatibility) via swap/subscription, while keeping round-one’s real edge (simplicity, instant torque).</p>'
-             '<ul><li><b class="lbl">S:</b> closes the exact historical gap that killed EV round one — and the 2025 sales jump, 22%→36% share, is already evidence, not just theory</li>'
-             '<li><b class="lbl">W:</b> heavy upfront CapEx for a 150,000-station target by 2028 — real money committed years before full payoff</li>'
-             '<li><b class="lbl">O:</b> urban air-quality policy pressure + falling battery cell cost curve</li>'
-             '<li><b class="lbl">T:</b> incumbents could close the gap again — Kettering’s starter did it to EV once already in 1912</li></ul>')
-        + pc("#f87171", "5. Conclusion", "", '<p><b class="lbl">Summary:</b> round two succeeds only to the extent it actually fixes compatibility — relative advantage alone already lost once, in 1912.</p><p><b class="lbl">Key lesson, stated as a rule:</b> when reviving a technology that failed before, diagnose <i>which</i> of the 5 attributes killed it the first time, and fix <i>that one</i> — do not assume the technology improving is sufficient by itself.</p>')
+             '<p><b class="lbl">Value proposition:</b> one verified identity, reusable across every agency and, increasingly, banks and platforms — fewer queues for citizens, less duplicate fraud-prone paperwork for the state.</p>'
+             '<ul><li><b class="lbl">S:</b> mandatory sector-by-sector rollout sidesteps the usual trap of government apps nobody opens — compatibility is legislated, not hoped for</li>'
+             '<li><b class="lbl">W:</b> mandatory moments can lock citizens out of essential services (banking, platforms) if verification fails or deadlines are missed</li>'
+             '<li><b class="lbl">O:</b> stated ambition to grow VNeID into a "super app" distribution channel for further public and private services</li>'
+             '<li><b class="lbl">T:</b> the Dec. 2026 platform-linking rule has already drawn public criticism over privacy and surveillance — trust, once broken by a breach, is hard to legislate back</li></ul>')
+        + pc("#f87171", "5. Conclusion", "", '<p><b class="lbl">Summary:</b> VNeID doesn’t win adoption attribute by attribute like every other example in this deck — it uses regulation to force compatibility directly, sector by sector.</p><p><b class="lbl">Key lesson, stated as a rule:</b> when a firm or state controls the channel citizens must use anyway (banking rails, e-government portals), diffusion can be legislated, not earned — but that shortcut borrows against public trust, and the bill comes due at the first major failure or breach.</p>')
         + '</div>',
-        "Core analysis: the value proposition is that round two directly attacks round one's killer, compatibility, through swap and subscription models, while keeping round one's real edge, simplicity and instant torque. The SWOT: the strength is closing the exact historical gap that killed EV round one, and the 2025 sales jump from 22 to 36 percent share is already evidence, not just theory; the weakness is heavy upfront capital committed years before full payoff on a 150,000-station target; the opportunity is urban air-quality policy plus the falling battery cost curve; and the threat is that incumbents could close the gap again, exactly as Kettering's starter did to EV once already in 1912. Conclusion: round two succeeds only to the extent it actually fixes compatibility, because relative advantage alone already lost once before. Stated as a transferable rule: when reviving a technology that failed previously, diagnose which of the five attributes killed it the first time, and fix that one specifically — don't assume the technology improving is sufficient by itself.", 75)
+        "Core analysis: the value proposition is one verified identity, reusable across every agency and, increasingly, banks and platforms, fewer queues for citizens, less duplicate paperwork for the state. The SWOT: the strength is that mandatory rollout sidesteps the usual trap of a government app nobody opens, compatibility is legislated, not hoped for; the weakness is that a mandatory moment can lock citizens out of essential services if verification fails; the opportunity is the stated ambition to grow it into a super-app distribution channel; and the threat is that the platform-linking rule has already drawn public criticism over privacy, and trust, once broken by a breach, is hard to legislate back. Conclusion, and this is the transferable lesson for the whole deck: VNeID doesn't win adoption attribute by attribute like Grab, QR payments or the Dvorak keyboard did — it uses regulation to force compatibility directly. When a firm or state controls the channel citizens must use anyway, diffusion can be legislated, not earned — but that shortcut borrows against public trust, and the bill comes due at the first major failure or breach.", 80)
 
     add("close", '<div class="closewrap"><div class="eyebrow">Wrap-up</div><h2>Diffusion is not automatic — it has to be managed</h2>'
         '<p class="takeaway">Technological excellence alone does not guarantee success; commercial victory relies on market adoption. Managers must actively design products and strategies for each adopter segment, not assume the S-curve will climb itself.</p>'
