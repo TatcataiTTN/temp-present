@@ -1,0 +1,258 @@
+"""Session 5 — Mid-term Exam Review (bilingual EN/VI). Run: python3 build/build_slides.py
+Exam: 23/10/2026, 14:55-15:55, written, 1 hour, 4 review questions.
+Source: Review Questions- Innovation.doc"""
+import html, json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+e = html.escape
+
+CSS = """
+:root{--bg:#0b1512;--ink:#eef6f2;--mut:#9db3aa;--brand:#2dd4bf;--ok:#34d399;--no:#f87171;--q:#fbbf24}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#050a08;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;background:radial-gradient(1200px 600px at 10% 0,#12332c,var(--bg));overflow:hidden}
+.slide{position:absolute;inset:0;padding:46px 76px 40px;display:none;flex-direction:column}
+.slide.on{display:flex;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1{font-size:72px;letter-spacing:-.04em;margin:0;line-height:1.05}
+h2{font-size:33px;letter-spacing:-.02em;margin:0 0 6px;line-height:1.18;max-width:1120px}
+.kick{color:var(--brand);font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin-bottom:14px;font-size:16px}
+.sub{font-size:22px;color:var(--mut);margin:12px 0 0;max-width:1020px;line-height:1.35}
+.title{justify-content:center}
+.section{display:inline-block;font-size:13px;color:#04211d;background:var(--brand);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 11px;border-radius:999px;margin-bottom:10px}
+.eyebrow{font-size:15px;color:var(--q);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+.qtext{font-size:18px;line-height:1.42;color:#d6e6df;max-width:1120px}
+.qtext .vi{color:var(--mut);font-style:italic;display:block;margin-top:4px}
+.model{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;background:#0b1512;border-radius:16px;padding:10px}
+.model svg{max-height:420px;width:auto}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;min-height:0}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;align-content:center}
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;align-content:center}
+.pc{background:#10221d;border:1px solid #1f3a33;border-top:5px solid var(--t);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;min-height:0;overflow:auto}
+.pc h3{margin:0 0 6px;font-size:18px}
+.pc .meta{color:var(--mut);font-size:12.5px;margin:-3px 0 7px}
+.pc p{margin:0 0 5px;font-size:14px;line-height:1.36;color:#d6e6df}
+.pc p.vi{color:var(--mut);font-style:italic;font-size:13px}
+.pc p:last-child{margin-bottom:0}
+.pc ul{margin:3px 0 6px;padding-left:16px}
+.pc li{font-size:13px;line-height:1.35;color:#d6e6df;margin:2px 0}
+.pc b.lbl{color:var(--q);font-weight:700}
+.card3{background:#10221d;border:1px solid #1f3a33;border-top:5px solid var(--t);border-radius:14px;padding:16px}
+.card3 h3{margin:0 0 5px;font-size:16px}
+.card3 p{margin:0;font-size:13px;line-height:1.34;color:#d6e6df}
+.card3 p.vi{color:var(--mut);font-style:italic;margin-top:3px}
+.probe{margin-top:10px;font-size:15px;line-height:1.35;color:var(--q);font-style:italic;border-top:1px solid #1f3a33;padding-top:10px}
+.tablewrap table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tablewrap th{text-align:left;color:var(--q);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:2px solid #1f3a33}
+.tablewrap td{padding:7px 8px;border-bottom:1px solid #1f3a33;color:#d6e6df;vertical-align:top}
+.tablewrap td.vi{color:var(--mut);font-style:italic;font-size:12.5px}
+/* flashcard reveal */
+.flash{flex:1;display:flex;flex-direction:column;gap:14px;min-height:0}
+.flash .q{background:#10221d;border:1px solid #1f3a33;border-radius:14px;padding:18px 22px;font-size:17px;line-height:1.4}
+.flash .q b{color:var(--q)}
+.flash .hint{font-size:13px;color:var(--mut);margin-top:16px}
+.flash .ans{background:#0f2420;border:1px solid #1f4a3c;border-radius:14px;padding:18px 22px;font-size:14.5px;line-height:1.4;display:none;overflow:auto}
+.flash .ans.show{display:block}
+.flash .ans b.lbl{color:var(--ok)}
+.flash .ans .vi{color:var(--mut);font-style:italic;display:block;margin-top:3px}
+.flash button{align-self:flex-start;background:var(--brand);color:#04211d;border:none;border-radius:999px;padding:9px 20px;font-weight:700;font-size:14px;cursor:pointer}
+.examband{background:#1a1a0f;border:1px solid #3a3a1f;border-radius:12px;padding:12px 18px;font-size:15px;color:var(--q);font-weight:700;text-align:center}
+#hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#12221d;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
+#count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
+#home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
+#notes{position:fixed;left:0;right:0;bottom:0;max-height:34vh;overflow:auto;background:#f6f7f4;color:#15211d;padding:16px 28px;font-size:17px;line-height:1.6;display:none;z-index:9;border-top:4px solid var(--brand)}
+#notes.on{display:block}#notes small{display:block;color:#5b6b64;margin-bottom:6px}
+.nb{position:fixed;top:12px;right:12px;z-index:9;display:flex;gap:8px}
+.nb button{background:#12221d;color:var(--ink);border:1px solid #2a4a41;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px}
+@media print{html,body{overflow:visible;height:auto}#stage{position:static;transform:none!important;width:auto;height:auto}.slide{display:flex!important;position:relative;height:720px;page-break-after:always}.nb,#hud,#count,#home,#notes{display:none!important}}
+"""
+
+JS = """
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide')),stage=document.getElementById('stage'),cur=0;
+  var notes=NOTES_JSON;
+  function fit(){var on=document.getElementById('notes').classList.contains('on');var s=Math.min(innerWidth/1280,(innerHeight*(on?.66:1))/720);
+    stage.style.transform='translate(-50%,-50%) scale('+s+')';stage.style.top=(on?33:50)+'%';}
+  function show(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach(function(s,i){s.classList.toggle('on',i===cur)});
+    document.getElementById('bar').style.width=((cur+1)/slides.length*100)+'%';document.getElementById('count').textContent=(cur+1)+' / '+slides.length;
+    var n2=notes[cur+1]||['',0];document.getElementById('notes').innerHTML='<small>Speaker notes / Ghi ch\\u00fa \\u00b7 slide '+(cur+1)+'</small>'+n2[0];
+    history.replaceState(null,'','#'+(cur+1));}
+  document.addEventListener('keydown',function(ev){var c=ev.key;
+    if(c==='ArrowRight'||c==='PageDown'||c===' '){ev.preventDefault();show(cur+1)}else if(c==='ArrowLeft'||c==='PageUp'){show(cur-1)}
+    else if(c==='Home'){show(0)}else if(c==='End'){show(slides.length-1)}
+    else if(c==='n'||c==='N'){toggleNotes()}else if(c==='f'||c==='F'){fs()}});
+  function toggleNotes(){document.getElementById('notes').classList.toggle('on');fit();}
+  function fs(){if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();}
+  var sx=null;document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX});
+  document.addEventListener('touchend',function(e){if(sx==null)return;var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)show(cur+(d<0?1:-1));sx=null});
+  document.getElementById('prev').onclick=function(){show(cur-1)};document.getElementById('next').onclick=function(){show(cur+1)};
+  document.getElementById('nt').onclick=toggleNotes;document.getElementById('fs').onclick=fs;
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-reveal]');
+    if(!b)return;
+    var ans=b.parentElement.querySelector('.ans');
+    ans.classList.toggle('show');
+    b.textContent=ans.classList.contains('show')?'Hide answer / \\u1ea8n \\u0111\\u00e1p \\u00e1n':b.dataset.label;
+  });
+  addEventListener('resize',fit);addEventListener('hashchange',function(){show((parseInt(location.hash.slice(1),10)||1)-1)});fit();show((parseInt(location.hash.slice(1),10)||1)-1);
+})();
+"""
+
+
+def slide(cls, inner):
+    return f'<section class="slide {cls}">{inner}</section>'
+
+
+def pc(t, title, meta, body_html):
+    return f'<div class="pc" style="--t:{t}"><h3>{e(title)}</h3>' + (f'<div class="meta">{e(meta)}</div>' if meta else '') + body_html + '</div>'
+
+
+def fourps_svg():
+    NAVY, RED = "#60a5fa", "#f87171"
+    return '''<svg viewBox="0 0 1000 480" role="img" aria-label="4Ps innovation space">
+<ellipse cx="500" cy="240" rx="420" ry="195" fill="#10221d" stroke="#1f3a33" stroke-width="2"/>
+<circle cx="500" cy="240" r="72" fill="#2dd4bf" fill-opacity=".9"/>
+<text x="500" y="247" text-anchor="middle" fill="#04211d" font-size="19" font-weight="800">INNOVATION</text>
+<path d="M500 168 L500 60" stroke="#fbbf24" stroke-width="3" marker-end="url(#p1)" marker-start="url(#p1)"/>
+<text x="500" y="42" text-anchor="middle" fill="#fbbf24" font-size="19" font-weight="800">Product</text>
+<path d="M572 240 L880 240" stroke="''' + RED + '''" stroke-width="3" marker-end="url(#p2)" marker-start="url(#p2)"/>
+<text x="900" y="235" fill="''' + RED + '''" font-size="19" font-weight="800">Process</text>
+<path d="M428 240 L120 240" stroke="''' + NAVY + '''" stroke-width="3" marker-end="url(#p3)" marker-start="url(#p3)"/>
+<text x="100" y="235" text-anchor="end" fill="''' + NAVY + '''" font-size="19" font-weight="800">Position</text>
+<path d="M500 312 L500 430" stroke="#a78bfa" stroke-width="3" marker-end="url(#p4)" marker-start="url(#p4)"/>
+<text x="500" y="455" text-anchor="middle" fill="#a78bfa" font-size="19" font-weight="800">Paradigm</text>
+<defs>
+<marker id="p1" markerWidth="9" markerHeight="9" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#fbbf24"/></marker>
+<marker id="p2" markerWidth="9" markerHeight="9" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="''' + RED + '''"/></marker>
+<marker id="p3" markerWidth="9" markerHeight="9" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="''' + NAVY + '''"/></marker>
+<marker id="p4" markerWidth="9" markerHeight="9" refX="4" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#a78bfa"/></marker>
+</defs>
+</svg>'''
+
+
+def flashcard(q_en, q_vi, ans_html, label="Show model answer / Xem đáp án mẫu"):
+    return (f'<div class="flash"><div class="q"><b>Q:</b> {e(q_en)}<br><span style="color:var(--mut);font-style:italic">{e(q_vi)}</span></div>'
+            f'<button data-reveal data-label="{e(label)}">{e(label)}</button>'
+            f'<div class="ans">{ans_html}</div></div>')
+
+
+def build():
+    S, NOTES, i = [], {}, 1
+
+    def add(cls, html_, notes, sec):
+        nonlocal i
+        S.append(slide(cls, html_))
+        NOTES[i] = [notes, sec]
+        i += 1
+
+    add("title", '<div class="kick">USTH Innovation · Session 5 · Mid-term Exam Review</div>'
+        '<h1>Ôn tập Thi Giữa Kỳ</h1><p class="sub">Science &amp; Technology Innovation Management — 4 review questions, bilingual EN/VI</p>'
+        '<div class="examband" style="margin-top:28px;max-width:600px">Exam: 23/10/2026, 14:55–15:55 (written, 1 hour)<br>Thi: 23/10/2026, 14h55–15h55 (tự luận, 1 tiếng)</div>',
+        "Welcome to the exam review. Four questions, written exam, one hour, tomorrow afternoon. Let's go through each one with a bilingual model answer and real company examples.", 20)
+
+    add("", '<div class="section">Question 1</div><h2>Definition of &quot;innovation&quot;</h2>'
+        + flashcard(
+            "Define “innovation.”",
+            "Định nghĩa “đổi mới sáng tạo” (innovation).",
+            '<p><b class="lbl">EN:</b> Innovation is the successful exploitation of new ideas — turning an invention (a new idea or technology) into practical, commercially or socially useful value. It is distinct from invention (creating something new) and from diffusion (the later process by which the market adopts it).</p>'
+            '<p class="vi"><b class="lbl" style="color:#fbbf24">VI:</b> Đổi mới sáng tạo là việc khai thác thành công một ý tưởng mới — biến một phát minh (ý tưởng hoặc công nghệ mới) thành giá trị thực tế, có ích về mặt thương mại hoặc xã hội. Nó khác với sáng chế (tạo ra cái mới) và khác với khuếch tán (quá trình thị trường chấp nhận nó sau đó).</p>'
+            '<p style="margin-top:8px"><b class="lbl">Key phrase to write / Cụm từ nên viết:</b> &quot;successful exploitation of new ideas&quot; + the invention/innovation/diffusion distinction.</p>'),
+        "Question one just wants the definition, with the three-way distinction between invention, innovation and diffusion, which the lecture is careful about.", 40)
+
+    add("", '<div class="section">Question 2</div><h2>The &quot;4Ps of Innovation&quot; model (Tidd &amp; Bessant)</h2><div class="model">' + fourps_svg() + '</div>'
+        '<p class="qtext">Innovation can happen along four dimensions. <span class="vi">Đổi mới có thể xảy ra theo 4 hướng khác nhau.</span></p>',
+        "The 4Ps: Product changes what you offer, Process changes how you make or deliver it, Position changes the market or context you sell into, and Paradigm changes the underlying business model itself.", 35)
+
+    add("", '<div class="eyebrow">Q2 — definitions</div><h2>What each P means</h2><div class="four">'
+        + pc("#fbbf24", "Product", "", '<p>What the organization offers.</p><p class="vi">Những gì tổ chức cung cấp.</p>')
+        + pc("#f87171", "Process", "", '<p>How it is made and delivered.</p><p class="vi">Cách tạo ra và phân phối sản phẩm.</p>')
+        + pc("#60a5fa", "Position", "", '<p>Who/where it is sold to.</p><p class="vi">Bán cho ai, ở thị trường nào.</p>')
+        + pc("#a78bfa", "Paradigm", "", '<p>The underlying business model.</p><p class="vi">Chính mô hình kinh doanh nền tảng.</p>')
+        + '</div>',
+        "Write all four clearly in the exam: Product, Process, Position, Paradigm, each with its one-line definition.", 35)
+
+    add("", '<div class="eyebrow">Q2 — worked example 1</div><h2>Apple, across all four Ps</h2><div class="two">'
+        + pc("#fbbf24", "Product & Process", "", '<p><b class="lbl">Product:</b> iPhone, Apple Silicon chips designed in-house.</p><p><b class="lbl">Process:</b> vertically integrated hardware+software+chip design, instead of buying off-the-shelf components.</p>')
+        + pc("#a78bfa", "Position & Paradigm", "", '<p><b class="lbl">Position:</b> premium/luxury positioning and a tightly closed ecosystem, not a mass low-cost market.</p><p><b class="lbl">Paradigm:</b> shift from one-time hardware sales to recurring Services revenue (App Store, iCloud, subscriptions).</p>')
+        + '</div><p class="qtext vi" style="margin-top:6px">Apple đổi mới sản phẩm (iPhone, chip tự thiết kế), quy trình (tích hợp dọc phần cứng-phần mềm), vị thế (định vị cao cấp), và mô hình kinh doanh (chuyển sang doanh thu dịch vụ lặp lại).</p>',
+        "Apple is the safest, most well-documented example: product, the chips and iPhone; process, vertical integration; position, premium and closed ecosystem; paradigm, the shift to recurring services revenue.", 50)
+
+    add("", '<div class="eyebrow">Q2 — worked example 2 (Vietnam)</div><h2>Viettel, across all four Ps</h2><div class="two">'
+        + pc("#fbbf24", "Product & Process", "", '<p><b class="lbl">Product:</b> Viettel High Tech co-developed its own Open RAN 5G equipment with Qualcomm, trialed with a UAE operator (2025), instead of only reselling foreign gear.</p><p><b class="lbl">Process:</b> builds telecom hardware in-house via its own R&amp;D arm.</p>')
+        + pc("#60a5fa", "Position & Paradigm", "", '<p><b class="lbl">Position:</b> now selling telecom equipment abroad (Middle East, Africa, South America), competing with Huawei/Ericsson/Nokia, not just operating as a domestic carrier.</p><p><b class="lbl">Paradigm:</b> shift from telecom operator to a technology &amp; defense conglomerate.</p>')
+        + '</div><p class="qtext vi" style="margin-top:6px">Viettel tự phát triển thiết bị 5G Open RAN (sản phẩm), xây dựng bằng R&amp;D nội bộ (quy trình), bán thiết bị ra nước ngoài cạnh tranh với Huawei/Ericsson/Nokia (vị thế), và chuyển từ nhà mạng viễn thông sang tập đoàn công nghệ-quốc phòng (mô hình).</p>',
+        "Viettel: product is its own Open RAN 5G gear built with Qualcomm, process is in-house R&D via Viettel High Tech, position is exporting telecom equipment to compete with Huawei and Ericsson, paradigm is the shift from telecom operator to tech and defense conglomerate.", 55)
+
+    add("", '<div class="eyebrow">Q2 — worked example 3 (Vietnam)</div><h2>FPT, across all four Ps</h2><div class="two">'
+        + pc("#fbbf24", "Product & Process", "", '<p><b class="lbl">Product:</b> FPT AI Factory (Nov 2024, Nvidia GPU-based AI cloud) and its first &quot;Make in Vietnam&quot; chip shipment to Japan.</p><p><b class="lbl">Process:</b> builds its own AI infrastructure/cloud instead of just staffing outsourced coding projects.</p>')
+        + pc("#60a5fa", "Position & Paradigm", "", '<p><b class="lbl">Position:</b> $200M investment to target Japan as an AI partner market, aiming for $5B in global IT services revenue by 2030.</p><p><b class="lbl">Paradigm:</b> shift from a software-outsourcing vendor to an AI/digital-transformation partner.</p>')
+        + '</div><p class="qtext vi" style="margin-top:6px">FPT ra mắt AI Factory và chip &quot;Make in Vietnam&quot; (sản phẩm), tự xây hạ tầng AI (quy trình), đầu tư $200 triệu vào Nhật Bản (vị thế), và chuyển từ gia công phần mềm sang đối tác AI (mô hình).</p>',
+        "FPT: product is the AI Factory and the Make in Vietnam chip, process is building its own AI infrastructure, position is the two-hundred-million-dollar push into Japan, paradigm is the shift from outsourcing vendor to AI partner, targeting five billion dollars in global revenue by 2030.", 55)
+
+    add("", '<div class="section">Question 3</div><h2>Risks in the &quot;Implementing&quot; phase</h2>'
+        + flashcard(
+            "What risks arise when turning a technical concept into a commercial product, and how are they managed?",
+            "Những rủi ro nào xảy ra khi biến ý tưởng kỹ thuật thành sản phẩm thương mại, và quản lý thế nào?",
+            '<p><b class="lbl">Technological risk / Rủi ro công nghệ:</b> the concept may not scale, may be too costly to manufacture, or may simply not work reliably outside the lab.</p>'
+            '<p><b class="lbl">Market risk / Rủi ro thị trường:</b> customers may not want it, demand may be smaller than expected, or a competitor/substitute may arrive first.</p>'
+            '<p style="margin-top:8px"><b class="lbl">Managing both:</b> stage-gate reviews (kill or fund at each checkpoint), build a minimum viable product/prototype to test technical feasibility cheaply, run a small pilot with real customers to validate demand before full-scale launch, and keep technical and market validation running in parallel rather than sequentially.</p>'
+            '<p class="vi"><b class="lbl" style="color:#fbbf24">VI:</b> Dùng mô hình stage-gate (dừng hoặc cấp vốn tiếp ở từng mốc), làm MVP/prototype để kiểm tra tính khả thi kỹ thuật với chi phí thấp, chạy thử nghiệm nhỏ với khách hàng thật để kiểm chứng nhu cầu trước khi tung ra quy mô lớn, và kiểm chứng cả kỹ thuật lẫn thị trường song song thay vì lần lượt.</p>'),
+        "Two risk families: technological (will it work and scale) and market (will anyone buy it). Managed through stage-gate reviews, MVPs/prototypes, and small pilots run in parallel with technical validation.", 50)
+
+    roles5 = """<div class="tablewrap"><table><thead><tr><th>Role</th><th>What it means / Ý nghĩa</th></tr></thead><tbody>
+<tr><td><b>1. Creating &amp; sustaining competitive advantage</b></td><td class="vi">Tạo và duy trì lợi thế cạnh tranh liên tục, không phải một lần</td></tr>
+<tr><td><b>2. Integrating technology, market &amp; organization</b></td><td class="vi">Gắn kết công nghệ, thị trường và tổ chức thành một hệ thống</td></tr>
+<tr><td><b>3. Transforming ideas into real value</b></td><td class="vi">Biến ý tưởng thành giá trị thật (doanh thu), không chỉ ra mắt</td></tr>
+<tr><td><b>4. Building &amp; optimizing dynamic capabilities</b></td><td class="vi">Xây và tối ưu năng lực thích ứng khi thị trường thay đổi</td></tr>
+<tr><td><b>5. Managing risk &amp; optimizing resources</b></td><td class="vi">Mở rộng nhanh mà không phình rủi ro</td></tr>
+</tbody></table></div>"""
+    add("", '<div class="section">Question 4</div><h2>The role of innovation management for businesses (5 official roles)</h2>' + roles5,
+        "Question four wants the role of innovation management with examples. The course names five official roles: competitive advantage, integration, turning ideas into value, dynamic capabilities, and risk/resource management.", 45)
+
+    add("", '<div class="eyebrow">Q4 — illustrative example</div><h2>Grab: one company, all 5 roles</h2>'
+        + '<div class="tablewrap"><table><thead><tr><th>Role</th><th>Evidence from Grab</th></tr></thead><tbody>'
+        '<tr><td>1. Competitive advantage</td><td>EXP: hundreds of A/B tests a month keep tuning matching/pricing — why no SEA rival, including Uber, could out-execute Grab</td></tr>'
+        '<tr><td>2. Integration</td><td>Super-app flywheel: tech (EXP) + 47M users + licenses across 8 countries fused into one loop</td></tr>'
+        '<tr><td>3. Ideas → value</td><td>GrabMaps: built in 2022 for its own drivers, later sold B2B; 14 years from MyTeksi to Grab’s first net profit, $200M in FY2025</td></tr>'
+        '<tr><td>4. Dynamic capabilities</td><td>Incentive spend cut from 13.3% of GMV (2022) to ≈10% (2024) while users kept growing</td></tr>'
+        '<tr><td>5. Risk &amp; resources</td><td>GrabDefense protected 4.5B transactions from fraud in 2024; years securing financial licenses before launching lending</td></tr>'
+        '</tbody></table></div>'
+        '<p class="qtext vi" style="margin-top:8px">Grab là ví dụ dùng đủ trong bài: hệ thống A/B test EXP, flywheel siêu ứng dụng, GrabMaps từ nội bộ thành sản phẩm B2B, cắt giảm khuyến mãi có kiểm soát, và GrabDefense chống gian lận.</p>',
+        "Grab covers all five roles with real figures: the EXP testing system, the super-app flywheel, GrabMaps turning an internal tool into revenue, the controlled cut in incentive spend, and GrabDefense protecting 4.5 billion transactions from fraud in 2024.", 55)
+
+    add("close", '<div class="section">Self-check</div><h2>Before you close the laptop tonight</h2>'
+        '<div class="two">'
+        + pc("#2dd4bf", "Can you do this without looking?", "", '<ul>'
+            '<li>Define innovation in one sentence, with the invention/diffusion distinction</li>'
+            '<li>Name all 4 Ps and one example company per P</li>'
+            '<li>Name 2 risk types in Implementing + 2 ways to manage them</li>'
+            '<li>Name all 5 roles of innovation management + 1 real example per role</li></ul>')
+        + pc("#fbbf24", "Kiểm tra nhanh", "", '<ul>'
+            '<li>Định nghĩa đổi mới sáng tạo trong 1 câu, có phân biệt với sáng chế/khuếch tán</li>'
+            '<li>Kể đủ 4 chữ P và 1 ví dụ công ty cho mỗi chữ P</li>'
+            '<li>Kể 2 loại rủi ro giai đoạn Implementing + 2 cách quản lý</li>'
+            '<li>Kể đủ 5 vai trò quản trị đổi mới + 1 ví dụ thật cho mỗi vai trò</li></ul>')
+        + '</div>'
+        '<div class="examband" style="margin-top:14px">Good luck tomorrow, 14:55–15:55! / Chúc may mắn ngày mai!</div>',
+        "That's the full review. If you can do all four of these from memory, you're ready for tomorrow's exam.", 30)
+
+    notes_json = json.dumps({str(k): v for k, v in NOTES.items()}, ensure_ascii=False)
+    js = JS.replace("NOTES_JSON", notes_json)
+    doc = f'''<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mid-term Exam Review · Session 5 Slides</title><style>{CSS}</style></head>
+<body>
+<div id="stage">{"".join(S)}<a id="home" href="../index.html">← Home</a><div id="count"></div><div id="hud"><i id="bar"></i></div></div>
+<div class="nb"><button id="prev" aria-label="Previous slide">‹</button><button id="next" aria-label="Next slide">›</button><button id="nt">Notes (N)</button><button id="fs">Full screen (F)</button></div>
+<div id="notes"></div>
+<script>{js}</script>
+</body></html>
+'''
+    (ROOT / "slides").mkdir(exist_ok=True)
+    (ROOT / "slides" / "index.html").write_text(doc, encoding="utf-8")
+    sec = sum(v[1] for v in NOTES.values())
+    print(f"slides: {len(S)}, total seconds: {sec} ({sec//60} min)")
+
+
+if __name__ == "__main__":
+    build()
