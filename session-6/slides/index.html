@@ -1,74 +1,164 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Innovative Technology &middot; Session 6 Slides</title><style>
-:root{--bg:#0a1626;--ink:#eef6fc;--mut:#9fb3c8;--brand:#38bdf8;--ok:#34d399;--no:#f87171;--q:#fbbf24}
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:#050d18;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;overflow:hidden}
-#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;background:radial-gradient(1200px 600px at 10% 0,#102a44,var(--bg));overflow:hidden}
-.slide{position:absolute;inset:0;padding:46px 76px 40px;display:none;flex-direction:column}
-.slide.on{display:flex;animation:in .35s ease}
-@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-h1{font-size:68px;letter-spacing:-.04em;margin:0;line-height:1.05}
-h2{font-size:32px;letter-spacing:-.02em;margin:0 0 6px;line-height:1.18;max-width:1120px}
-.kick{color:var(--brand);font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin-bottom:14px;font-size:16px}
-.sub{font-size:21px;color:var(--mut);margin:12px 0 0;max-width:1020px;line-height:1.35}
-.title{justify-content:center}
-.section{display:inline-block;font-size:13px;color:#03202f;background:var(--brand);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:3px 11px;border-radius:999px;margin-bottom:10px}
-.eyebrow{font-size:15px;color:var(--q);font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
-.qtext{font-size:18px;line-height:1.42;color:#d8e6f2;max-width:1120px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;min-height:0}
-.three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;flex:1;align-content:center}
-.six{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:12px;flex:1;min-height:0}
-.pc{background:#0e2238;border:1px solid #1e3a57;border-top:5px solid var(--t);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;min-height:0;overflow:auto}
-.pc h3{margin:0 0 6px;font-size:17px}
-.pc .meta{color:var(--mut);font-size:12.5px;margin:-3px 0 7px}
-.pc p{margin:0 0 5px;font-size:13.5px;line-height:1.36;color:#d8e6f2}
-.pc p:last-child{margin-bottom:0}
-.pc ul{margin:3px 0 6px;padding-left:16px}
-.pc li{font-size:13px;line-height:1.35;color:#d8e6f2;margin:2px 0}
-.pc b.lbl{color:var(--q);font-weight:700}
-.tablewrap table{width:100%;border-collapse:collapse;font-size:13.5px}
-.tablewrap th{text-align:left;color:var(--q);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:5px 8px;border-bottom:2px solid #1e3a57}
-.tablewrap td{padding:7px 8px;border-bottom:1px solid #1e3a57;color:#d8e6f2;vertical-align:top}
-.statrow{display:flex;gap:14px;margin-top:10px}
-.stat{flex:1;background:#0e2238;border:1px solid #1e3a57;border-radius:12px;padding:12px 14px;text-align:center}
-.stat b{display:block;font-size:30px;color:var(--brand)}
-.stat span{font-size:12.5px;color:var(--mut)}
-.src{font-size:12px;color:var(--mut);font-style:italic;margin-top:auto;padding-top:8px}
-.examband{background:#1a1a0f;border:1px solid #3a3a1f;border-radius:12px;padding:12px 18px;font-size:15px;color:var(--q);font-weight:700;text-align:center}
-#hud{position:absolute;left:0;right:0;bottom:0;height:6px;background:#0e2238;z-index:5}#hud i{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
-#count{position:absolute;right:28px;bottom:16px;color:var(--mut);font-size:16px;z-index:5}
-#home{position:absolute;left:28px;bottom:16px;color:var(--mut);font-size:16px;text-decoration:none;z-index:5}
-#notes{position:fixed;left:0;right:0;bottom:0;max-height:34vh;overflow:auto;background:#f0f7fc;color:#0a1626;padding:16px 28px;font-size:17px;line-height:1.6;display:none;z-index:9;border-top:4px solid var(--brand)}
-#notes.on{display:block}#notes small{display:block;color:#5b7186;margin-bottom:6px}
-.nb{position:fixed;top:12px;right:12px;z-index:9;display:flex;gap:8px}
-.nb button{background:#0e2238;color:var(--ink);border:1px solid #27476b;border-radius:999px;padding:6px 14px;cursor:pointer;font-size:14px}
-@media print{html,body{overflow:visible;height:auto}#stage{position:static;transform:none!important;width:auto;height:auto}.slide{display:flex!important;position:relative;height:720px;page-break-after:always}.nb,#hud,#count,#home,#notes{display:none!important}}
+<title>Innovative Technology &middot; Session 6 Slides</title>
+<style>/* deck_sizing.css: kích cỡ chữ, ảnh, bảng, logo cho deck HTML 1280x720 (rút từ deck USTH "From Fields to Cities", 2026-10).
+   QUY TẮC CỐT LÕI: mọi chữ >= 20 px trên canvas 1280x720; nhúng SAU usth_theme.css (theme mặc định dùng ~16,6 px nên phải ghi đè).
+   Thứ tự nhúng: BASE (khung + thanh điều hướng) -> usth_theme.css -> OVERRIDE (cỡ chữ) -> EXTRA (thẻ, ma trận, nhãn NEW). */
+/* ===== BASE ===== */
+*{box-sizing:border-box}html,body{margin:0;background:#e9edf5;font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:#1b2433}
+.mdeck{max-width:1400px;margin:0 auto;padding:10px 12px}
+.mdeck-canvas-wrap{width:100%;position:relative;overflow:hidden;background:#fff;border:1px solid #d5dae6;border-radius:10px;box-shadow:0 4px 20px rgba(20,40,80,.12)}
+.mdeck-viewport{width:1280px;height:720px;position:absolute;left:0;top:0;transform-origin:top left}
+.mdeck-slide{display:none;position:absolute;left:0;top:0;width:1280px;height:720px;overflow:hidden;font-size:24px;line-height:1.35}
+.mdeck-slide.active{display:block}
+.mdeck-bar{display:flex;align-items:center;gap:8px;padding:8px 4px;flex-wrap:wrap}
+.mdeck-bar button{font:inherit;font-size:.9rem;background:#fff;border:1px solid #d5dae6;border-radius:8px;padding:5px 14px;cursor:pointer}
+.mdeck-bar button:hover{border-color:#273896}.mdeck-count{font-size:.9rem;color:#566074;min-width:60px}
+.mdeck-dots{display:flex;gap:5px;flex-wrap:wrap;flex:1;justify-content:center}
+.mdeck-dots button{width:10px;height:10px;padding:0;border-radius:50%;background:#c7cde0;border:0}.mdeck-dots button.on{background:#ED1C24;transform:scale(1.35)}
+.mdeck:fullscreen{background:#0f1420;display:flex;flex-direction:column;justify-content:center;max-width:none;padding:0}
+.mdeck:fullscreen .mdeck-bar{background:#0f1420;color:#fff}
+
+/* ===== OVERRIDE (cỡ chữ, bảng, thẻ, logo, bìa) ===== */
+/* sizes (px on the 1280x720 canvas): nothing below 20 px */
+.mdeck-slide{padding:100px 60px 24px}
+.mdeck-slide h2{font-size:34px;line-height:1.1;margin:0;font-weight:800}
+.mdeck-slide.th0 h2{right:300px;font-size:34px}
+.mdeck-slide p,.mdeck-slide li{font-size:27px;line-height:1.38}
+.mdeck-slide ul{margin:6px 0;padding-left:30px}.mdeck-slide li{margin:14px 0}
+.mdeck-slide table{border-collapse:collapse;width:100%;background:#fff;font-size:24px}
+.mdeck-slide table.lg th{background:#273896;color:#fff;text-align:left;padding:13px 16px;font-size:24px}
+.mdeck-slide table.lg td{border:1px solid #d5dae6;padding:13px 16px;font-size:24px;vertical-align:middle;line-height:1.3}
+.mdeck-slide table.lg tr:nth-child(even) td{background:#f5f7fc}
+.mdeck-slide ul.xl li{font-size:30px;margin:22px 0;line-height:1.36}
+.mdeck-slide table.xl th,.mdeck-slide table.xl td{font-size:27px;padding:20px 20px}
+.mdeck-slide table.mid th,.mdeck-slide table.mid td{font-size:25px;padding:18px 18px}
+.mdeck-slide table.tight td,.mdeck-slide table.tight th{padding:10px 16px}
+.cols p{font-size:27px}
+.mdeck-slide .note{font-size:25px;margin:16px 0 0;color:#1b2433}
+.mdeck-slide .res{margin-top:14px}
+.mdeck-slide .callout{margin:18px 0;padding:14px 20px;border-radius:10px;border-left:8px solid #273896;background:#eef2fa;font-size:26px}
+.mdeck-slide .callout.warn{border-left-color:#ED1C24;background:#fdeeee}.mdeck-slide .callout .lbl{font-weight:800;color:#273896;margin-bottom:4px;font-size:26px}
+.mdeck-slide .callout.warn .lbl{color:#ED1C24}
+.cards{display:grid;gap:18px;margin-top:6px;height:548px}
+.mdeck-slide:has(.bigq) .cards{height:290px;margin-top:22px}
+.card{border:1px solid #d5dae6;border-top:7px solid #273896;border-radius:12px;padding:18px 20px;background:#fff}
+.card-h{font-weight:800;color:#273896;font-size:30px;margin-bottom:8px;line-height:1.15}.card-t{font-size:25px;line-height:1.35}
+.fig{margin:0}.fig.ctr{text-align:center}.fig img{display:block;margin:0 auto;border:1px solid #d5dae6;border-radius:8px;background:#fff;max-width:100%}
+.cap{font-size:20px;line-height:1.3;color:#566074;margin-top:8px;text-align:left}
+.cols{display:flex;gap:26px;align-items:flex-start}.cols>div{min-width:0}.cols.two{justify-content:center;align-items:flex-start;gap:20px}
+.bigq{font-size:32px;line-height:1.4;border-left:10px solid #ED1C24;padding:16px 24px;background:#eef2fa;border-radius:10px}
+.mdeck-slide b,.mdeck-slide strong{color:#ED1C24}
+.logo-chip{position:absolute;top:7px;right:16px;height:54px;display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:3px 12px;z-index:3}
+.logo-chip img{height:46px;width:auto;display:block}
+.mdeck-slide.cover,.mdeck-slide.endcard{padding:130px 60px 40px 70px}
+.mdeck-slide.cover h2,.mdeck-slide.endcard h2{font-size:68px;line-height:1.04;margin-bottom:18px;color:#273896;position:static}
+.cover-sub{font-size:31px;line-height:1.4;max-width:740px;margin:12px 0 26px}.cover-meta{font-size:23px;line-height:1.6;color:#2a3550;max-width:790px}
+.cover-chip{top:26px;right:34px;height:78px;padding:6px 16px}.cover-chip img{height:66px}
+.cover-img{position:absolute;right:60px;top:140px;width:420px;height:420px;object-fit:cover;border:2px solid #d5dae6;border-radius:12px}
+
+/* ===== EXTRA (thẻ NEW / SAME AS, ma trận, chip trạng thái, bảng gọn) — chỉ cần khi có 2 phiên bản deck ===== */
+.pill{display:inline-block;font-size:20px;font-weight:800;padding:2px 12px;border-radius:14px;color:#fff;line-height:1.3}
+.pill.new{background:#ED1C24}.pill.old{background:#566074}.pill.bor{background:#e08a00}
+.st{display:inline-block;font-weight:800;padding:2px 14px;border-radius:8px;color:#1b2433}.st-done{background:#a1d99b}.st-part{background:#fee391}.st-no{background:#fcae91}
+table.matrix td:not(:first-child),table.matrix th:not(:first-child){text-align:center;padding-left:4px;padding-right:4px;font-size:22px}
+table.matrix td:first-child{font-size:21px}
+.mdeck-slide.is-new::after,.mdeck-slide.is-old::after{position:absolute;top:19px;right:236px;z-index:4;font-size:20px;font-weight:800;color:#fff;padding:2px 12px;border-radius:14px;line-height:1.3}
+.mdeck-slide.is-new::after{content:"NEW";background:#ED1C24}.mdeck-slide.is-old::after{content:"SAME AS v1";background:#566074}
+.mdeck-slide.th0 h2{right:420px!important}
+.mdeck-slide.is-new ul li{font-size:34px;margin:26px 0;line-height:1.3}
+.mdeck-slide.is-new .cols ul li{font-size:32px;margin:30px 0}
+.mdeck-slide.is-new .note{font-size:28px;margin-top:26px}
+.mdeck-slide table.compact th,.mdeck-slide table.compact td{font-size:21px;padding:4px 8px;line-height:1.2}
+.mdeck-slide table.compact td:first-child{font-size:21px}
+
+/* Theme slide USTH cho deck HTML 1280x720 — biến thể CSS-THUẦN (không dựng ảnh nền Beamer như hust_theme.css,
+   vì chưa có beamerthemeUSTH.sty + ảnh nền render sẵn). Dùng băng màu CSS + logo thật dạng <img> overlay.
+   Đã verify thật trong dự án "for-ttn-USTH" (site QRC-Diff-Climate-Modelling, 2026-10):
+   đọc pixel trực tiếp từ assets/usth/usth_logo.png (file logo chính thức do trường cấp) ra đúng 2 màu:
+   đỏ #ED1C24, xanh navy #273896 — KHÔNG phải màu đoán. Nếu đổi sang 1 file logo USTH khác, nên verify lại
+   bằng PIL.Image.getcolors() trước khi tin theo 2 mã màu này.
+   Nhúng trong <style> của trang, SAU deck.css/common.css, THAY hust_theme.css (không dùng cả 2 cùng lúc).
+   Đường dẫn ảnh tính từ trang HTML (vi/*.html -> ../assets/...). */
+:root{--accent:#ED1C24;--accent2:#273896}
+:root[data-theme="dark"]{--accent:#ff6b70;--accent2:#5c73c9}
+.mdeck-slide{--text:#1b2433;--muted:#566074;--panel:#fff;--border:#d5dae6;--code:#eef2fa;--ured:#ED1C24;--unavy:#273896;
+  color:var(--text);background-color:#fff;padding:104px 60px 66px;position:relative}
+/* Không có ảnh nền baked — băng tiêu đề là 1 div CSS thuần, logo là <img> overlay thật (không vẽ lại bằng tay) */
+.mdeck-slide.th0,.mdeck-slide.th1,.mdeck-slide.th2,.mdeck-slide.th3{background:#fff}
+.mdeck-slide.th0::before,.mdeck-slide.th1::before,.mdeck-slide.th2::before,.mdeck-slide.th3::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:68px;background:var(--unavy);
+  border-bottom:4px solid var(--ured)}
+.mdeck-slide.th0 h2,.mdeck-slide.th1 h2,.mdeck-slide.th2 h2,.mdeck-slide.th3 h2{position:absolute;left:60px;right:96px;top:0;height:68px;
+  margin:0;display:flex;align-items:center;color:#fff;font-size:1.42rem;line-height:1.15;z-index:1}
+.mdeck-slide.has-logo h2{right:230px}
+/* logo thật: dùng usth_logo.png (huy hiệu chính) + usth_dses_logo.png (logo khoa/đơn vị, nếu cần 2 logo kiểu HUST) */
+.mdeck-slide .usth-emblem{position:absolute;top:6px;right:20px;height:56px;width:auto;z-index:1}
+.mdeck-slide .usth-emblem-secondary{position:absolute;top:6px;right:90px;height:56px;width:auto;
+  background:#fff;border-radius:6px;padding:2px;z-index:1}
+.tech-logo{position:absolute;top:6px;right:90px;height:56px;max-width:170px;object-fit:contain;background:#fff;
+  border:1px solid var(--border);border-radius:8px;padding:4px 8px;z-index:1}
+.mdeck-slide.part-divider{background:var(--unavy);padding:0 80px;color:#fff}
+.mdeck-slide.part-divider h2{position:static;color:#fff}
+.mdeck-slide.part-divider::after{content:"";position:absolute;left:0;right:0;bottom:60px;height:4px;background:var(--ured)}
+.mdeck-slide.cover{background:#fff;padding:150px 80px 70px 70px;align-items:flex-start;border-top:10px solid var(--unavy)}
+.mdeck-slide.cover::after{content:"";position:absolute;top:10px;left:0;right:0;height:4px;background:var(--ured)}
+.mdeck-slide.cover h2{font-size:2.3rem;color:var(--unavy)}
+.mdeck-slide.endcard{background:#fff;padding:150px 60px 70px 70px;align-items:flex-start;border-top:10px solid var(--unavy)}
+.mdeck-slide b,.mdeck-slide strong{color:var(--ured)}                       /* chữ đậm màu đỏ USTH */
+.mdeck-slide.part-divider b,.mdeck-slide.part-divider strong{color:#fff}
+/* vùng nội dung chỉ còn ~536px cao (y 100..636) vì có băng tiêu đề 68px + lề dưới: giảm cỡ chữ để không tràn */
+.mdeck-slide p,.mdeck-slide li{font-size:1.04rem;line-height:1.42}
+.mdeck-slide table{font-size:.92rem}.mdeck-slide table.dense{font-size:.8rem}
+.mdeck-slide td .katex,.mdeck-slide th .katex{white-space:nowrap}              /* công thức trong ô bảng không ngắt dòng */
+.mdeck-slide td,.mdeck-slide th{vertical-align:middle}
+.mdeck-slide h3{font-size:1.12rem;color:var(--unavy)}
+/* khối kiểu Beamer "block": thanh tiêu đề màu + danh sách đánh số trong khung viền */
+.tblock{border:1px solid var(--unavy);border-radius:10px;overflow:hidden;margin:10px 0;background:var(--panel)}
+.tblock .tblock-h{background:var(--unavy);color:#fff;font-weight:800;padding:7px 16px;font-size:.98rem}
+.tblock ol{margin:0;padding:10px 16px 10px 34px}.tblock li{margin:5px 0;line-height:1.45}
+.qa-pre{margin:6px 0;padding:8px 12px;background:var(--code);border:1px solid var(--border);border-radius:8px;
+  font:12.5px/1.4 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow:hidden}
+.qa-cols{display:flex;gap:16px;align-items:flex-start}.qa-cols>*{flex:1;min-width:0}
+
+/* USTH-DSES light-blue override. Verified from assets/usth/usth_dses_logo.png via PIL pixel read: dominant color #15AFF0.
+   Embed AFTER usth_theme.css and deck_sizing.css (which hardcode USTH navy #273896 / red #ED1C24 in several selectors). */
+.mdeck-slide{--unavy:#15AFF0;--ured:#0369A1}
+.mdeck-slide .card{border-top-color:#15AFF0}
+.mdeck-slide .card-h{color:#15AFF0}
+.mdeck-slide table.lg th{background:#15AFF0}
+.mdeck-slide .callout{border-left-color:#15AFF0;background:#EAF7FE}
+.mdeck-slide .callout .lbl{color:#15AFF0}
+.mdeck-slide .callout.warn{border-left-color:#0369A1;background:#E6F0FA}
+.mdeck-slide .callout.warn .lbl{color:#0369A1}
+.mdeck-slide .bigq{border-left-color:#0369A1;background:#EAF7FE}
+.mdeck-dots button.on{background:#15AFF0}
+.mdeck-slide.cover h2,.mdeck-slide.endcard h2{color:#15AFF0}
+.mdeck-bar button:hover{border-color:#15AFF0}
+.tblock{border-color:#15AFF0}
+.tblock .tblock-h{background:#15AFF0}
+
+.mdeck-canvas-wrap{max-width:1280px}
+a.back-home{display:inline-block;margin:0 4px}
 </style></head>
 <body>
-<div id="stage"><section class="slide title"><div class="kick">USTH Innovation &middot; Session 6 &middot; Chapter 3</div><h1>Innovative Technology</h1><p class="sub">AI in SMEs &middot; Blockchain &middot; Network Platforms</p><div class="examband" style="margin-top:28px;max-width:640px">Science &amp; Technology Innovation Management &mdash; Dr. Do Thi Hai, USTH Master Programme</div></section><section class="slide "><div class="section">1. AI in SMEs</div><h2>Three ways SMEs adopt AI</h2><div class="three"><div class="pc" style="--t:#38bdf8"><h3>Off-the-shelf / Cloud AI</h3><p>SaaS running on cloud platforms, low upfront investment.</p><p><b class="lbl">Ex:</b> chatbots, marketing tools, AI invoice recognition.</p></div><div class="pc" style="--t:#fbbf24"><h3>Embedded AI</h3><p>AI features built into third-party core software.</p><p><b class="lbl">Ex:</b> predictive sales analytics in CRMs (Salesforce, HubSpot), ad-optimization on Google/Meta.</p></div><div class="pc" style="--t:#f87171"><h3>Custom AI Solutions</h3><p>Bespoke algorithms for unique operations.</p><p><b class="lbl">Trade-off:</b> expensive, needs dedicated data infra and ML engineers &mdash; least common in SMEs.</p></div></div></section><section class="slide "><div class="section">1. AI in SMEs</div><h2>Drivers, barriers, and Vietnam in numbers</h2><div class="two"><div class="pc" style="--t:#34d399"><h3>Strategic drivers</h3><ul><li>Cost &amp; productivity: automating repetitive admin/customer-service tasks</li><li>Decision support: forecasting demand, managing inventory/supply-chain risk</li><li>Hyper-personalized customer experience</li></ul></div><div class="pc" style="--t:#f87171"><h3>Adoption barriers</h3><ul><li>Skills gap &amp; talent shortage</li><li>Data quality: fragmented, unstructured data</li><li>Financial constraints, unclear short-term ROI</li><li>Legal &amp; security risk (privacy, compliance)</li></ul></div></div><div class="statrow"><div class="stat"><b>93%</b><span>Vietnam SMEs using &ge;1 AI tool &mdash; highest of 6 surveyed APAC markets</span></div><div class="stat"><b>92%</b><span>report AI improves productivity</span></div><div class="stat"><b>89%</b><span>report AI cuts operating cost</span></div></div><p class="src">Source: Deloitte Access Economics &amp; Meta (2025) survey, as cited in lecture slide 12&ndash;13; OECD (2021) policy framework, slide 11.</p></section><section class="slide "><div class="section">2. Blockchain</div><h2>What is Blockchain, and why it matters for supply chains</h2><div class="two"><div class="pc" style="--t:#38bdf8"><h3>Core idea</h3><p>A distributed, decentralized ledger: data is grouped into blocks linked by cryptographic hashes, each block referencing the one before it &mdash; a continuous chain.</p><p><b class="lbl">Characteristics:</b> transparency (visible to authorized members), immutability (recorded data cannot be altered), smart contracts (automated execution when conditions are met).</p></div><div class="pc" style="--t:#fbbf24"><h3>Problem it solves</h3><p>Industry reality: information is fragmented across stakeholders (Farm &rarr; Logistics &rarr; Warehouse &rarr; Supermarket); manual traceability is slow and costly.</p><p>Blockchain does <b>not</b> replace legacy systems &mdash; it acts as a trusted verification layer connecting them.</p></div></div></section><section class="slide "><div class="section">2. Blockchain</div><h2>Food traceability case: Farm to Table</h2><div class="tablewrap"><table><thead><tr><th>Stage</th><th>What happens on-chain</th></tr></thead><tbody><tr><td><b>Input (Farm)</b></td><td>QR code / RFID chip + initial quality certification recorded</td></tr><tr><td><b>Transport (Logistics)</b></td><td>IoT sensors push real-time temperature/humidity data to the chain</td></tr><tr><td><b>Handoff (Smart contract)</b></td><td>Automated verification of storage conditions + instant payment release</td></tr><tr><td><b>Output (Consumer)</b></td><td>Scan the QR code to see the full batch history</td></tr></tbody></table></div><p class="qtext" style="margin-top:10px">Impact: traceability time drops from several days of manual paperwork to seconds of a QR scan.</p></section><section class="slide "><div class="section">2. Blockchain &mdash; deeper dive</div><h2>Six characteristics of blockchain as a data platform</h2><div class="six"><div class="pc" style="--t:#38bdf8"><h3>1. Transparency</h3><p>Data visible to network members; public chains are visible to anyone.</p></div><div class="pc" style="--t:#34d399"><h3>2. Immutability</h3><p>Data cannot be deleted/edited &rarr; a public audit trail.</p></div><div class="pc" style="--t:#fbbf24"><h3>3. Consistency</h3><p>Every node holds the same ledger &mdash; one single source of truth.</p></div><div class="pc" style="--t:#a78bfa"><h3>4. Equal rights</h3><p>No privileged intermediary; equal read/write access across nodes.</p></div><div class="pc" style="--t:#f472b6"><h3>5. Availability</h3><p>Each node keeps a full copy; the system runs as long as one node survives.</p></div><div class="pc" style="--t:#f87171"><h3>6. Trade-offs</h3><p>Low privacy (public data) and low throughput (consensus is slow).</p></div></div><p class="src">Secondary source: "Đặc tính chính của Blockchain", Nhóm 10 (classmates, Dặi học Sư phạm Hà Nội, môn Cơ sở dữ liệu tiên tiến) &mdash; not our group's work, cited here to go beyond the lecture slide for exam depth.</p></section><section class="slide "><div class="section">2. Blockchain &mdash; group exercise</div><h2>Worked answer: Blockchain for Health Insurance (Y Tế)</h2><div class="two"><div class="pc" style="--t:#38bdf8"><h3>The problem today</h3><ul><li>Patient records scattered across hospitals, clinics, insurers &mdash; no shared source of truth</li><li>Claim fraud and duplicate billing are hard to detect across fragmented systems</li><li>Patients cannot easily prove their own treatment history when switching provider/insurer</li></ul></div><div class="pc" style="--t:#34d399"><h3>The Blockchain application</h3><ul><li><b class="lbl">Transparency + Consistency:</b> hospital, insurer, and patient see the same claim record &mdash; one shared ledger instead of reconciling paperwork</li><li><b class="lbl">Immutability:</b> a treatment history/claim, once recorded, cannot be quietly altered &mdash; strong fraud deterrent</li><li><b class="lbl">Smart contracts:</b> claim auto-approved and paid once hospital discharge + policy conditions are verified on-chain</li><li><b class="lbl">Off-chain + on-chain hybrid:</b> sensitive medical data stays off-chain (hospital DB / encrypted storage); only a hash/proof of the record goes on-chain &mdash; keeps patient privacy (GDPR-style) while still giving an immutable audit trail</li></ul></div></div></section><section class="slide "><div class="section">3. Network Platforms</div><h2>How platforms create value for SMEs</h2><div class="three"><div class="pc" style="--t:#38bdf8"><h3>Network effects</h3><p>A growing user base lowers search and transaction costs for every participating firm.</p></div><div class="pc" style="--t:#fbbf24"><h3>Global market reach</h3><p>E-commerce platforms remove geographic barriers, aggregate demand, streamline supply chains.</p></div><div class="pc" style="--t:#a78bfa"><h3>Functional outsourcing</h3><p>SMEs outsource payments, logistics, marketing, and &quot;security-by-design&quot; cybersecurity to the platform.</p></div></div><p class="qtext" style="margin-top:10px">Core concept: a 5&ndash;10-person SME can sell globally or use AI without building costly internal IT &mdash; via a pay-as-you-go network platform.</p></section><section class="slide "><div class="section">3. Network Platforms</div><h2>Models, risks, and policy response</h2><div class="two"><div class="pc" style="--t:#34d399"><h3>Three platform models</h3><ul><li><b class="lbl">E-commerce/Marketplaces</b> (B2C/B2B): expands sales channels, lowers customer-acquisition cost</li><li><b class="lbl">Cloud platforms</b> (SaaS/IaaS): ERP/CRM + big-data analytics without hardware investment</li><li><b class="lbl">B2B/Industrial networks</b>: collaborative design, joint manufacturing, data sharing</li></ul></div><div class="pc" style="--t:#f87171"><h3>Strategic risks &amp; response</h3><ul><li>Platform lock-in: sudden algorithm/fee changes</li><li>Data asymmetry: platform owns the customer data, not the SME</li><li>Digital skills gap inside the SME</li><li><b class="lbl">Response:</b> omnichannel strategy, collect first-party data, policy: data-portability rights + targeted financial incentives</li></ul></div></div></section><section class="slide close"><div class="section">Self-check</div><h2>Before you close the laptop</h2><div class="two"><div class="pc" style="--t:#38bdf8"><h3>Can you do this without looking?</h3><ul><li>Name the 3 AI adoption paths for SMEs and 1 trade-off each</li><li>Explain why blockchain is a &quot;verification layer&quot;, not a database replacement</li><li>Name all 6 blockchain characteristics (Transparency&hellip;Trade-offs)</li><li>Give 1 full Blockchain application example end-to-end (e.g. health insurance)</li><li>Name the 3 network-platform models + 2 SME risks</li></ul></div><div class="pc" style="--t:#fbbf24"><h3>One sentence per technology</h3><p><b class="lbl">AI:</b> boosts SME productivity but is gated by data quality and skills.</p><p><b class="lbl">Blockchain:</b> a shared, tamper-proof verification layer for multi-party trust.</p><p><b class="lbl">Platforms:</b> pay-as-you-go scale, at the cost of data ownership.</p></div></div></section><a id="home" href="../index.html">&larr; Home</a><div id="count"></div><div id="hud"><i id="bar"></i></div></div>
-<div class="nb"><button id="prev" aria-label="Previous slide">&lsaquo;</button><button id="next" aria-label="Next slide">&rsaquo;</button><button id="nt">Notes (N)</button><button id="fs">Full screen (F)</button></div>
-<div id="notes"></div>
-<script>
+<div class="mdeck"><div class="mdeck-canvas-wrap"><div class="mdeck-viewport"><div class="mdeck-slide cover"><div class="kicker">SESSION 6</div><h2>Innovative Technology</h2><div class="cover-sub">AI in SMEs &middot; Blockchain &middot; Network Platforms</div><div class="cover-meta">Science &amp; Technology Innovation Management &mdash; Chapter 3<br>Dr. Do Thi Hai &middot; USTH Master Programme</div><div class="logo-chip"><img src="../assets/images/usth_logo.png" alt="USTH"><img src="../assets/images/usth_dses_logo.png" alt="DSES"></div></div><div class="mdeck-slide th0"><div class="kicker">1 &middot; AI IN SMEs</div><h2>Three ways SMEs adopt AI</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cards" style="grid-template-columns:repeat(3,1fr)"><div class="card"><div class="card-h">Off-the-shelf / Cloud AI</div><div class="card-t">SaaS on cloud platforms, low upfront cost. Ex: support chatbots, marketing tools, AI invoice recognition.</div></div><div class="card"><div class="card-h">Embedded AI</div><div class="card-t">AI features built into third-party core software. Ex: predictive sales analytics in CRMs, ad-optimization on Google/Meta.</div></div><div class="card"><div class="card-h">Custom AI Solutions</div><div class="card-t">Bespoke algorithms for unique operations. Trade-off: expensive, needs dedicated data infra and ML engineers &mdash; rarest path for SMEs.</div></div></div></div><div class="mdeck-slide th0"><div class="kicker">1 &middot; AI IN SMEs</div><h2>Strategic drivers vs. adoption barriers</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cols"><div style="flex:1"><ul class=""><li><b>Cost &amp; productivity</b>: automating repetitive admin / customer-service tasks</li><li><b>Decision support</b>: forecasting demand, managing supply-chain risk</li><li><b>Hyper-personalized</b> customer experience</li></ul></div><div style="flex:1"><ul class=""><li><b>Skills gap</b>: lack of in-house technical expertise</li><li><b>Data quality</b>: fragmented, unstructured data</li><li><b>Financial constraints</b>: unclear short-term ROI</li><li><b>Legal &amp; security risk</b>: privacy, compliance</li></ul></div></div><div class="callout info"><div class="lbl">Vietnam, 2025 (Deloitte Access Economics &amp; Meta survey)</div>93% of Vietnamese SMEs use &ge;1 AI tool &mdash; highest of 6 surveyed APAC markets &middot; 92% report higher productivity &middot; 89% report lower operating cost.</div></div><div class="mdeck-slide th0"><div class="kicker">2 &middot; BLOCKCHAIN</div><h2>What is Blockchain, and why supply chains need it</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cols"><div style="flex:1"><div class="card"><div class="card-h">Core idea</div><div class="card-t">A distributed, decentralized ledger: data is grouped into blocks linked by cryptographic hashes, each block referencing the one before it. <b>Transparency</b> (visible to authorized members), <b>immutability</b> (recorded data cannot be altered), <b>smart contracts</b> (automatic execution once conditions are met).</div></div></div><div style="flex:1"><div class="card"><div class="card-h">Problem it solves</div><div class="card-t">Information is fragmented across stakeholders (Farm &rarr; Logistics &rarr; Warehouse &rarr; Supermarket); manual traceability is slow and costly. Blockchain does <b>not</b> replace legacy systems &mdash; it acts as a trusted verification layer connecting them.</div></div></div></div></div><div class="mdeck-slide th0"><div class="kicker">2 &middot; BLOCKCHAIN</div><h2>Case study: food traceability, Farm to Table</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><table class="lg "><tr><th>Stage</th><th>What happens on-chain</th></tr><tr><td>Input (Farm)</td><td>QR code / RFID chip + initial quality certification recorded</td></tr><tr><td>Transport (Logistics)</td><td>IoT sensors push real-time temperature / humidity data to the chain</td></tr><tr><td>Handoff (Smart contract)</td><td>Automated verification of storage conditions + instant payment release</td></tr><tr><td>Output (Consumer)</td><td>Scan the QR code to see the full batch history</td></tr></table><div class="note">Impact: traceability time drops from several days of manual paperwork to seconds of a QR scan.</div></div><div class="mdeck-slide th0"><div class="kicker">2 &middot; BLOCKCHAIN</div><h2>Six characteristics of Blockchain as a data platform</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cards" style="grid-template-columns:repeat(3,1fr);height:420px;gap:14px"><div class="card"><div class="card-h">1. Transparency</div><div class="card-t">Data visible to network members; public chains visible to anyone.</div></div><div class="card"><div class="card-h">2. Immutability</div><div class="card-t">Data cannot be deleted or edited &rarr; a public audit trail.</div></div><div class="card"><div class="card-h">3. Consistency</div><div class="card-t">Every node holds the same ledger &mdash; one single source of truth.</div></div><div class="card"><div class="card-h">4. Equal rights</div><div class="card-t">No privileged intermediary; equal read/write access across nodes.</div></div><div class="card"><div class="card-h">5. Availability</div><div class="card-t">Each node keeps a full copy; the system runs as long as one node survives.</div></div><div class="card"><div class="card-h">6. Trade-offs</div><div class="card-t">Low privacy (public data) and low throughput (consensus is slow).</div></div></div><div class="note" style="font-size:20px">Secondary source: &quot;Đặc tính chính của Blockchain&quot;, Nhóm 10 (classmates, Đại học Sư phạm Hà Nội, môn Cơ sở dữ liệu tiên tiến) &mdash; not our group’s work, cited to go beyond the lecture slide.</div></div><div class="mdeck-slide th0"><div class="kicker">2 &middot; BLOCKCHAIN &middot; GROUP ACTIVITY</div><h2>Group Discussion &amp; Scenario Exercise (20 mins)</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="bigq">Scenario: propose a Blockchain application for a different industry (e.g., Anti-counterfeiting in Luxury Fashion, <b>Health Insurance</b>, Real Estate, or Pharmaceutical Traceability). Group presentations: 5&ndash;10 minutes per group.</div><div class="callout good"><div class="lbl">Our group's answer: Health Insurance</div>Worked out on the next slide.</div></div><div class="mdeck-slide th0"><div class="kicker">2 &middot; BLOCKCHAIN &middot; GROUP ACTIVITY</div><h2>Worked answer: Blockchain for Health Insurance</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cols"><div style="flex:1"><div class="card"><div class="card-h">The problem today</div><div class="card-t"><ul class=""><li>Patient records scattered across hospitals, clinics, insurers &mdash; no shared source of truth</li><li>Claim fraud and duplicate billing are hard to detect across fragmented systems</li><li>Patients cannot easily prove their treatment history when switching provider or insurer</li></ul></div></div></div><div style="flex:1"><div class="card"><div class="card-h">The Blockchain application</div><div class="card-t"><ul class=""><li><b>Transparency + Consistency</b>: hospital, insurer, and patient see the same claim record on one shared ledger</li><li><b>Immutability</b>: a recorded treatment history / claim cannot be quietly altered &mdash; strong fraud deterrent</li><li><b>Smart contracts</b>: claim auto-approved and paid once discharge + policy conditions verify on-chain</li><li><b>Hybrid on/off-chain</b>: sensitive medical data stays off-chain; only a hash/proof goes on-chain &mdash; keeps privacy while proving the record is untampered</li></ul></div></div></div></div></div><div class="mdeck-slide th0"><div class="kicker">3 &middot; NETWORK PLATFORMS</div><h2>How network platforms create value for SMEs</h2><img class="usth-emblem" src="../assets/images/usth_logo.png" alt="USTH"><div class="cards" style="grid-template-columns:repeat(3,1fr);height:420px;gap:14px"><div class="card"><div class="card-h">Network effects</div><div class="card-t">A growing user base lowers search and transaction costs for every participating firm.</div></div><div class="card"><div class="card-h">Global market reach</div><div class="card-t">E-commerce platforms remove geographic barriers, aggregate demand, streamline supply chains.</div></div><div class="card"><div class="card-h">Functional outsourcing</div><div class="card-t">SMEs outsource payments, logistics, marketing, and &quot;security-by-design&quot; cybersecurity to the platform.</div></div></div><div class="note">Core concept: a 5&ndash;10-person SME can sell globally or use AI without building costly internal IT &mdash; via a pay-as-you-go network platform.</div></div><div class="mdeck-slide endcard"><div class="kicker">3 &middot; NETWORK PLATFORMS &middot; SELF-CHECK</div><h2>Strategic risks, and the self-check before you close the laptop</h2><div class="cols"><div style="flex:1"><ul class=""><li><b>Platform lock-in</b>: sudden algorithm/fee changes</li><li><b>Data asymmetry</b>: platform owns the customer data, not the SME</li><li><b>Digital skills gap</b> inside the SME</li><li><b>Response</b>: omnichannel strategy, first-party data collection, data-portability regulation</li></ul></div><div style="flex:1"><ul class=""><li>Name the 3 AI adoption paths for SMEs + 1 trade-off each</li><li>Explain why Blockchain is a &quot;verification layer&quot;, not a database replacement</li><li>Name all 6 Blockchain characteristics (Transparency&hellip;Trade-offs)</li><li>Give 1 full Blockchain application end-to-end (Health Insurance)</li><li>Name the 3 network-platform models + 2 SME risks</li></ul></div></div></div></div></div><div class="mdeck-bar"><button class="mdeck-prev">◀ Trước</button><button class="mdeck-next">Sau ▶</button><span class="mdeck-count"></span><div class="mdeck-dots"></div><button class="mdeck-fs">⛶ Toàn màn hình</button></div></div>
+<p style="text-align:center;margin:10px 0 24px"><a class="back-home" href="../index.html">&larr; Session 6 home</a></p>
+<script>// Slide engine: scales the 1280x720 canvas to the window, keyboard and button navigation, dots, fullscreen, #n deep links.
 (function(){
-  var slides=[].slice.call(document.querySelectorAll('.slide')),stage=document.getElementById('stage'),cur=0;
-  var notes={"1": ["Chapter 3 covers three innovative-technology case studies: AI adoption by SMEs, Blockchain in enterprise and supply chains, and network platforms.", 20], "2": ["Three adoption paths, cheapest and most common to most expensive and rarest: off-the-shelf cloud AI, embedded AI inside existing software, and fully custom AI solutions.", 40], "3": ["Drivers are cost, decision support, and personalization. Barriers are skills, data quality, ROI uncertainty, and legal risk. Vietnam leads the region: 93 percent of SMEs have adopted at least one AI tool.", 50], "4": ["Blockchain is a distributed, immutable ledger. In supply chains it fixes the fragmentation problem: no single stakeholder trusts another's records, so blockchain becomes a shared verification layer, not a replacement for existing systems.", 45], "5": ["The farm-to-table case: QR/RFID at input, IoT sensors during transport, smart-contract-triggered payment at handoff, and a consumer-facing QR scan at output. Traceability time drops from days to seconds.", 45], "6": ["Six characteristics from a classmate team's database-course deep dive, cited as a secondary source: transparency, immutability, consistency, equal rights, availability, and the trade-off of low privacy and low throughput that comes with all of the above.", 55], "7": ["Scenario exercise answer for healthcare: the shared ledger kills the reconciliation problem between hospitals and insurers, immutability deters claim fraud, smart contracts automate payout, and a hybrid on-chain/off-chain design keeps sensitive medical data private while still proving the record hasn't been tampered with.", 60], "8": ["Platforms create value for SMEs through network effects, global reach, and outsourcing core functions like payments and security, all pay-as-you-go instead of upfront IT investment.", 40], "9": ["Three platform models: e-commerce, cloud, and B2B/industrial networks. The risks are lock-in, data asymmetry, and skills gaps; the policy response is omnichannel strategy, first-party data collection, and data-portability regulation.", 45], "10": ["Three technologies, one sentence each: AI boosts productivity but needs clean data and skills; blockchain is a shared tamper-proof verification layer; platforms give SMEs scale at the cost of owning their own customer data.", 35]};
-  function fit(){var on=document.getElementById('notes').classList.contains('on');var s=Math.min(innerWidth/1280,(innerHeight*(on?.66:1))/720);
-    stage.style.transform='translate(-50%,-50%) scale('+s+')';stage.style.top=(on?33:50)+'%';}
-  function show(n){cur=Math.max(0,Math.min(slides.length-1,n));slides.forEach(function(s,i){s.classList.toggle('on',i===cur)});
-    document.getElementById('bar').style.width=((cur+1)/slides.length*100)+'%';document.getElementById('count').textContent=(cur+1)+' / '+slides.length;
-    var n2=notes[cur+1]||['',0];document.getElementById('notes').innerHTML='<small>Speaker notes \u00b7 slide '+(cur+1)+'</small>'+n2[0];
-    history.replaceState(null,'','#'+(cur+1));}
-  document.addEventListener('keydown',function(ev){var c=ev.key;
-    if(c==='ArrowRight'||c==='PageDown'||c===' '){ev.preventDefault();show(cur+1)}else if(c==='ArrowLeft'||c==='PageUp'){show(cur-1)}
-    else if(c==='Home'){show(0)}else if(c==='End'){show(slides.length-1)}
-    else if(c==='n'||c==='N'){toggleNotes()}else if(c==='f'||c==='F'){fs()}});
-  function toggleNotes(){document.getElementById('notes').classList.toggle('on');fit();}
-  function fs(){if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();}
-  var sx=null;document.addEventListener('touchstart',function(e){sx=e.touches[0].clientX});
-  document.addEventListener('touchend',function(e){if(sx==null)return;var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)show(cur+(d<0?1:-1));sx=null});
-  document.getElementById('prev').onclick=function(){show(cur-1)};document.getElementById('next').onclick=function(){show(cur+1)};
-  document.getElementById('nt').onclick=toggleNotes;document.getElementById('fs').onclick=fs;
-  addEventListener('resize',fit);addEventListener('hashchange',function(){show((parseInt(location.hash.slice(1),10)||1)-1)});fit();show((parseInt(location.hash.slice(1),10)||1)-1);
+ var deck=document.querySelector('.mdeck'),wrap=deck.querySelector('.mdeck-canvas-wrap'),vp=deck.querySelector('.mdeck-viewport');
+ var sl=[].slice.call(vp.querySelectorAll('.mdeck-slide')),i=0,dots=deck.querySelector('.mdeck-dots'),cnt=deck.querySelector('.mdeck-count');
+ sl.forEach(function(_,k){var b=document.createElement('button');b.title='Slide '+(k+1);b.onclick=function(){go(k)};dots.appendChild(b)});
+ function fit(){var fs=document.fullscreenElement===deck;var w=fs?window.innerWidth:wrap.clientWidth;var h=fs?window.innerHeight-48:1e9;
+  var s=Math.min(w/1280,h/720);vp.style.transform='scale('+s+')';wrap.style.height=(720*s)+'px';wrap.style.width=fs?(1280*s)+'px':'100%';wrap.style.margin=fs?'0 auto':'0';}
+ function go(k){i=Math.max(0,Math.min(sl.length-1,k));sl.forEach(function(s,n){s.classList.toggle('active',n===i)});
+  [].forEach.call(dots.children,function(d,n){d.classList.toggle('on',n===i)});cnt.textContent=(i+1)+' / '+sl.length;
+  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+ deck.querySelector('.mdeck-prev').onclick=function(){go(i-1)};deck.querySelector('.mdeck-next').onclick=function(){go(i+1)};
+ deck.querySelector('.mdeck-fs').onclick=function(){if(document.fullscreenElement){document.exitFullscreen()}else{deck.requestFullscreen&&deck.requestFullscreen()}};
+ document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){go(i+1);e.preventDefault()}else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(i-1)}else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(sl.length-1)}});
+ window.addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+ var h=parseInt((location.hash||'').slice(1),10);fit();go(isNaN(h)?0:h-1);
 })();
 </script>
 </body></html>

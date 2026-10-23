@@ -1,0 +1,16 @@
+/* USTH-DSES light-blue override. Verified from assets/usth/usth_dses_logo.png via PIL pixel read: dominant color #15AFF0.
+   Embed AFTER usth_theme.css and deck_sizing.css (which hardcode USTH navy #273896 / red #ED1C24 in several selectors). */
+.mdeck-slide{--unavy:#15AFF0;--ured:#0369A1}
+.mdeck-slide .card{border-top-color:#15AFF0}
+.mdeck-slide .card-h{color:#15AFF0}
+.mdeck-slide table.lg th{background:#15AFF0}
+.mdeck-slide .callout{border-left-color:#15AFF0;background:#EAF7FE}
+.mdeck-slide .callout .lbl{color:#15AFF0}
+.mdeck-slide .callout.warn{border-left-color:#0369A1;background:#E6F0FA}
+.mdeck-slide .callout.warn .lbl{color:#0369A1}
+.mdeck-slide .bigq{border-left-color:#0369A1;background:#EAF7FE}
+.mdeck-dots button.on{background:#15AFF0}
+.mdeck-slide.cover h2,.mdeck-slide.endcard h2{color:#15AFF0}
+.mdeck-bar button:hover{border-color:#15AFF0}
+.tblock{border-color:#15AFF0}
+.tblock .tblock-h{background:#15AFF0}

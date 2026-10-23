@@ -1,0 +1,48 @@
+/* Theme slide USTH cho deck HTML 1280x720 — biến thể CSS-THUẦN (không dựng ảnh nền Beamer như hust_theme.css,
+   vì chưa có beamerthemeUSTH.sty + ảnh nền render sẵn). Dùng băng màu CSS + logo thật dạng <img> overlay.
+   Đã verify thật trong dự án "for-ttn-USTH" (site QRC-Diff-Climate-Modelling, 2026-10):
+   đọc pixel trực tiếp từ assets/usth/usth_logo.png (file logo chính thức do trường cấp) ra đúng 2 màu:
+   đỏ #ED1C24, xanh navy #273896 — KHÔNG phải màu đoán. Nếu đổi sang 1 file logo USTH khác, nên verify lại
+   bằng PIL.Image.getcolors() trước khi tin theo 2 mã màu này.
+   Nhúng trong <style> của trang, SAU deck.css/common.css, THAY hust_theme.css (không dùng cả 2 cùng lúc).
+   Đường dẫn ảnh tính từ trang HTML (vi/*.html -> ../assets/...). */
+:root{--accent:#ED1C24;--accent2:#273896}
+:root[data-theme="dark"]{--accent:#ff6b70;--accent2:#5c73c9}
+.mdeck-slide{--text:#1b2433;--muted:#566074;--panel:#fff;--border:#d5dae6;--code:#eef2fa;--ured:#ED1C24;--unavy:#273896;
+  color:var(--text);background-color:#fff;padding:104px 60px 66px;position:relative}
+/* Không có ảnh nền baked — băng tiêu đề là 1 div CSS thuần, logo là <img> overlay thật (không vẽ lại bằng tay) */
+.mdeck-slide.th0,.mdeck-slide.th1,.mdeck-slide.th2,.mdeck-slide.th3{background:#fff}
+.mdeck-slide.th0::before,.mdeck-slide.th1::before,.mdeck-slide.th2::before,.mdeck-slide.th3::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:68px;background:var(--unavy);
+  border-bottom:4px solid var(--ured)}
+.mdeck-slide.th0 h2,.mdeck-slide.th1 h2,.mdeck-slide.th2 h2,.mdeck-slide.th3 h2{position:absolute;left:60px;right:96px;top:0;height:68px;
+  margin:0;display:flex;align-items:center;color:#fff;font-size:1.42rem;line-height:1.15;z-index:1}
+.mdeck-slide.has-logo h2{right:230px}
+/* logo thật: dùng usth_logo.png (huy hiệu chính) + usth_dses_logo.png (logo khoa/đơn vị, nếu cần 2 logo kiểu HUST) */
+.mdeck-slide .usth-emblem{position:absolute;top:6px;right:20px;height:56px;width:auto;z-index:1}
+.mdeck-slide .usth-emblem-secondary{position:absolute;top:6px;right:90px;height:56px;width:auto;
+  background:#fff;border-radius:6px;padding:2px;z-index:1}
+.tech-logo{position:absolute;top:6px;right:90px;height:56px;max-width:170px;object-fit:contain;background:#fff;
+  border:1px solid var(--border);border-radius:8px;padding:4px 8px;z-index:1}
+.mdeck-slide.part-divider{background:var(--unavy);padding:0 80px;color:#fff}
+.mdeck-slide.part-divider h2{position:static;color:#fff}
+.mdeck-slide.part-divider::after{content:"";position:absolute;left:0;right:0;bottom:60px;height:4px;background:var(--ured)}
+.mdeck-slide.cover{background:#fff;padding:150px 80px 70px 70px;align-items:flex-start;border-top:10px solid var(--unavy)}
+.mdeck-slide.cover::after{content:"";position:absolute;top:10px;left:0;right:0;height:4px;background:var(--ured)}
+.mdeck-slide.cover h2{font-size:2.3rem;color:var(--unavy)}
+.mdeck-slide.endcard{background:#fff;padding:150px 60px 70px 70px;align-items:flex-start;border-top:10px solid var(--unavy)}
+.mdeck-slide b,.mdeck-slide strong{color:var(--ured)}                       /* chữ đậm màu đỏ USTH */
+.mdeck-slide.part-divider b,.mdeck-slide.part-divider strong{color:#fff}
+/* vùng nội dung chỉ còn ~536px cao (y 100..636) vì có băng tiêu đề 68px + lề dưới: giảm cỡ chữ để không tràn */
+.mdeck-slide p,.mdeck-slide li{font-size:1.04rem;line-height:1.42}
+.mdeck-slide table{font-size:.92rem}.mdeck-slide table.dense{font-size:.8rem}
+.mdeck-slide td .katex,.mdeck-slide th .katex{white-space:nowrap}              /* công thức trong ô bảng không ngắt dòng */
+.mdeck-slide td,.mdeck-slide th{vertical-align:middle}
+.mdeck-slide h3{font-size:1.12rem;color:var(--unavy)}
+/* khối kiểu Beamer "block": thanh tiêu đề màu + danh sách đánh số trong khung viền */
+.tblock{border:1px solid var(--unavy);border-radius:10px;overflow:hidden;margin:10px 0;background:var(--panel)}
+.tblock .tblock-h{background:var(--unavy);color:#fff;font-weight:800;padding:7px 16px;font-size:.98rem}
+.tblock ol{margin:0;padding:10px 16px 10px 34px}.tblock li{margin:5px 0;line-height:1.45}
+.qa-pre{margin:6px 0;padding:8px 12px;background:var(--code);border:1px solid var(--border);border-radius:8px;
+  font:12.5px/1.4 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow:hidden}
+.qa-cols{display:flex;gap:16px;align-items:flex-start}.qa-cols>*{flex:1;min-width:0}
